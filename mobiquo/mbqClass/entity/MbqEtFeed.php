@@ -16,7 +16,7 @@ Class MbqEtFeed extends MbqBaseEntity {
     public $postId;    /* the post associated with this feed */
     public $type;   /* user/topic/post or other anything */
     public $newFeed;   /* to indicate whether this feed is an unread feed. */
-    public $feedContent;
+    public $message;    /* message to be displayed in the app about this feed.  */
     public $postTime;   
     
     public function __construct() {
@@ -27,7 +27,7 @@ Class MbqEtFeed extends MbqBaseEntity {
         $this->postId = clone MbqMain::$simpleV;
         $this->type = clone MbqMain::$simpleV;
         $this->newFeed = clone MbqMain::$simpleV;
-        $this->feedContent = clone MbqMain::$simpleV;
+        $this->message = clone MbqMain::$simpleV;
         $this->postTime = clone MbqMain::$simpleV;
     }
   

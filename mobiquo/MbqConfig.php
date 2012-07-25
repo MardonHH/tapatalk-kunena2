@@ -122,7 +122,7 @@ Class MbqConfig extends MbqBaseConfig {
     }
     
     /**
-     * init cfg
+     * init cfg default value
      */
     protected function initCfg() {
         /* base/user/forum/pm/pc/like/subscribe/thank/follow/feed */
@@ -134,6 +134,7 @@ Class MbqConfig extends MbqBaseConfig {
         $this->cfg['base']['inbox_stat'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.base.inbox_stat.default')));  /* Return "1" if the plugin support pm and subscribed topic unread number since last check time. */
         $this->cfg['base']['announcement'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.base.announcement.default')));    /* This instructs the app to hide/show the "Announcement" tab in topic view */
         $this->cfg['base']['disable_bbcode'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.base.disable_bbcode.default')));    /* disable bbcode function flag */
+        $this->cfg['base']['push'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.base.push.default')));
       /* user */
         $this->cfg['user']['name'] = MbqMain::$oClk->newObj('MbqValue', 'Joomla! Kunena');    /* module name.it indicate this module is supported by whitch applications or 3rd plugins/modules.it is used to distinguish the diffrent 3rd plugins or modules. */
         $this->cfg['user']['version'] = MbqMain::$oClk->newObj('MbqValue', 'Joomla!1.5.26+/Joomla!2.5.4+  Kunena2.0.x');    /* module version.it indicate the applications version that support this module. */

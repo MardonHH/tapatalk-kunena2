@@ -38,10 +38,13 @@ Class MbqEtForumPost extends MbqBaseEntity {
     public $modByUserId;    /* If this post has already been moderated, return the user id of the person who moderated this post */
     public $deleteByUserId; /* return the user id of the person who has previously soft-deleted this post */
     public $deleteReason;   /* return reason of deletion, if any. */
-    
-    public $objsMbqEtAtt;
-    public $objsMbqEtForumThank;
-    public $objsMbqEtForumLike;
+        
+    public $oMbqEtForum;
+    public $oMbqEtForumTopic;
+    public $oAuthorMbqEtUser;
+    public $objsMbqEtAtt = array();
+    public $objsMbqEtForumThank = array();
+    public $objsMbqEtForumLike = array();
     
     public function __construct() {
         parent::__construct();
@@ -74,6 +77,9 @@ Class MbqEtForumPost extends MbqBaseEntity {
         $this->deleteByUserId = clone MbqMain::$simpleV;
         $this->deleteReason = clone MbqMain::$simpleV;
         
+        $this->oMbqEtForum = NULL;
+        $this->oMbqEtForumTopic = NULL;
+        $this->oAuthorMbqEtUser = NULL;
         $this->objsMbqEtAtt = array();
         $this->objsMbqEtForumThank = array();
         $this->objsMbqEtForumLike = array();

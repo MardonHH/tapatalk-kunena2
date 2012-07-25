@@ -10,7 +10,7 @@ defined('MBQ_IN_IT') or exit;
  */
 Abstract Class MbqBaseConfig {
     
-    /* plugin config many dimensions array.will be calculated with $this->cfg default value and MbqMain::$customConfig and MbqMain::$oMbqAppEnv and the plugin support degree. */
+    /* plugin config,many dimensions array.will be calculated with $this->cfg default value and MbqMain::$customConfig and MbqMain::$oMbqAppEnv and the plugin support degree. */
     protected $cfg;
 
     public function __construct() {

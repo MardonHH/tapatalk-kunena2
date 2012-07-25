@@ -11,7 +11,21 @@ defined('MBQ_IN_IT') or exit;
 Abstract Class MbqFdtFeed extends MbqBaseFdt {
     
     public static $df = array(
-        
+        'MbqEtFeed' => array(
+            'type' => array(
+                'range' => array(
+                    'user' => 'user',
+                    'topic' => 'topic',
+                    'post' => 'post'
+                )
+            ),
+            'newFeed' => array(
+                'range' => array(
+                    'yes' => true,
+                    'no' => false
+                )
+            )
+        )
     );
   
 }

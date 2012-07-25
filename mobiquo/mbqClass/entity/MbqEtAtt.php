@@ -16,7 +16,13 @@ Class MbqEtAtt extends MbqBaseEntity {
     public $postId;
     public $filtersSize;
     public $uploadFileName;
-    public $attType;    /* post att or user avatar */
+    public $attType;    /* forum post att or user avatar */
+    public $contentType;    /* return "image", "pdf" or "other" */
+    public $thumbnailUrl;   /* if content type = "image", use absolute path (optional: if not presented, use "url" to load thumbnail instead) */
+    public $url;    /* URL of the attachment source. */
+    public $userId;     /* user id who submit this attachment */
+    
+    public $oMbqEtUser; /* user who submit this attachment */
     
     public function __construct() {
         parent::__construct();
@@ -27,6 +33,12 @@ Class MbqEtAtt extends MbqBaseEntity {
         $this->filtersSize = clone MbqMain::$simpleV;
         $this->uploadFileName = clone MbqMain::$simpleV;
         $this->attType = clone MbqMain::$simpleV;
+        $this->contentType = clone MbqMain::$simpleV;
+        $this->thumbnailUrl = clone MbqMain::$simpleV;
+        $this->url = clone MbqMain::$simpleV;
+        $this->userId = clone MbqMain::$simpleV;
+        
+        $this->oMbqEtUser = NULL;
     }
   
 }

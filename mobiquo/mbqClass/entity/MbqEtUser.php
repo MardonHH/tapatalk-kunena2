@@ -16,7 +16,7 @@ Class MbqEtUser extends MbqBaseEntity {
     public $userName;   /* for display */
     public $userGroupIds;   /* usergroup ids that this user belongs to. */
     public $iconUrl;
-    public $postCount;
+    public $postCount;  /* Return total number of post of this user */
     public $canPm;
     public $canSendPm;
     public $canModerate;
@@ -34,10 +34,10 @@ Class MbqEtUser extends MbqBaseEntity {
     public $iFollowU;
     public $uFollowMe;
     public $acceptFollow;
-    public $followingCount;
-    public $follower;
+    public $followingCount;     /* number of person this user is following to */
+    public $follower;           /* number of person following this user */
     public $currentAction;  /* If the user is currently online, return what the user is currently doing */
-    public $topicId;
+    public $topicId;    /* Required if [TOPIC] BBCode is presented in the display_text above */
     public $canBan;     /* return true if current user can ban this user */
     public $isBan;      /* return true if this user has been baned */
     public $canMarkSpam;

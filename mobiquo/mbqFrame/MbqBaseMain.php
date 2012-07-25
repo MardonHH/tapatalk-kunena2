@@ -57,8 +57,7 @@ Abstract Class MbqBaseMain {
     /**
      * action
      */
-    public function action() {
-    }
+    abstract public function action();
     
     /**
      * data output

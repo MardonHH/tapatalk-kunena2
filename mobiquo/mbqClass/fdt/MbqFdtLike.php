@@ -11,7 +11,14 @@ defined('MBQ_IN_IT') or exit;
 Abstract Class MbqFdtLike extends MbqBaseFdt {
     
     public static $df = array(
-        
+        'MbqEtLike' => array(
+            'type' => array(
+                'range' => array(
+                    'likeForumTopic' => 'likeForumTopic',
+                    'likeForumPost' => 'likeForumPost'
+                )
+            )
+        )
     );
   
 }

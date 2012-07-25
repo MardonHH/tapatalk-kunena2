@@ -10,7 +10,7 @@ defined('MBQ_IN_IT') or exit;
  */
 Class MbqEtFollow extends MbqBaseEntity {
     
-    public $userIdFrom;    /* user id who launch a follow */
+    public $userIdFrom;    /* user id who follow to another user */
     public $userIdTo; /* user id who be followed */
     
     public function __construct() {

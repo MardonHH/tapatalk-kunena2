@@ -10,14 +10,16 @@ defined('MBQ_IN_IT') or exit;
  */
 Class MbqEtForumTopic extends MbqBaseEntity {
     
+    /* some properties comes from $this->oFirstMbqEtForumPost */
     public $topicId;
     public $forumId;
+    public $firstPostId;    /* first post id.in some appcations the first post id = topic id perhaps. */
     public $topicTitle;
     public $topicContent;
     public $prefixId;
     public $topicAuthorId;
     public $lastReplyAuthorId;
-    public $attachMentIdArray;
+    public $attachmentIdArray;
     public $groupId;
     public $state;  /* 1 = post is success but need moderation. Otherwise no need to return this key. */
     public $isSubscribed;   /* return true if this thread has been subscribed by this user */
@@ -48,7 +50,11 @@ Class MbqEtForumTopic extends MbqBaseEntity {
     public $modByUserId;    /* If this topic has already been moderated, return the user id of the person who moderated this topic */
     public $deleteByUserId; /* return the user id of the person who has previously soft-deleted this topic */
     public $deleteReason;   /* return reason of deletion, if any. */
+    public $canReply;
     
+    public $oMbqEtForum;
+    public $oFirstMbqEtForumPost;
+    public $oAuthorMbqEtUser;
     public $objsMbqEtAtt;
     public $objsMbqEtForumPost;
     
@@ -61,7 +67,7 @@ Class MbqEtForumTopic extends MbqBaseEntity {
         $this->prefixId = clone MbqMain::$simpleV;
         $this->topicAuthorId = clone MbqMain::$simpleV;
         $this->lastReplyAuthorId = clone MbqMain::$simpleV;
-        $this->attachMentIdArray = clone MbqMain::$simpleV;
+        $this->attachmentIdArray = clone MbqMain::$simpleV;
         $this->state = clone MbqMain::$simpleV;
         $this->groupId = clone MbqMain::$simpleV;
         $this->isSubscribed = clone MbqMain::$simpleV;
@@ -92,7 +98,11 @@ Class MbqEtForumTopic extends MbqBaseEntity {
         $this->modByUserId = clone MbqMain::$simpleV;
         $this->deleteByUserId = clone MbqMain::$simpleV;
         $this->deleteReason = clone MbqMain::$simpleV;
+        $this->canReply = clone MbqMain::$simpleV;
         
+        $this->oMbqEtForum = NULL;
+        $this->oFirstMbqEtForumPost = NULL;
+        $this->oAuthorMbqEtUser = NULL;
         $this->objsMbqEtAtt = array();
         $this->objsMbqEtForumPost = array();
     }

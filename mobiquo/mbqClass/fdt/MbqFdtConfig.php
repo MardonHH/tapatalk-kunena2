@@ -39,6 +39,13 @@ Abstract Class MbqFdtConfig extends MbqBaseFdt {
                     'enable' => 0,
                     'disable' => 1
                 )
+            ),
+            'push' => array(
+                'default' => 0,
+                'range' => array (
+                    'support' => 1,
+                    'notSupport' => 0
+                )
             )
         ),
         'user' => array(
@@ -67,14 +74,14 @@ Abstract Class MbqFdtConfig extends MbqBaseFdt {
                 )
             ),
             'guest_whosonline' => array(
-                'default' => 1,
+                'default' => 0,
                 'range' => array (
                     'support' => 1,
                     'notSupport' => 0
                 )
             ),
             'avatar' => array(
-                'default' => 1,
+                'default' => 0,
                 'range' => array (
                     'support' => 1,
                     'notSupport' => 0
@@ -88,21 +95,21 @@ Abstract Class MbqFdtConfig extends MbqBaseFdt {
                 )
             ),
             'support_md5' => array(
-                'default' => 1,
+                'default' => 0,
                 'range' => array (
                     'support' => 1,
                     'notSupport' => 0
                 )
             ),
             'get_smilies' => array(
-                'default' => 1,
+                'default' => 0,
                 'range' => array (
                     'support' => 1,
                     'notSupport' => 0
                 )
             ),
             'advanced_online_users' => array(
-                'default' => 1,
+                'default' => 0,
                 'range' => array (
                     'support' => 1,
                     'notSupport' => 0
@@ -116,7 +123,7 @@ Abstract Class MbqFdtConfig extends MbqBaseFdt {
                 )
             ),
             'upload_avatar' => array(
-                'default' => 1,
+                'default' => 0,
                 'range' => array (
                     'support' => 1,
                     'notSupport' => 0

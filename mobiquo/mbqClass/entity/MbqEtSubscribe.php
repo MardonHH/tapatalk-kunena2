@@ -15,12 +15,16 @@ Class MbqEtSubscribe extends MbqBaseEntity {
     public $userId; /* user id who subscribed this */
     public $type;   /* subscribe forum/topic or other anything */
     
+    public $oMbqEtUser; /* user who subscribed this */
+    
     public function __construct() {
         parent::__construct();
         $this->subscribeMode = clone MbqMain::$simpleV;
         $this->key = clone MbqMain::$simpleV;
         $this->userId = clone MbqMain::$simpleV;
         $this->type = clone MbqMain::$simpleV;
+        
+        $this->oMbqEtUser = NULL;
     }
   
 }

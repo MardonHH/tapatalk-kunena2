@@ -19,7 +19,7 @@ Class MbqEtForum extends MbqBaseEntity {
     public $isProtected;
     public $isSubscribed;   /* return true if this forum was subscribed by current user */
     public $canSubscribe;   /* return true if current user can subscribe this forum. Default as true for member. */
-    public $url;
+    public $url;    /* if it contains a url, it means this forum is just a link to other webpage */
     public $subOnly;
     public $canPost;    /* return false if user cannot create new topic in this forum */
     public $unreadStickyCount;
@@ -28,6 +28,7 @@ Class MbqEtForum extends MbqBaseEntity {
     public $prefixes;
     public $canUpload;  /* return true if the user has authority to upload attachments in this sub-forum. */
     
+    public $oParentMbqEtForum;  /* parent forum */
     public $objsSubMbqEtForum;  /* sub forums */
     
     public function __construct() {
@@ -50,6 +51,7 @@ Class MbqEtForum extends MbqBaseEntity {
         $this->prefixes = clone MbqMain::$simpleV;
         $this->canUpload = clone MbqMain::$simpleV;
         
+        $this->oParentMbqEtForum = NULL;
         $this->objsSubMbqEtForum = array();
     }
   

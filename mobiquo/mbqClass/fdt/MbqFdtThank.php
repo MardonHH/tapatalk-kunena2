@@ -11,7 +11,13 @@ defined('MBQ_IN_IT') or exit;
 Abstract Class MbqFdtThank extends MbqBaseFdt {
     
     public static $df = array(
-        
+        'MbqEtThank' => array(
+            'type' => array(
+                'range' => array(
+                    'thankForumPost' => 'thankForumPost'
+                )
+            )
+        )
     );
   
 }

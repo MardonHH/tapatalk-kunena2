@@ -10,15 +10,21 @@ defined('MBQ_IN_IT') or exit;
  */
 Class MbqEtLike extends MbqBaseEntity {
     
-    public $key;    /* now only postId */
+    public $key;    /* topicId or postId */
     public $userId; /* user id who liked this */
-    public $type;   /* like post or other anything */
+    public $type;   /* like forum topic/post or other anything */
+    public $postTime;
+    
+    public $oMbqEtUser; /* user who like this */
     
     public function __construct() {
         parent::__construct();
         $this->key = clone MbqMain::$simpleV;
         $this->userId = clone MbqMain::$simpleV;
         $this->type = clone MbqMain::$simpleV;
+        $this->postTime = clone MbqMain::$simpleV;
+        
+        $this->oMbqEtUser = NULL;
     }
   
 }
