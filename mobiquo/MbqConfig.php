@@ -20,10 +20,12 @@ define('MBQ_CLASS_PATH', MBQ_PATH.'mbqClass/');    /* class path */
 define('MBQ_ENTITY_PATH', MBQ_CLASS_PATH.'entity/');    /* entity class path */
 define('MBQ_FDT_PATH', MBQ_CLASS_PATH.'fdt/');    /* fdt class path */
 define('MBQ_IO_PATH', MBQ_CLASS_PATH.'io/');    /* io class path */
+define('MBQ_IO_HANDLE_PATH', MBQ_IO_PATH.'handle/');    /* io class path */
 define('MBQ_LIB_PATH', MBQ_CLASS_PATH.'lib/');    /* lib class path */
 define('MBQ_ACTION_PATH', MBQ_PATH.'mbqAction/');    /* action class path */
 define('MBQ_APPEXTENTION_PATH', MBQ_PATH.'appExtt/');    /* application extention path */
 define('MBQ_CUSTOM_PATH', MBQ_PATH.'custom/');    /* user custom path */
+define('MBQ_3RD_LIB_PATH', MBQ_PATH.'3rdLib/');    /* user custom path */
 
 /**
  * plugin config
@@ -118,6 +120,8 @@ Class MbqConfig extends MbqBaseConfig {
         /* lib class */
         /* I/O class */
         MbqMain::$oClk->reg('MbqIo', MBQ_IO_PATH.'MbqIo.php');
+        MbqMain::$oClk->reg('MbqIoHandleXmlrpc', MBQ_IO_HANDLE_PATH.'MbqIo.php');
+        MbqMain::$oClk->reg('MbqIoHandleJson', MBQ_IO_HANDLE_PATH.'MbqIo.php');
         /* action class */
     }
     

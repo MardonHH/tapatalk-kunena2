@@ -10,10 +10,47 @@ defined('MBQ_IN_IT') or exit;
  */
 Class MbqIo extends MbqBaseIo {
     
+    protected $oHandle;    // real io data handle
+    
     public function __construct() {
         parent::__construct();
+        
+        // identify the protocol
+        $this->init();
+        
     }
-  
+    
+    /**
+     * Get request protocol based on Content-Type
+     *
+     * @return string default as xmlrpc
+     */
+    protected function init() {
+        $contentType = MbqMain::$oMbqCm->getRequestHeader('Content-Type');
+        switch ($contentType) {
+            case 'text/xml':
+                $protocol = 'xmlrpc';
+                break;
+            case 'application/json':
+                $protocol = 'json';
+                break;
+            default:
+                $protocol = 'xmlrpc';
+        }
+        $ioHandleClass = 'MbqIoHandle'.ucfirst($protocol);
+        MbqMain::$oClk->includeClass($ioHandleClass);
+        $this->protocol = $protocol;
+        $this->oHandle = MbqMain::$oClk->newObj($ioHandleClass);
+        $this->cmd = $this->oHandle->getCmd();
+        $this->input = $this->oHandle->getInput();
+    }
+    
+    /**
+     * output data
+     */
+    public function output() {
+        $this->oHandle->output(MbqMain::$data);
+    }
 }
 
 ?>

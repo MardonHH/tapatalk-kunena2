@@ -41,6 +41,45 @@ Abstract Class MbqBaseCm {
         }
     }
     
+    /**
+     * Get all request headers
+     * 
+     * @return array
+     */
+    public static function getAllRequestHeaders() {
+        static $_cached_headers = false;
+        if($_cached_headers !== false) {
+            return $_cached_headers;
+        }
+        $headers = array();
+        if(function_exists('getallheaders')) {
+            foreach( getallheaders() as $name => $value ) {
+                $headers[strtolower($name)] = $value;
+            }
+        } else {
+            foreach($_SERVER as $name => $value) {
+                if(substr($name, 0, 5) == 'HTTP_') {
+                    $headers[strtolower(str_replace(' ', '-', str_replace('_', ' ', substr($name, 5))))] = $value;
+                }
+            }
+        }
+        return $_cached_headers = $headers;
+    }
+    
+    /**
+     * Get a request header
+     *
+     * @param  string $name the requested header title
+     * @return string|false
+     */
+    public static function getRequestHeader($name) {
+        $headers = self::getAllRequestHeaders();
+        if (isset($headers[strtolower($name)])) {
+            return $headers[strtolower($name)];
+        }
+        return false;
+    }
+    
 }
 
 ?>
