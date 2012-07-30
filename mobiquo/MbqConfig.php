@@ -120,8 +120,8 @@ Class MbqConfig extends MbqBaseConfig {
         /* lib class */
         /* I/O class */
         MbqMain::$oClk->reg('MbqIo', MBQ_IO_PATH.'MbqIo.php');
-        MbqMain::$oClk->reg('MbqIoHandleXmlrpc', MBQ_IO_HANDLE_PATH.'MbqIo.php');
-        MbqMain::$oClk->reg('MbqIoHandleJson', MBQ_IO_HANDLE_PATH.'MbqIo.php');
+        MbqMain::$oClk->reg('MbqIoHandleXmlrpc', MBQ_IO_HANDLE_PATH.'MbqIoHandleXmlrpc.php');
+        MbqMain::$oClk->reg('MbqIoHandleJson', MBQ_IO_HANDLE_PATH.'MbqIoHandleJson.php');
         /* action class */
     }
     
@@ -218,10 +218,6 @@ Class MbqConfig extends MbqBaseConfig {
         $this->cfg['follow']['name'] = clone MbqMain::$simpleV;
         $this->cfg['follow']['version'] = clone MbqMain::$simpleV;
         $this->cfg['follow']['module_follow'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.follow.module_follow.default')));    /* enable follow module flag */
-      /* like */
-        $this->cfg['like']['name'] = clone MbqMain::$simpleV;
-        $this->cfg['like']['version'] = clone MbqMain::$simpleV;
-        $this->cfg['like']['module_like'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.like.module_like.default')));    /* enable like module flag */
       /* feed */
         $this->cfg['feed']['name'] = clone MbqMain::$simpleV;
         $this->cfg['feed']['version'] = clone MbqMain::$simpleV;
