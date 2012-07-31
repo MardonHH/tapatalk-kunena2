@@ -27,7 +27,7 @@ define('MBQ_LIB_PATH', MBQ_CLASS_PATH.'lib'.MBQ_DS);    /* lib class path */
 define('MBQ_ACTION_PATH', MBQ_PATH.'mbqAction'.MBQ_DS);    /* action class path */
 define('MBQ_APPEXTENTION_PATH', MBQ_PATH.'appExtt'.MBQ_DS);    /* application extention path */
 define('MBQ_CUSTOM_PATH', MBQ_PATH.'custom'.MBQ_DS);    /* user custom path */
-define('MBQ_3RD_LIB_PATH', MBQ_PATH.'3rdLib/');    /* 3rd lib path */
+define('MBQ_3RD_LIB_PATH', MBQ_PATH.'3rdLib'.MBQ_DS);    /* 3rd lib path */
 
 /**
  * plugin config
