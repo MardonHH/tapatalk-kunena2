@@ -9,23 +9,25 @@ define('MBQ_ERR_NOT_SUPPORT', 5);  /* not support corresponding function error t
 define('MBQ_ERR_APP', 7);   /* normal error that maked by program logic can be displayed,the program can works continue or not. */
 define('MBQ_ERR_INFO', 9);  /* success info that maked by program logic can be displayed,the program can works continue or not. */
 /* path constant */
-define('MBQ_PATH', dirname(__FILE__).'/');    /* mobiquo path */
-define('MBQ_FRAME_PATH', MBQ_PATH.'mbqFrame/');    /* frame path */
+define('MBQ_DS', DIRECTORY_SEPARATOR);
+define('MBQ_PATH', dirname(__FILE__).MBQ_DS);    /* mobiquo path */
+define('MBQ_PARENT_PATH', realpath(dirname(__FILE__).MBQ_DS.'..').MBQ_DS);    /* mobiquo parent dir path */
+define('MBQ_FRAME_PATH', MBQ_PATH.'mbqFrame'.MBQ_DS);    /* frame path */
 require_once(MBQ_FRAME_PATH.'MbqError.php');
 require_once(MBQ_FRAME_PATH.'MbqBaseConfig.php');
 require_once(MBQ_FRAME_PATH.'MbqBaseMain.php');
 require_once(MBQ_FRAME_PATH.'MbqClassLink.php');
 require_once(MBQ_FRAME_PATH.'MbqValue.php');
-define('MBQ_CLASS_PATH', MBQ_PATH.'mbqClass/');    /* class path */
-define('MBQ_ENTITY_PATH', MBQ_CLASS_PATH.'entity/');    /* entity class path */
-define('MBQ_FDT_PATH', MBQ_CLASS_PATH.'fdt/');    /* fdt class path */
-define('MBQ_IO_PATH', MBQ_CLASS_PATH.'io/');    /* io class path */
-define('MBQ_IO_HANDLE_PATH', MBQ_IO_PATH.'handle/');    /* io class path */
-define('MBQ_LIB_PATH', MBQ_CLASS_PATH.'lib/');    /* lib class path */
-define('MBQ_ACTION_PATH', MBQ_PATH.'mbqAction/');    /* action class path */
-define('MBQ_APPEXTENTION_PATH', MBQ_PATH.'appExtt/');    /* application extention path */
-define('MBQ_CUSTOM_PATH', MBQ_PATH.'custom/');    /* user custom path */
-define('MBQ_3RD_LIB_PATH', MBQ_PATH.'3rdLib/');    /* user custom path */
+define('MBQ_CLASS_PATH', MBQ_PATH.'mbqClass'.MBQ_DS);    /* class path */
+define('MBQ_ENTITY_PATH', MBQ_CLASS_PATH.'entity'.MBQ_DS);    /* entity class path */
+define('MBQ_FDT_PATH', MBQ_CLASS_PATH.'fdt'.MBQ_DS);    /* fdt class path */
+define('MBQ_IO_PATH', MBQ_CLASS_PATH.'io'.MBQ_DS);    /* io class path */
+define('MBQ_IO_HANDLE_PATH', MBQ_IO_PATH.'handle'.MBQ_DS);    /* io handle class path */
+define('MBQ_LIB_PATH', MBQ_CLASS_PATH.'lib'.MBQ_DS);    /* lib class path */
+define('MBQ_ACTION_PATH', MBQ_PATH.'mbqAction'.MBQ_DS);    /* action class path */
+define('MBQ_APPEXTENTION_PATH', MBQ_PATH.'appExtt'.MBQ_DS);    /* application extention path */
+define('MBQ_CUSTOM_PATH', MBQ_PATH.'custom'.MBQ_DS);    /* user custom path */
+define('MBQ_3RD_LIB_PATH', MBQ_PATH.'3rdLib/');    /* 3rd lib path */
 
 /**
  * plugin config
@@ -123,6 +125,7 @@ Class MbqConfig extends MbqBaseConfig {
         MbqMain::$oClk->reg('MbqIoHandleXmlrpc', MBQ_IO_HANDLE_PATH.'MbqIoHandleXmlrpc.php');
         MbqMain::$oClk->reg('MbqIoHandleJson', MBQ_IO_HANDLE_PATH.'MbqIoHandleJson.php');
         /* action class */
+        MbqMain::$oClk->reg('MbqActGetConfig', MBQ_ACTION_PATH.'MbqActGetConfig.php');
     }
     
     /**
