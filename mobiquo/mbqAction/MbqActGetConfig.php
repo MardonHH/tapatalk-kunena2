@@ -18,7 +18,9 @@ Class MbqActGetConfig extends MbqBaseAct {
      * action implement
      */
     public function actionImplement() {
-        /* will output by MbqMain::$oMbqConfig */
+        $data = &MbqMain::$data;
+        $data['sys_version'] = MbqMain::$oMbqConfig->getCfg('base.mbq_version')->oriValue;
+        $data['api_level'] = MbqMain::$oMbqConfig->getCfg('base.api_level')->oriValue;
     }
   
 }

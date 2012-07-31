@@ -46,11 +46,18 @@ Class MbqIo extends MbqBaseIo {
     }
     
     /**
+     * intput data
+     */
+    public function input() {
+    }
+    
+    /**
      * output data
      */
     public function output() {
         $this->oHandle->output(MbqMain::$data);
     }
+    
 }
 
 ?>

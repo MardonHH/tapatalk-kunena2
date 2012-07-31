@@ -26,6 +26,7 @@ Class MbqMain extends MbqBaseMain {
     public function __construct() {
         parent::__construct();
         MbqMain::$oMbqCm->changeWorkDir('..');  /* change work dir to parent dir. */
+        ob_start();
     }
     
     /**
@@ -64,7 +65,7 @@ $oMbqMain->initAppEnv();    /* application environment init */
 $oMbqMain->action();    /* main program handle */
 $oMbqMain->output();    /* handle output data */
 
-echo 'works';
+//echo 'works';
 //print_r(MbqMain::$oMbqConfig);
 
 ?>

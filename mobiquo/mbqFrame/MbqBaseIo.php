@@ -15,26 +15,28 @@ Abstract Class MbqBaseIo {
     protected $cmd;   /* action command name,must unique in all action. */
     protected $input;   /* input params array */
     
+    protected $data;    /* data need return */
+    
     public function __construct() {
         $this->input = array();
+        $this->data = array();
+        MbqMain::$protocol = &$this->protocol;
+        MbqMain::$module = &$this->module;
+        MbqMain::$cmd = &$this->cmd;
+        MbqMain::$input = &$this->input;
+        
+        MbqMain::$data = &$this->data;
     }
     
     /**
      * input data
      */
-    public function input() {
-        MbqMain::$protocol = &$this->protocol;
-        MbqMain::$module = &$this->module;
-        MbqMain::$cmd = &$this->cmd;
-        MbqMain::$input = &$this->input;
-    }
+    abstract public function input();
     
     /**
      * output data
      */
-    public function output() {
-        $data = &MbqMain::$data;
-    }
+    abstract public function output();
   
 }
 
