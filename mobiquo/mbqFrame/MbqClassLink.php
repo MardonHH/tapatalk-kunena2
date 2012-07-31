@@ -17,6 +17,16 @@ Class MbqClassLink {
     }
     
     /**
+     * to judge the class has been registed
+     *
+     * @param  String  $name  class name
+     * @return  Boolean
+     */
+    public function hasReg($name) {
+        return $this->classes[$name] ? true : flase;
+    }
+    
+    /**
      * regist a class
      *
      * @param  String  $name  class name

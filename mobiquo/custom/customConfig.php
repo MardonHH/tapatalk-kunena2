@@ -3,7 +3,7 @@
 defined('MBQ_IN_IT') or exit;
 
 /**
- * user custom config,to replace part config of MbqMain::$oMbqConfig->cfg.
+ * user custom config,to replace some config of MbqMain::$oMbqConfig->cfg.
  * you can change any config if you need,please refer to MbqConfig.php for more details.
  * 
  * @since  2012-7-19

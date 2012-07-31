@@ -44,7 +44,6 @@ Abstract Class MbqBaseMain {
      */
     public function input() {
         self::$oMbqIo->input();
-        /* you can change work path by your need after input */
     }
     
     /**

@@ -12,6 +12,11 @@ Abstract Class MbqBaseAct {
     
     public function __construct() {
     }
+    
+    /**
+     * action implement
+     */
+    abstract public function actionImplement();
   
 }
 

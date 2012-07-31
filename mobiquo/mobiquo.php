@@ -13,7 +13,7 @@ if (MBQ_DEBUG) {
 }
 set_time_limit(60);
 
-require_once('./MbqConfig.php');
+require_once('MbqConfig.php');
 
 /**
  * frame main program
@@ -32,7 +32,28 @@ Class MbqMain extends MbqBaseMain {
      * action
      */
     public function action() {
-        self::$oMbqConfig->calCfg();    /* you should do some modify with this function in multiple different applications! */
+        self::$oMbqConfig->calCfg();    /* you should do some modify with this function in multiple different type applications! */
+        self::$cmd = 'get_config';
+        if (self::$cmd) {
+            self::$cmd = (string) self::$cmd;
+            if (preg_match('/[A-Za-z0-9_]{1,128}/', self::$cmd)) {
+                $arr = explode('_', self::$cmd);
+                foreach ($arr as &$v) {
+                    $v = ucfirst(strtolower($v));
+                }
+                $actionClassName = 'MbqAct'.implode('', $arr);
+                if (self::$oClk->hasReg($actionClassName)) {
+                    self::$oAct = self::$oClk->newObj($actionClassName);
+                    self::$oAct->actionImplement();
+                } else {
+                    MbqError::alert('', "Not support action for ".self::$cmd."!");
+                }
+            } else {
+                MbqError::alert('', "Need valid cmd!");
+            }
+        } else {
+            MbqError::alert('', "Need not empty cmd!");
+        }
     }
     
 }
@@ -43,6 +64,7 @@ $oMbqMain->initAppEnv();    /* application environment init */
 $oMbqMain->action();    /* main program handle */
 $oMbqMain->output();    /* handle output data */
 
-print_r(MbqMain::$oMbqConfig);
+echo 'works';
+//print_r(MbqMain::$oMbqConfig);
 
 ?>

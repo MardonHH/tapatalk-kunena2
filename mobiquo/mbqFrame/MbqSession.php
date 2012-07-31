@@ -12,10 +12,7 @@ Class MbqSession {
     
     public function __construct() {
     }
-    
-    public function isLogin() {
-        // to be done
-    }
+  
 }
 
 ?>
