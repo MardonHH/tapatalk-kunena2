@@ -18,9 +18,11 @@ Class MbqError {
      *
      * @param  String  $errTitle  error title
      * @param  Mixed  $errInfo  error info
+     * @param  Array  $data  other data need return
      * @param  String  $errDegree  error degree(MBQ_ERR_TOP|MBQ_ERR_HIGH|MBQ_ERR_APP|MBQ_ERR_INFO)
+     * @param  Boolean  $stop  need stop the program immediately flag,it often is true value in plugin development.
      */
-    public static function alert($errTitle = '', $errInfo = 'error!', $errDegree = MBQ_ERR_TOP) {
+    public static function alert($errTitle = '', $errInfo = 'error!', $data = '', $errDegree = MBQ_ERR_TOP, $stop = true) {
         switch ($errDegree) {
             case MBQ_ERR_TOP:
                 die($errTitle.':'.$errInfo);
