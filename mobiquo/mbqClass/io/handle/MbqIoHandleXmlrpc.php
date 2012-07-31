@@ -55,7 +55,7 @@ Class MbqIoHandleXmlrpc {
                         $data = $degzdata;
                     }
                 } else {
-                    self::errorOutput('XML-RPC: '.__METHOD__.': Received from client compressed HTTP request and cannot decompress')
+                    self::errorOutput('XML-RPC: '.__METHOD__.': Received from client compressed HTTP request and cannot decompress');
                 }
             }
         }
