@@ -74,7 +74,7 @@ Class MbqAppEnv extends MbqBaseAppEnv {
         if($this->session->allowed == 'na'){
             $this->session->allowed = '-1';
         }
-        print_r($this->session);
+        //print_r($this->session);
     }
     
 }
