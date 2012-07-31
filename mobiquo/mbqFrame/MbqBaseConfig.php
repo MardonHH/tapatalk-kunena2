@@ -33,6 +33,15 @@ Abstract Class MbqBaseConfig {
     abstract protected function calCfg();
     
     /**
+     * return $this->cfg.if not necessary,you should urs $this->getCfg() method instead of $this->getAllCfg() method!
+     *
+     * @return  Array
+     */
+    public function getAllCfg() {
+        return $this->cfg;
+    }
+    
+    /**
      * return corresponding config value
      *
      * @param  String  $cfgPath

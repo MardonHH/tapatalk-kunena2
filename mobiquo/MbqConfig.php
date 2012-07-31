@@ -135,7 +135,8 @@ Class MbqConfig extends MbqBaseConfig {
         /* base/user/forum/pm/pc/like/subscribe/thank/follow/feed */
         $this->cfg['base'] = $this->cfg['user'] = $this->cfg['forum'] = $this->cfg['pm'] = $this->cfg['pc'] = $this->cfg['like'] = $this->cfg['subscribe'] = $this->cfg['thank'] = $this->cfg['follow'] = $this->cfg['like'] = $this->cfg['feed'] = array();
       /* base config includes some global setting */
-        $this->cfg['base']['mbq_version'] = clone MbqMain::$simpleV; /* Tapatalk plugin version. Plugin developers: Set "version=dev" in order to get your development environment verified by the Tapatalk Network. */
+        $this->cfg['base']['sys_version'] = clone MbqMain::$simpleV;
+        $this->cfg['base']['version'] = clone MbqMain::$simpleV; /* Tapatalk plugin version. Plugin developers: Set "version=dev" in order to get your development environment verified by the Tapatalk Network. */
         $this->cfg['base']['api_level'] = clone MbqMain::$simpleV;
         $this->cfg['base']['is_open'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.base.is_open.default')));  /* false: service is not available / true: service is available.  */
         $this->cfg['base']['inbox_stat'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.base.inbox_stat.default')));  /* Return "1" if the plugin support pm and subscribed topic unread number since last check time. */
@@ -143,8 +144,8 @@ Class MbqConfig extends MbqBaseConfig {
         $this->cfg['base']['disable_bbcode'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.base.disable_bbcode.default')));    /* disable bbcode function flag */
         $this->cfg['base']['push'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.base.push.default')));
       /* user */
-        $this->cfg['user']['name'] = MbqMain::$oClk->newObj('MbqValue', 'Joomla! Kunena');    /* module name.it indicate this module is supported by whitch applications or 3rd plugins/modules.it is used to distinguish the diffrent 3rd plugins or modules. */
-        $this->cfg['user']['version'] = MbqMain::$oClk->newObj('MbqValue', 'Joomla!1.5.26+/Joomla!2.5.4+  Kunena2.0.x');    /* module version.it indicate the applications version that support this module. */
+        $this->cfg['user']['module_name'] = MbqMain::$oClk->newObj('MbqValue', 'Joomla! Kunena');    /* module name.it indicate this module is supported by whitch applications or 3rd plugins/modules.it is used to distinguish the diffrent 3rd plugins or modules. */
+        $this->cfg['user']['module_version'] = MbqMain::$oClk->newObj('MbqValue', 'Joomla!1.5.26+/Joomla!2.5.4+  Kunena2.0.x');    /* module version.it indicate the applications version that support this module. */
         $this->cfg['user']['module_user'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.user.module_user.default')));    /* enable user module flag */
         $this->cfg['user']['reg_url'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.user.reg_url.default')));     /* regist url on web page */
         $this->cfg['user']['guest_okay'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.user.guest_okay.default'))); /* false: guest access is not allowed / true: guess access is allowed. */
@@ -158,8 +159,8 @@ Class MbqConfig extends MbqBaseConfig {
         $this->cfg['user']['user_id'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.user.user_id.default')));    /* Indicate the function get_participated_topic / get_user_info / get_user_topic / get_user_reply_post support request with user id. */
         $this->cfg['user']['upload_avatar'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.user.upload_avatar.default')));    /* can upload avatar flag. */
       /* forum */
-        $this->cfg['forum']['name'] = MbqMain::$oClk->newObj('MbqValue', 'Kunena');
-        $this->cfg['forum']['version'] = MbqMain::$oClk->newObj('MbqValue', 'Kunena2.0.x');
+        $this->cfg['forum']['module_name'] = MbqMain::$oClk->newObj('MbqValue', 'Kunena');
+        $this->cfg['forum']['module_version'] = MbqMain::$oClk->newObj('MbqValue', 'Kunena2.0.x');
         $this->cfg['forum']['module_forum'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.forum.module_forum.default')));    /* enable forum module flag */
         $this->cfg['forum']['report_post'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.forum.report_post.default')));    /* return 1 to indicate the plugin support report_post function. */
         $this->cfg['forum']['goto_post'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.forum.goto_post.default')));
@@ -193,37 +194,37 @@ Class MbqConfig extends MbqBaseConfig {
         $this->cfg['forum']['max_attachment'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.forum.max_attachment.default')));    /* return the max attachment num can be submitted when submit topic/post. */
         $this->cfg['forum']['soft_delete'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.forum.soft_delete.default')));    /* support soft delete flag. */
       /* pm */
-        $this->cfg['pm']['name'] = clone MbqMain::$simpleV;
-        $this->cfg['pm']['version'] = clone MbqMain::$simpleV;
+        $this->cfg['pm']['module_name'] = clone MbqMain::$simpleV;
+        $this->cfg['pm']['module_version'] = clone MbqMain::$simpleV;
         $this->cfg['pm']['module_pm'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.pm.module_pm.default')));    /* enable pm module flag */
         $this->cfg['pm']['report_pm'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.pm.report_pm.default')));
         $this->cfg['pm']['pm_load'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.pm.pm_load.default')));   /* Return "1" if get_box support pagination. */
         $this->cfg['pm']['mark_pm_unread'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.pm.mark_pm_unread.default')));   /* Return 1 if the plugin support function mark_pm_unread */
       /* pc */
-        $this->cfg['pc']['name'] = clone MbqMain::$simpleV;
-        $this->cfg['pc']['version'] = clone MbqMain::$simpleV;
+        $this->cfg['pc']['module_name'] = clone MbqMain::$simpleV;
+        $this->cfg['pc']['module_version'] = clone MbqMain::$simpleV;
         $this->cfg['pc']['module_pc'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.pc.module_pc.default')));    /* enable pc module flag */
         $this->cfg['pc']['conversation'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.pc.conversation.default')));  /* Return 1 if the plugin support conversation pm */
       /* like */
-        $this->cfg['like']['name'] = clone MbqMain::$simpleV;
-        $this->cfg['like']['version'] = clone MbqMain::$simpleV;
+        $this->cfg['like']['module_name'] = clone MbqMain::$simpleV;
+        $this->cfg['like']['module_version'] = clone MbqMain::$simpleV;
         $this->cfg['like']['module_like'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.like.module_like.default')));    /* enable like module flag */
       /* subscribe */
-        $this->cfg['subscribe']['name'] = clone MbqMain::$simpleV;
-        $this->cfg['subscribe']['version'] = clone MbqMain::$simpleV;
+        $this->cfg['subscribe']['module_name'] = clone MbqMain::$simpleV;
+        $this->cfg['subscribe']['module_version'] = clone MbqMain::$simpleV;
         $this->cfg['subscribe']['module_subscribe'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.subscribe.module_subscribe.default')));    /* enable subscribe module flag */
         $this->cfg['subscribe']['mass_subscribe'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.subscribe.mass_subscribe.default'))); /* Return 1 if the plugin support id 'ALL' in subscribe_topic / subscribe_forum / unsubscribe_topic / unsubscribe_forum */
       /* thank */
-        $this->cfg['thank']['name'] = clone MbqMain::$simpleV;
-        $this->cfg['thank']['version'] = clone MbqMain::$simpleV;
+        $this->cfg['thank']['module_name'] = clone MbqMain::$simpleV;
+        $this->cfg['thank']['module_version'] = clone MbqMain::$simpleV;
         $this->cfg['thank']['module_thank'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.thank.module_thank.default')));    /* enable thank module flag */
       /* follow */
-        $this->cfg['follow']['name'] = clone MbqMain::$simpleV;
-        $this->cfg['follow']['version'] = clone MbqMain::$simpleV;
+        $this->cfg['follow']['module_name'] = clone MbqMain::$simpleV;
+        $this->cfg['follow']['module_version'] = clone MbqMain::$simpleV;
         $this->cfg['follow']['module_follow'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.follow.module_follow.default')));    /* enable follow module flag */
       /* feed */
-        $this->cfg['feed']['name'] = clone MbqMain::$simpleV;
-        $this->cfg['feed']['version'] = clone MbqMain::$simpleV;
+        $this->cfg['feed']['module_name'] = clone MbqMain::$simpleV;
+        $this->cfg['feed']['module_version'] = clone MbqMain::$simpleV;
         $this->cfg['feed']['module_feed'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.feed.module_feed.default')));    /* enable feed module flag */
     }
     

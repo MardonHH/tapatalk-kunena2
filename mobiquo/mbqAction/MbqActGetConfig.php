@@ -18,9 +18,23 @@ Class MbqActGetConfig extends MbqBaseAct {
      * action implement
      */
     public function actionImplement() {
-        $data = &MbqMain::$data;
-        $data['sys_version'] = MbqMain::$oMbqConfig->getCfg('base.mbq_version')->oriValue;
-        $data['api_level'] = MbqMain::$oMbqConfig->getCfg('base.api_level')->oriValue;
+        $data = & MbqMain::$data;
+        $cfg = MbqMain::$oMbqConfig->getAllCfg();
+        foreach ($cfg as $moduleName => $module) {
+            foreach ($module as $k => $v) {
+                if ($k !== 'module_name' && $k != 'module_version' && $k != 'module_'.$moduleName) {
+                    if (isset($data[$k])) {
+                        MbqError::alert('', "Find repeat config $k!");
+                    } else {
+                        if ($v->hasSetOriValue()) {
+                            $data[$k] = $v->oriValue;
+                        } else {
+                            MbqError::alert('', "Need set config $k!");
+                        }
+                    }
+                }
+            }
+        }
     }
   
 }
