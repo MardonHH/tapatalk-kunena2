@@ -8,6 +8,7 @@ define('MBQ_ERR_HIGH', 3);  /* serious error that must stop the program immediat
 define('MBQ_ERR_NOT_SUPPORT', 5);  /* not support corresponding function error that must stop the program immediately. */
 define('MBQ_ERR_APP', 7);   /* normal error that maked by program logic can be displayed,the program can works continue or not. */
 define('MBQ_ERR_INFO', 9);  /* success info that maked by program logic can be displayed,the program can works continue or not. */
+define('MBQ_ERR_DEFAULT_INFO', 'You are not logged in or you do not have permission to do this action.');
 /* path constant */
 define('MBQ_DS', DIRECTORY_SEPARATOR);
 define('MBQ_PATH', dirname(__FILE__).MBQ_DS);    /* mobiquo path */

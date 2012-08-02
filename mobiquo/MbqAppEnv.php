@@ -35,6 +35,7 @@ Class MbqAppEnv extends MbqBaseAppEnv {
         require_once JPATH_BASE.'/includes/framework.php';
         $this->oApp = JFactory::getApplication('site');
         $this->oApp->initialise();
+        
         define('JPATH_COMPONENT', JPATH_BASE.DS.'components'.DS.'com_kunena');
         define('KPATH_SITE', JPATH_ROOT.DS.'components'.DS.'com_kunena');
         define('KPATH_ADMIN', JPATH_ADMINISTRATOR.DS.'components'.DS.'com_kunena');
