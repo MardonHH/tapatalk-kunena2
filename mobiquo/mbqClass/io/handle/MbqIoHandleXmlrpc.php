@@ -91,9 +91,14 @@ Class MbqIoHandleXmlrpc {
             header('Content-Type: text/xml');
         }
         
-        $response = $this->{$this->cmd}($data);
-        echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".$response->serialize('UTF-8');
-        exit;
+        if (method_exists($this, $this->cmd)) {
+            $response = $this->{$this->cmd}($data);
+            echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".$response->serialize('UTF-8');
+            exit;
+        } else {
+            self::errorOutput('XML-RPC: '.__METHOD__.": Unknown method '{$this->cmd}'");
+        }
+        
     }
     
     /**
@@ -125,6 +130,27 @@ Class MbqIoHandleXmlrpc {
         
         echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".$response->serialize('UTF-8');
         exit;
+    }
+    
+    public function get_config($data)
+    {
+        $xmlrpcData = array();
+        foreach($data as $key => $value)
+        {
+            switch ($key) {
+                case 'is_open':
+                case 'guest_okay':
+                    $xmlrpcData[$key] = new xmlrpcval($value, 'boolean');
+                    break;
+                case 'min_search_length':
+                    $xmlrpcData[$key] = new xmlrpcval($value, 'int');
+                    break;
+                default:
+                    $xmlrpcData[$key] = new xmlrpcval($value);
+            }
+        }
+        
+        return new xmlrpcresp(new xmlrpcval($xmlrpcData, 'struct'));
     }
 }
 
