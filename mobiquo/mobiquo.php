@@ -46,6 +46,7 @@ Class MbqMain extends MbqBaseMain {
                 if (self::$oClk->hasReg($actionClassName)) {
                     self::$oAct = self::$oClk->newObj($actionClassName);
                     self::$oAct->actionImplement();
+                    ob_end_clean();
                 } else {
                     MbqError::alert('', "Not support action for ".self::$cmd."!");
                 }
@@ -64,8 +65,5 @@ $oMbqMain->input();     /* handle input data */
 $oMbqMain->initAppEnv();    /* application environment init */
 $oMbqMain->action();    /* main program handle */
 $oMbqMain->output();    /* handle output data */
-
-//echo 'works';
-//print_r(MbqMain::$oMbqConfig);
 
 ?>

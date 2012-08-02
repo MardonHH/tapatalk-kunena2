@@ -27,7 +27,11 @@ Class MbqActGetConfig extends MbqBaseAct {
                         MbqError::alert('', "Find repeat config $k!");
                     } else {
                         if ($v->hasSetOriValue()) {
-                            $data[$k] = $v->oriValue;
+                            if ($k == 'is_open' || $k == 'guest_okay' || $k == 'min_search_length') {
+                                $data[$k] = $v->oriValue;
+                            } else {
+                                $data[$k] = (string) $v->oriValue;
+                            }
                         } else {
                             MbqError::alert('', "Need set config $k!");
                         }

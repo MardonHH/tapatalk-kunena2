@@ -22,22 +22,31 @@ Class MbqError {
      * @param  String  $errDegree  error degree(MBQ_ERR_TOP|MBQ_ERR_HIGH|MBQ_ERR_APP|MBQ_ERR_INFO)
      * @param  Boolean  $stop  need stop the program immediately flag,it often is true value in plugin development.
      */
-    public static function alert($errTitle = '', $errInfo = 'error!', $data = '', $errDegree = MBQ_ERR_TOP, $stop = true) {
+    public static function alert($errTitle = '', $errInfo = MBQ_ERR_DEFAULT_INFO, $data = '', $errDegree = MBQ_ERR_TOP, $stop = true) {
         switch ($errDegree) {
             case MBQ_ERR_TOP:
-                die($errTitle.':'.$errInfo);
+                MbqMain::$oMbqIo->alert($errInfo, false);
+                exit;
                 break;
             case MBQ_ERR_HIGH:
-                die($errTitle.':'.$errInfo);
+                self::alert('', 'Not support MBQ_ERR_HIGH now!');
+                exit;
+                break;
+            case MBQ_ERR_NOT_SUPPORT:
+                MbqMain::$oMbqIo->alert($errInfo, false);
+                exit;
                 break;
             case MBQ_ERR_APP:
-                die($errTitle.':'.$errInfo);
+                MbqMain::$oMbqIo->alert($errInfo, false);
+                exit;
                 break;
             case MBQ_ERR_INFO:
-                die($errTitle.':'.$errInfo);
+                MbqMain::$oMbqIo->alert($errInfo, true);
+                exit;
                 break;
             default:
-                die($errTitle.':'.$errInfo);
+                self::alert('', 'Unknown error degree!');
+                exit;
                 break;
         }
     }
