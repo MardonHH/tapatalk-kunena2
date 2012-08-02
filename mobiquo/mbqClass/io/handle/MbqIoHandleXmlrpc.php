@@ -36,7 +36,7 @@ Class MbqIoHandleXmlrpc {
         
         if (count($_SERVER) == 0)
         {
-            self::errorOutput('XML-RPC: '.__METHOD__.': cannot parse request headers as $_SERVER is not populated');
+            self::alert('XML-RPC: '.__METHOD__.': cannot parse request headers as $_SERVER is not populated');
         }
         
         if(isset($_SERVER['HTTP_CONTENT_ENCODING'])) {
@@ -55,7 +55,7 @@ Class MbqIoHandleXmlrpc {
                         $data = $degzdata;
                     }
                 } else {
-                    self::errorOutput('XML-RPC: '.__METHOD__.': Received from client compressed HTTP request and cannot decompress');
+                    self::alert('XML-RPC: '.__METHOD__.': Received from client compressed HTTP request and cannot decompress');
                 }
             }
         }
@@ -87,7 +87,6 @@ Class MbqIoHandleXmlrpc {
         
         if (!headers_sent)
         {
-            header('Mobiquo_is_login:'.(MbqMain::$oMbqSession->isLogin() ? 'true' : 'false'));
             header('Content-Type: text/xml');
         }
         
@@ -96,7 +95,7 @@ Class MbqIoHandleXmlrpc {
             echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".$response->serialize('UTF-8');
             exit;
         } else {
-            self::errorOutput('XML-RPC: '.__METHOD__.": Unknown method '{$this->cmd}'");
+            self::alert('XML-RPC: '.__METHOD__.": Unknown method '{$this->cmd}'");
         }
         
     }
@@ -106,26 +105,16 @@ Class MbqIoHandleXmlrpc {
      *
      * @return string default as xmlrpc
      */
-    public static function errorOutput($errorMsg) {
-        
-        if (empty($errorMsg))
-        {
-            if (MbqMain::$oMbqSession->isLogin()) {
-                $errorMsg = 'You may not have permission to do this action.';
-            } else {
-                $errorMsg = 'You are not logged in or you do not have permission to do this action.';
-            }
-        }
+    public static function alert($message, $result = false) {
         
         if (!headers_sent)
         {
-            header('Mobiquo_is_login:'.(MbqMain::$oMbqSession->isLogin() ? 'true' : 'false'));
             header('Content-Type: text/xml');
         }
         
         $response = new xmlrpcresp(new xmlrpcval(array(
-            'result'        => new xmlrpcval(false, 'boolean'),
-            'result_text'   => new xmlrpcval(strip_tags($errorMsg), 'base64'),
+            'result'        => new xmlrpcval($result, 'boolean'),
+            'result_text'   => new xmlrpcval(strip_tags($message), 'base64'),
         ), 'struct'));
         
         echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".$response->serialize('UTF-8');

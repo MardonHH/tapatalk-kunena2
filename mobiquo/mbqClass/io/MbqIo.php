@@ -58,6 +58,9 @@ Class MbqIo extends MbqBaseIo {
         $this->oHandle->output(MbqMain::$data);
     }
     
+    public function alert($message, $result = false) {
+        $this->oHandle->alert($message, $result);
+    }
 }
 
 ?>
