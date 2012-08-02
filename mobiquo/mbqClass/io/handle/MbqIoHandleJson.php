@@ -2,16 +2,13 @@
 
 defined('MBQ_IN_IT') or exit;
 
-include_once(MBQ_3RD_LIB_PATH . 'xmlrpc/xmlrpc.inc');
-include_once(MBQ_3RD_LIB_PATH . 'xmlrpc/xmlrpcs.inc');
-
 /**
- * io handle for xmlrpc class
+ * io handle for Json class
  * 
- * @since  2012-7-30
+ * @since  2012-8-2
  * @author Jayeley Yang <jayeley@gmail.com>
  */
-Class MbqIoHandleXmlrpc {
+Class MbqIoHandleJson {
     
     protected $cmd;   /* action command name,must unique in all action. */
     protected $input;   /* input params array */
@@ -23,13 +20,13 @@ Class MbqIoHandleXmlrpc {
     /**
      * Get request protocol based on Content-Type
      *
-     * @return string default as xmlrpc
+     * @return string default as json
      */
     protected function init() {
         
         if (!headers_sent)
         {
-            header('Content-Type: text/xml');
+            header('Content-Type: application/json');
         }
         
         $ver = phpversion();
@@ -41,7 +38,7 @@ Class MbqIoHandleXmlrpc {
         
         if (count($_SERVER) == 0)
         {
-            self::alert('XML-RPC: '.__METHOD__.': cannot parse request headers as $_SERVER is not populated');
+            self::alert('JSON: '.__METHOD__.': cannot parse request headers as $_SERVER is not populated');
         }
         
         if(isset($_SERVER['HTTP_CONTENT_ENCODING'])) {
@@ -60,14 +57,34 @@ Class MbqIoHandleXmlrpc {
                         $data = $degzdata;
                     }
                 } else {
-                    self::alert('XML-RPC: '.__METHOD__.': Received from client compressed HTTP request and cannot decompress');
+                    self::alert('JSON: '.__METHOD__.': Received from client compressed HTTP request and cannot decompress');
                 }
             }
         }
         
-        $parsers = php_xmlrpc_decode_xml($data);
-        $this->cmd = $parsers->methodname;
-        $this->input = php_xmlrpc_decode(new xmlrpcval($parsers->params, 'array'));
+        $parsers = json_decode($data);
+        $parsers = $this->objectToArray($parsers);
+        
+        $this->cmd = $parsers['methodname'];
+        $this->input = $parsers['params'];
+    }
+    
+    
+    /**
+     * return convert stdClass object to Array
+     *
+     * @return array
+     */
+    public function objectToArray($data) {
+        if (is_object($data)) {
+            $data = get_object_vars($data);
+        }
+        
+        if (is_array($data)) {
+            return array_map(__FUNCTION__, $data);
+        } else {
+            return $data;
+        }
     }
     
     /**
@@ -89,26 +106,23 @@ Class MbqIoHandleXmlrpc {
     }
     
     public function output(&$data) {
-        
-        $xmlrpcData = php_xmlrpc_encode($data);
-        $response = new xmlrpcresp($xmlrpcData);
-        echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".$response->serialize('UTF-8');
+        echo json_encode($data);
         exit;
     }
     
     /**
      * output error message
      *
-     * @return string default as xmlrpc
+     * @return string default as json
      */
     public static function alert($message, $result = false) {
         
-        $response = new xmlrpcresp(new xmlrpcval(array(
-            'result'        => new xmlrpcval($result, 'boolean'),
-            'result_text'   => new xmlrpcval($message, 'base64'),
-        ), 'struct'));
+        $response = array(
+            'result'        => $result,
+            'result_text'   => $message,
+        );
         
-        echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".$response->serialize('UTF-8');
+        echo json_encode($response);
         exit;
     }
 }
