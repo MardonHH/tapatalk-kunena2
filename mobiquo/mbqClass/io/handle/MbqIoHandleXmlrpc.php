@@ -90,7 +90,7 @@ Class MbqIoHandleXmlrpc {
     
     public function output(&$data) {
         
-        $xmlrpcData = php_xmlrpc_encode($data);
+        $xmlrpcData = php_xmlrpc_encode($data, array('auto_dates', 'extension_api'));
         $response = new xmlrpcresp($xmlrpcData);
         echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".$response->serialize('UTF-8');
         exit;
