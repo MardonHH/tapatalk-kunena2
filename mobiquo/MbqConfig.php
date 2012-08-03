@@ -147,7 +147,7 @@ Class MbqConfig extends MbqBaseConfig {
       /* user */
         $this->cfg['user']['module_name'] = MbqMain::$oClk->newObj('MbqValue', 'Joomla! Kunena');    /* module name.it indicate this module is supported by whitch applications or 3rd plugins/modules.it is used to distinguish the diffrent 3rd plugins or modules. */
         $this->cfg['user']['module_version'] = MbqMain::$oClk->newObj('MbqValue', 'Joomla!1.5.26+/Joomla!2.5.4+  Kunena2.0.x');    /* module version.it indicate the applications version that support this module. */
-        $this->cfg['user']['module_user'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.user.module_user.default')));    /* enable user module flag */
+        $this->cfg['user']['module_enable'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.user.module_enable.default')));    /* enable module flag */
         $this->cfg['user']['reg_url'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.user.reg_url.default')));     /* regist url on web page */
         $this->cfg['user']['guest_okay'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.user.guest_okay.default'))); /* false: guest access is not allowed / true: guess access is allowed. */
         $this->cfg['user']['anonymous'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.user.anonymous.default'))); /* Return 1 if plugin support anonymous login. */
@@ -162,7 +162,7 @@ Class MbqConfig extends MbqBaseConfig {
       /* forum */
         $this->cfg['forum']['module_name'] = MbqMain::$oClk->newObj('MbqValue', 'Kunena');
         $this->cfg['forum']['module_version'] = MbqMain::$oClk->newObj('MbqValue', 'Kunena2.0.x');
-        $this->cfg['forum']['module_forum'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.forum.module_forum.default')));    /* enable forum module flag */
+        $this->cfg['forum']['module_enable'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.forum.module_enable.default')));
         $this->cfg['forum']['report_post'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.forum.report_post.default')));    /* return 1 to indicate the plugin support report_post function. */
         $this->cfg['forum']['goto_post'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.forum.goto_post.default')));
         $this->cfg['forum']['goto_unread'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.forum.goto_unread.default')));
@@ -197,43 +197,71 @@ Class MbqConfig extends MbqBaseConfig {
       /* pm */
         $this->cfg['pm']['module_name'] = clone MbqMain::$simpleV;
         $this->cfg['pm']['module_version'] = clone MbqMain::$simpleV;
-        $this->cfg['pm']['module_pm'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.pm.module_pm.default')));    /* enable pm module flag */
+        $this->cfg['pm']['module_enable'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.pm.module_enable.default')));
         $this->cfg['pm']['report_pm'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.pm.report_pm.default')));
         $this->cfg['pm']['pm_load'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.pm.pm_load.default')));   /* Return "1" if get_box support pagination. */
         $this->cfg['pm']['mark_pm_unread'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.pm.mark_pm_unread.default')));   /* Return 1 if the plugin support function mark_pm_unread */
       /* pc */
         $this->cfg['pc']['module_name'] = clone MbqMain::$simpleV;
         $this->cfg['pc']['module_version'] = clone MbqMain::$simpleV;
-        $this->cfg['pc']['module_pc'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.pc.module_pc.default')));    /* enable pc module flag */
+        $this->cfg['pc']['module_enable'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.pc.module_enable.default')));
         $this->cfg['pc']['conversation'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.pc.conversation.default')));  /* Return 1 if the plugin support conversation pm */
       /* like */
         $this->cfg['like']['module_name'] = clone MbqMain::$simpleV;
         $this->cfg['like']['module_version'] = clone MbqMain::$simpleV;
-        $this->cfg['like']['module_like'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.like.module_like.default')));    /* enable like module flag */
+        $this->cfg['like']['module_enable'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.like.module_enable.default')));
       /* subscribe */
         $this->cfg['subscribe']['module_name'] = clone MbqMain::$simpleV;
         $this->cfg['subscribe']['module_version'] = clone MbqMain::$simpleV;
-        $this->cfg['subscribe']['module_subscribe'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.subscribe.module_subscribe.default')));    /* enable subscribe module flag */
+        $this->cfg['subscribe']['module_enable'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.subscribe.module_enable.default')));
         $this->cfg['subscribe']['mass_subscribe'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.subscribe.mass_subscribe.default'))); /* Return 1 if the plugin support id 'ALL' in subscribe_topic / subscribe_forum / unsubscribe_topic / unsubscribe_forum */
       /* thank */
         $this->cfg['thank']['module_name'] = clone MbqMain::$simpleV;
         $this->cfg['thank']['module_version'] = clone MbqMain::$simpleV;
-        $this->cfg['thank']['module_thank'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.thank.module_thank.default')));    /* enable thank module flag */
+        $this->cfg['thank']['module_enable'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.thank.module_enable.default')));
       /* follow */
         $this->cfg['follow']['module_name'] = clone MbqMain::$simpleV;
         $this->cfg['follow']['module_version'] = clone MbqMain::$simpleV;
-        $this->cfg['follow']['module_follow'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.follow.module_follow.default')));    /* enable follow module flag */
+        $this->cfg['follow']['module_enable'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.follow.module_enable.default')));
       /* feed */
         $this->cfg['feed']['module_name'] = clone MbqMain::$simpleV;
         $this->cfg['feed']['module_version'] = clone MbqMain::$simpleV;
-        $this->cfg['feed']['module_feed'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.feed.module_feed.default')));    /* enable feed module flag */
+        $this->cfg['feed']['module_enable'] = MbqMain::$oClk->newObj('MbqValue', array('oriValue' => MbqBaseFdt::getFdt('MbqFdtConfig.feed.module_enable.default')));
+    }
+    
+    /**
+     * test plugin is open
+     *
+     * @return  Boolean
+     */
+    public function pluginIsOpen() {
+        return ($this->cfg['base']['is_open']->oriValue == MbqBaseFdt::getFdt('MbqFdtConfig.base.is_open.range.yes')) ? true : false;
+    }
+    
+    /**
+     * test module is enable
+     *
+     * @param  String  module name
+     * @return  Boolean
+     */
+    public function moduleIsEnable($moduleName) {
+        if (isset($this->cfg[$moduleName])) {
+            if (isset($this->cfg[$moduleName]['module_enable'])) {
+                if ($this->cfg[$moduleName]['module_enable']->oriValue == MbqBaseFdt::getFdt('MbqFdtConfig.'.$moduleName.'.module_enable.range.enable')) {
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . "Invalid module name $moduleName!");
+        }
     }
     
     /**
      * calculate the final config of $this->cfg through $this->cfg default value and MbqMain::$customConfig and MbqMain::$oMbqAppEnv and the plugin support degree
      */
     public function calCfg() {
-        /* replace part config through MbqMain::$customConfig */
+      /* replace part config through MbqMain::$customConfig */
         foreach (MbqMain::$customConfig as $moduleKey => $module) {
             if (isset($this->cfg[$moduleKey])) {
                 foreach ($module as $itemKey => $item) {
@@ -247,8 +275,14 @@ Class MbqConfig extends MbqBaseConfig {
                 MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . "Can not find module:$moduleKey in config!");
             }
         }
-        /* calculate the final config through MbqMain::$oMbqAppEnv */
-        
+      /* calculate the final config through MbqMain::$oMbqAppEnv */
+        if ( class_exists('KunenaForum') && KunenaForum::isCompatible('2.0') && KunenaForum::enabled() ) {
+            $this->cfg['forum']['module_enable']->setOriValue(MbqBaseFdt::getFdt('MbqFdtConfig.forum.module_enable.range.enable'));
+        }
+        /* because the forum module is the main function,so the is_open setting relys on the forum module status. */
+        if (!$this->moduleIsEnable('forum')) {
+            $this->cfg['base']['is_open']->setOriValue(MbqBaseFdt::getFdt('MbqFdtConfig.base.is_open.range.no'));
+        }
     }
     
 }

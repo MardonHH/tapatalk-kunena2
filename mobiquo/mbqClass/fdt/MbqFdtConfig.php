@@ -49,7 +49,7 @@ Abstract Class MbqFdtConfig extends MbqBaseFdt {
             )
         ),
         'user' => array(
-            'module_user' => array(
+            'module_enable' => array(
                 'default' => 1,
                 'range' => array (
                     'enable' => 1,
@@ -131,7 +131,7 @@ Abstract Class MbqFdtConfig extends MbqBaseFdt {
             )
         ),
         'forum' => array(
-            'module_forum' => array(
+            'module_enable' => array(
                 'default' => 1,
                 'range' => array (
                     'enable' => 1,
@@ -349,7 +349,7 @@ Abstract Class MbqFdtConfig extends MbqBaseFdt {
             )
         ),
         'pm' => array(
-            'module_pm' => array(
+            'module_enable' => array(
                 'default' => 0,
                 'range' => array (
                     'enable' => 1,
@@ -379,7 +379,7 @@ Abstract Class MbqFdtConfig extends MbqBaseFdt {
             )
         ),
         'pc' => array(
-            'module_pc' => array(
+            'module_enable' => array(
                 'default' => 0,
                 'range' => array (
                     'enable' => 1,
@@ -395,7 +395,7 @@ Abstract Class MbqFdtConfig extends MbqBaseFdt {
             )
         ),
         'like' => array(
-            'module_like' => array(
+            'module_enable' => array(
                 'default' => 0,
                 'range' => array (
                     'enable' => 1,
@@ -404,7 +404,7 @@ Abstract Class MbqFdtConfig extends MbqBaseFdt {
             )
         ),
         'subscribe' => array(
-            'module_subscribe' => array(
+            'module_enable' => array(
                 'default' => 0,
                 'range' => array (
                     'enable' => 1,
@@ -420,7 +420,7 @@ Abstract Class MbqFdtConfig extends MbqBaseFdt {
             )
         ),
         'thank' => array(
-            'module_thank' => array(
+            'module_enable' => array(
                 'default' => 0,
                 'range' => array (
                     'enable' => 1,
@@ -429,7 +429,7 @@ Abstract Class MbqFdtConfig extends MbqBaseFdt {
             )
         ),
         'follow' => array(
-            'module_follow' => array(
+            'module_enable' => array(
                 'default' => 0,
                 'range' => array (
                     'enable' => 1,
@@ -438,7 +438,7 @@ Abstract Class MbqFdtConfig extends MbqBaseFdt {
             )
         ),
         'feed' => array(
-            'module_feed' => array(
+            'module_enable' => array(
                 'default' => 0,
                 'range' => array (
                     'enable' => 1,

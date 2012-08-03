@@ -22,7 +22,7 @@ Class MbqActGetConfig extends MbqBaseAct {
         $cfg = MbqMain::$oMbqConfig->getAllCfg();
         foreach ($cfg as $moduleName => $module) {
             foreach ($module as $k => $v) {
-                if ($k !== 'module_name' && $k != 'module_version' && $k != 'module_'.$moduleName) {
+                if ($k !== 'module_name' && $k != 'module_version' && $k != 'module_enable') {
                     if (isset($data[$k])) {
                         MbqError::alert('', "Find repeat config $k!");
                     } else {

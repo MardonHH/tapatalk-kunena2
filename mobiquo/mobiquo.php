@@ -34,6 +34,9 @@ Class MbqMain extends MbqBaseMain {
      */
     public function action() {
         self::$oMbqConfig->calCfg();    /* you should do some modify with this function in multiple different type applications! */
+        if (!self::$oMbqConfig->pluginIsOpen()) {
+            MbqError::alert('', "Plugin is not in service!");
+        }
         self::$cmd = 'get_config';
         if (self::$cmd) {
             self::$cmd = (string) self::$cmd;
