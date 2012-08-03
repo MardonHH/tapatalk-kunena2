@@ -38,7 +38,6 @@ Class MbqIo extends MbqBaseIo {
                 $protocol = 'xmlrpc';
         }
         $ioHandleClass = 'MbqIoHandle'.ucfirst($protocol);
-        MbqMain::$oClk->includeClass($ioHandleClass);
         $this->protocol = $protocol;
         $this->oHandle = MbqMain::$oClk->newObj($ioHandleClass);
         $this->cmd = $this->oHandle->getCmd();

@@ -23,12 +23,6 @@ Class MbqIoHandleJson {
      * @return string default as json
      */
     protected function init() {
-        
-        if (!headers_sent)
-        {
-            header('Content-Type: application/json');
-        }
-        
         $ver = phpversion();
         if ($ver[0] >= 5) {
             $data = file_get_contents('php://input');
@@ -106,6 +100,7 @@ Class MbqIoHandleJson {
     }
     
     public function output(&$data) {
+        header('Content-Type: application/json');
         echo json_encode($data);
         exit;
     }
@@ -116,7 +111,7 @@ Class MbqIoHandleJson {
      * @return string default as json
      */
     public static function alert($message, $result = false) {
-        
+        header('Content-Type: application/json');
         $response = array(
             'result'        => $result,
             'result_text'   => $message,

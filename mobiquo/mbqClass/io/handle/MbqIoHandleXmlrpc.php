@@ -26,12 +26,6 @@ Class MbqIoHandleXmlrpc {
      * @return string default as xmlrpc
      */
     protected function init() {
-        
-        if (!headers_sent)
-        {
-            header('Content-Type: text/xml');
-        }
-        
         $ver = phpversion();
         if ($ver[0] >= 5) {
             $data = file_get_contents('php://input');
@@ -89,7 +83,7 @@ Class MbqIoHandleXmlrpc {
     }
     
     public function output(&$data) {
-        
+        header('Content-Type: text/xml');
         $xmlrpcData = php_xmlrpc_encode($data, array('auto_dates', 'extension_api'));
         $response = new xmlrpcresp($xmlrpcData);
         echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".$response->serialize('UTF-8');
@@ -102,7 +96,7 @@ Class MbqIoHandleXmlrpc {
      * @return string default as xmlrpc
      */
     public static function alert($message, $result = false) {
-        
+        header('Content-Type: text/xml');
         $response = new xmlrpcresp(new xmlrpcval(array(
             'result'        => new xmlrpcval($result, 'boolean'),
             'result_text'   => new xmlrpcval($message, 'base64'),
