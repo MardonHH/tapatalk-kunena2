@@ -24,6 +24,23 @@ Class MbqCm extends MbqBaseCm {
         chdir($basePath.$relativePath);
     }
     
+    /**
+     * write log into a file for debug
+     */
+    public function writeLog($logContent, $add = false) {
+        if (defined('MBQ_PATH')) {
+            $filePath = MBQ_PATH.'mbqDebug.log';
+            if ($add) {
+                if ($handle = fopen($filePath, 'wb')) {
+                    fwrite($handle, $logContent);
+                    fclose($handle);
+                }
+            } else {
+                file_put_contents($filePath, $logContent);
+            }
+        }
+    }
+    
 }
 
 ?>

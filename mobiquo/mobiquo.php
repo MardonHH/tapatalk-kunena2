@@ -22,6 +22,8 @@ require_once('MbqConfig.php');
  * @author Wu ZeTao <578014287@qq.com>
  */
 Class MbqMain extends MbqBaseMain {
+    
+    public static $oCurMbqEtUser;  /* current user obj after login. */
 
     public function __construct() {
         parent::__construct();
@@ -37,7 +39,7 @@ Class MbqMain extends MbqBaseMain {
         if (!self::$oMbqConfig->pluginIsOpen()) {
             MbqError::alert('', "Plugin is not in service!");
         }
-        self::$cmd = 'get_config';
+        self::$cmd = 'get_forum';
         if (self::$cmd) {
             self::$cmd = (string) self::$cmd;
             if (preg_match('/[A-Za-z0-9_]{1,128}/', self::$cmd)) {
@@ -49,7 +51,6 @@ Class MbqMain extends MbqBaseMain {
                 if (self::$oClk->hasReg($actionClassName)) {
                     self::$oAct = self::$oClk->newObj($actionClassName);
                     self::$oAct->actionImplement();
-                    ob_end_clean();
                 } else {
                     MbqError::alert('', "Not support action for ".self::$cmd."!");
                 }
@@ -61,12 +62,25 @@ Class MbqMain extends MbqBaseMain {
         }
     }
     
+    /**
+     * do something before output
+     */
+    public function beforeOutPut() {
+        ob_end_clean();
+        if (self::$oCurMbqEtUser) {
+            header('Mobiquo_is_login: true');
+        } else {
+            header('Mobiquo_is_login: false');
+        }
+    }
+    
 }
 
 $oMbqMain = new MbqMain();  /* frame init */
 $oMbqMain->input();     /* handle input data */
 $oMbqMain->initAppEnv();    /* application environment init */
 $oMbqMain->action();    /* main program handle */
+$oMbqMain->beforeOutput();  /* do something before output */
 $oMbqMain->output();    /* handle output data */
 
 ?>
