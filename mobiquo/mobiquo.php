@@ -39,7 +39,7 @@ Class MbqMain extends MbqBaseMain {
         if (!self::$oMbqConfig->pluginIsOpen()) {
             MbqError::alert('', "Plugin is not in service!");
         }
-        self::$cmd = 'get_forum';
+        //self::$cmd = 'get_forum';
         if (self::$cmd) {
             self::$cmd = (string) self::$cmd;
             if (preg_match('/[A-Za-z0-9_]{1,128}/', self::$cmd)) {
