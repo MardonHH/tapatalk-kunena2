@@ -15,9 +15,11 @@ Class MbqIoHandleXmlrpc {
     
     protected $cmd;   /* action command name,must unique in all action. */
     protected $input;   /* input params array */
+    protected $base64Keys;  /* array of keys that need base64 encode */
     
     public function __construct() {
         $this->init();
+        $this->setBase64Keys();
     }
     
     /**
@@ -84,7 +86,9 @@ Class MbqIoHandleXmlrpc {
     
     public function output(&$data) {
         header('Content-Type: text/xml');
-        $xmlrpcData = php_xmlrpc_encode($data, array('auto_dates', 'extension_api'));
+        $options = array('auto_dates', 'extension_api');
+        $options['base64keys'] = $this->base64Keys;
+        $xmlrpcData = php_xmlrpc_encode($data, $options);
         $response = new xmlrpcresp($xmlrpcData);
         echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".$response->serialize('UTF-8');
         exit;
@@ -104,6 +108,46 @@ Class MbqIoHandleXmlrpc {
         
         echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".$response->serialize('UTF-8');
         exit;
+    }
+    
+    private function setBase64Keys() {
+        $this->base64Keys = array(
+            'box_name',
+            'code',
+            'conv_subject',
+            'conv_title',
+            'current_action',
+            'current_activity',
+            'description',
+            'delete_reason',
+            'deleted_by_name',
+            'display_text',
+            'forum_name',
+            'last_reply_author_name',
+            'message',
+            'moderated_by_name',
+            'moderated_reason',
+            'msg_content',
+            'msg_from',
+            'msg_subject',
+            'name',
+            'post_author_name',
+            'post_content',
+            'post_title',
+            'prefix',
+            'prefix_display_name',
+            'report_reason',
+            'reported_by_name',
+            'result_text',
+            'short_content',
+            'text_body',
+            'title',
+            'topic_author_name',
+            'topic_title',
+            'user_name',
+            'username',
+            'value',
+        );
     }
 }
 

@@ -3403,13 +3403,15 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 	* @param array $options	can include 'encode_php_objs', 'auto_dates', 'null_extension' or 'extension_api'
 	* @return xmlrpcval
 	*/
-	function php_xmlrpc_encode($php_val, $options=array())
+	function php_xmlrpc_encode($php_val, $options=array(), $orig_key='')
 	{
 		$type = gettype($php_val);
 		switch($type)
 		{
 			case 'string':
-				if (in_array('auto_dates', $options) && preg_match('/^[0-9]{8}T[0-9]{2}:[0-9]{2}:[0-9]{2}/', $php_val))
+				if (in_array($orig_key, $options['base64keys']))
+					$xmlrpc_val = new xmlrpcval($php_val, $GLOBALS['xmlrpcBase64']);
+				elseif (in_array('auto_dates', $options) && preg_match('/^[0-9]{8}T[0-9]{2}:[0-9]{2}:[0-9]{2}/', $php_val))
 					$xmlrpc_val = new xmlrpcval($php_val, $GLOBALS['xmlrpcDateTime']);
 				else
 					$xmlrpc_val = new xmlrpcval($php_val, $GLOBALS['xmlrpcString']);
@@ -3437,7 +3439,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 				$ko = false;
 				foreach($php_val as $key => $val)
 				{
-					$arr[$key] = php_xmlrpc_encode($val, $options);
+					$arr[$key] = php_xmlrpc_encode($val, $options, $key);
 					if(!$ko && $key !== $j)
 					{
 						$ko = true;
@@ -3468,7 +3470,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 					reset($php_val);
 					while(list($k,$v) = each($php_val))
 					{
-						$arr[$k] = php_xmlrpc_encode($v, $options);
+						$arr[$k] = php_xmlrpc_encode($v, $options, $k);
 					}
 					$xmlrpc_val = new xmlrpcval($arr, $GLOBALS['xmlrpcStruct']);
 					if (in_array('encode_php_objs', $options))
@@ -3509,8 +3511,8 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 				// an empty object in case, not a boolean.
 				$xmlrpc_val = new xmlrpcval();
 				break;
-			}
-			return $xmlrpc_val;
+		}
+		return $xmlrpc_val;
 	}
 
 	/**
