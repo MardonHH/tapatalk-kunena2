@@ -97,7 +97,7 @@ Class MbqEtUser extends MbqBaseEntity {
      * @return  String
      */
     public function getDisplayName() {
-        return $this->userName ? $this->userName : $this->loginName;
+        return $this->userName->hasSetOriValue() ? $this->userName->oriValue : $this->loginName->oriValue;
     }
   
 }

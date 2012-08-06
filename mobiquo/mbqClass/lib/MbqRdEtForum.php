@@ -72,10 +72,8 @@ Class MbqRdEtForum {
         if ($oMbqEtForum->canUpload->hasSetOriValue()) {
             $data['can_upload'] = (boolean) $oMbqEtForum->canUpload->oriValue;
         }
-        if ($oMbqEtForum->objsSubMbqEtForum) {
-            $data['child'] = array();
-            $this->recurMakeApiDataForumTree($data['child'], $oMbqEtForum->objsSubMbqEtForum);
-        }
+        $data['child'] = array();
+        $this->recurMakeApiDataForumTree($data['child'], $oMbqEtForum->objsSubMbqEtForum);
         return $data;
     }
     

@@ -41,6 +41,60 @@ Class MbqCm extends MbqBaseCm {
         }
     }
     
+    /**
+     * change array leaf value to string
+     * only support 3 dimensional array
+     *
+     * @param  Array  $arr
+     * @return  Array
+     */
+    public function changeArrValueToString($arr) {
+        foreach ($arr as &$v) {
+            if (is_array($v)) {
+                foreach ($v as &$v1) {
+                    if (is_array($v1)) {
+                        foreach ($v1 as &$v2) {
+                            if (!is_array($v2)) {
+                                $v2 = (string) $v2;
+                            }
+                        }
+                    } else {
+                        $v1 = (string) $v1;
+                    }
+                } 
+            } else {
+                $v = (string) $v;
+            }
+        }
+        return $arr;
+    }
+    
+    /**
+     * remove array key
+     *
+     * @param  Array  $arr
+     * @return  Array
+     */
+    public function removeArrayKey($arr) {
+        $retArr = array();
+        foreach ($arr as $v) {
+            $retArr[] = $v;
+        }
+        return $retArr;
+    }
+    
+    /**
+     * merge api data
+     *
+     * @param  Array  $apiData
+     * @param  Array  $addApiData
+     */
+    public function mergeApiData(&$apiData, $addApiData) {
+        foreach ($addApiData as $k => $v) {
+            $apiData[$k] = $v;
+        }
+    }
+    
 }
 
 ?>

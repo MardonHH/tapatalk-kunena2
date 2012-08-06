@@ -12,6 +12,8 @@ Class MbqAppEnv extends MbqBaseAppEnv {
     
     /* this class fully rely the application,so you can define the properties you need come from the application. */
     public $oApp;    /* joomla application obj */
+    public $oCurKunenaUser;
+    public $oCurJUser;
     
     public function __construct() {
         parent::__construct();
@@ -29,6 +31,17 @@ Class MbqAppEnv extends MbqBaseAppEnv {
         $this->oApp = JFactory::getApplication('site');
         $this->oApp->initialise();
         
+        KunenaFactory::loadLanguage('com_kunena.controllers');
+        KunenaFactory::loadLanguage('com_kunena.models');
+        KunenaFactory::loadLanguage('com_kunena.views');
+        KunenaFactory::loadLanguage('com_kunena.templates');
+        KunenaFactory::loadLanguage('com_kunena.sys', 'admin');
+        // Load last to get deprecated language files to work
+        KunenaFactory::loadLanguage('com_kunena');
+        KunenaForum::setup();
+        // Initialize error handlers
+        KunenaError::initialize ();
+        
         // Initialize session
         $ksession = KunenaFactory::getSession ( true );
         if ($ksession->userid > 0) {
@@ -39,7 +52,13 @@ Class MbqAppEnv extends MbqBaseAppEnv {
             }
             // Save session
             if (! $ksession->save ()) {
-                JFactory::getApplication ()->enqueueMessage ( JText::_ ( 'COM_KUNENA_ERROR_SESSION_SAVE_FAILED' ), 'error' );
+                MbqError::alert('', JText::_ ( 'COM_KUNENA_ERROR_SESSION_SAVE_FAILED' ));
+            }
+            if (MbqMain::$oMbqConfig->moduleIsEnable('user')) {
+                $this->oCurKunenaUser = $kuser;
+                $this->oCurJUser = JFactory::getUser();
+                $oMbqRdEtUser = MbqMain::$oClk->newObj('MbqRdEtUser');
+                $oMbqRdEtUser->initOCurMbqEtUser();
             }
         }
     }

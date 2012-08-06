@@ -3409,7 +3409,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 		switch($type)
 		{
 			case 'string':
-				if (in_array($orig_key, $options['base64keys']))
+				if (in_array($orig_key, $options['base64keys'], true))
 					$xmlrpc_val = new xmlrpcval($php_val, $GLOBALS['xmlrpcBase64']);
 				elseif (in_array('auto_dates', $options) && preg_match('/^[0-9]{8}T[0-9]{2}:[0-9]{2}:[0-9]{2}/', $php_val))
 					$xmlrpc_val = new xmlrpcval($php_val, $GLOBALS['xmlrpcDateTime']);

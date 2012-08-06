@@ -122,6 +122,7 @@ Class MbqConfig extends MbqBaseConfig {
         MbqMain::$oClk->reg('MbqFdtFeed', MBQ_FDT_PATH.'MbqFdtFeed.php');
         /* lib class */
         MbqMain::$oClk->reg('MbqRdEtForum', MBQ_LIB_PATH.'MbqRdEtForum.php');
+        MbqMain::$oClk->reg('MbqRdEtUser', MBQ_LIB_PATH.'MbqRdEtUser.php');
         /* I/O class */
         MbqMain::$oClk->reg('MbqIo', MBQ_IO_PATH.'MbqIo.php');
         MbqMain::$oClk->reg('MbqIoHandleXmlrpc', MBQ_IO_HANDLE_PATH.'MbqIoHandleXmlrpc.php');
@@ -131,7 +132,7 @@ Class MbqConfig extends MbqBaseConfig {
         MbqMain::$oClk->reg('MbqActGetForum', MBQ_ACTION_PATH.'MbqActGetForum.php');
         //MbqMain::$oClk->reg('MbqActGetTopic', MBQ_ACTION_PATH.'MbqActGetTopic.php');
         //MbqMain::$oClk->reg('MbqActGetThread', MBQ_ACTION_PATH.'MbqActGetThread.php');
-        //MbqMain::$oClk->reg('MbqActLogin', MBQ_ACTION_PATH.'MbqActLogin.php');
+        MbqMain::$oClk->reg('MbqActLogin', MBQ_ACTION_PATH.'MbqActLogin.php');
     }
     
     /**

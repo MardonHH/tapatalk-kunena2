@@ -18,6 +18,9 @@ Class MbqActGetForum extends MbqBaseAct {
      * action implement
      */
     public function actionImplement() {
+        if (!MbqMain::$oMbqConfig->moduleIsEnable('forum')) {
+            MbqError::alert('', "Not support module forum!", '', MBQ_ERR_NOT_SUPPORT);
+        }
         $data = & MbqMain::$data;
         $oMbqRdEtForum = MbqMain::$oClk->newObj('MbqRdEtForum');
         $tree = $oMbqRdEtForum->getForumTree();
