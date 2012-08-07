@@ -10,6 +10,8 @@ defined('MBQ_IN_IT') or exit;
  */
 Class MbqAppEnv extends MbqBaseAppEnv {
     
+    /* common properties */
+    public $timeOffset;
     /* this class fully rely the application,so you can define the properties you need come from the application. */
     public $oApp;    /* joomla application obj */
     public $oCurKunenaUser;
@@ -41,6 +43,8 @@ Class MbqAppEnv extends MbqBaseAppEnv {
         KunenaForum::setup();
         // Initialize error handlers
         KunenaError::initialize ();
+        
+        $this->timeOffset = $this->oApp->getCfg('offset');
         
         // Initialize session
         $ksession = KunenaFactory::getSession ( true );

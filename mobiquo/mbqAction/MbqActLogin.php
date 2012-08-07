@@ -24,7 +24,6 @@ Class MbqActLogin extends MbqBaseAct {
         $data = & MbqMain::$data;
         $oMbqRdEtUser = MbqMain::$oClk->newObj('MbqRdEtUser');
         $result = $oMbqRdEtUser->login(MbqMain::$input[0], MbqMain::$input[1]);
-        KunenaUserHelper::initialize();
         if ($result) {
             $data['result'] = true;
             $data1 = $oMbqRdEtUser->returnApiDataUser(MbqMain::$oCurMbqEtUser);

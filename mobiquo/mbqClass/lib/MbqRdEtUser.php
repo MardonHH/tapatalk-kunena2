@@ -64,9 +64,12 @@ Class MbqRdEtUser {
         if ($oMbqEtUser->displayText->hasSetOriValue()) {
             $data['display_text'] = (string) $oMbqEtUser->displayText->oriValue;
         }
-        /* TODO:regTime/lastActivityTime */
-        
-        
+        if ($oMbqEtUser->regTime->hasSetOriValue()) {
+            $data['reg_time'] = (string) MbqCm::datetimeIso8601Encode($oMbqEtUser->regTime->oriValue);
+        }
+        if ($oMbqEtUser->lastActivityTime->hasSetOriValue()) {
+            $data['last_activity_time'] = (string) MbqCm::datetimeIso8601Encode($oMbqEtUser->lastActivityTime->oriValue);
+        }
         if ($oMbqEtUser->isOnline->hasSetOriValue()) {
             $data['is_online'] = (boolean) $oMbqEtUser->isOnline->oriValue;
         }
@@ -143,6 +146,8 @@ Class MbqRdEtUser {
             MbqMain::$oCurMbqEtUser->loginName->setOriValue(MbqMain::$oMbqAppEnv->oCurJUser->username);
             MbqMain::$oCurMbqEtUser->userName->setOriValue(MbqMain::$oMbqAppEnv->oCurJUser->name);
             MbqMain::$oCurMbqEtUser->userGroupIds->setOriValue(MbqCm::removeArrayKey(MbqMain::$oMbqAppEnv->oCurJUser->groups));
+            MbqMain::$oCurMbqEtUser->regTime->setOriValue(strtotime(MbqMain::$oMbqAppEnv->oCurJUser->registerDate));
+            MbqMain::$oCurMbqEtUser->lastActivityTime->setOriValue(strtotime(MbqMain::$oMbqAppEnv->oCurJUser->lastvisitDate));
         }
     }
   

@@ -43,7 +43,7 @@ Class MbqCm extends MbqBaseCm {
     
     /**
      * change array leaf value to string
-     * only support 3 dimensional array
+     * now only support 3 dimensional array
      *
      * @param  Array  $arr
      * @return  Array
@@ -93,6 +93,28 @@ Class MbqCm extends MbqBaseCm {
         foreach ($addApiData as $k => $v) {
             $apiData[$k] = $v;
         }
+    }
+    
+    /**
+     * transform timestamp to iso8601 format
+     *
+     * @param  Integer  $timeStamp
+     * @param  Mixed  $timeOffset
+     */
+    public function datetimeIso8601Encode($timeStamp, $timeOffset = NULL) {
+        $timeOffset = $timeOffset ? $timeOffset : MbqMain::$oMbqAppEnv->timeOffset;
+    	$date = JFactory::getDate($timeStamp);
+    	if (is_numeric($timeOffset)) {
+    		$date->setOffset($timeOffset);
+    	} else {
+    		// Joomla 1.6 support
+    		$offset = new DateTimeZone($timeOffset);
+    		$date->setTimezone($offset);
+    	}
+    	$timezone = method_exists($date, 'getOffsetFromGMT') ? $date->getOffsetFromGMT(true) : 0;
+    	$t = $date->toFormat("%Y%m%dT%H:%M:%S", true);
+    	$t .= sprintf("%+03d:%02d", intval($timezone), abs($timezone - intval($timezone)) * 60);
+    	return $t;
     }
     
 }
