@@ -13,7 +13,7 @@ Class MbqEtLike extends MbqBaseEntity {
     public $key;    /* topicId or postId */
     public $userId; /* user id who liked this */
     public $type;   /* like forum topic/post or other anything */
-    public $postTime;
+    public $postTime;   /* timestamp */
     
     public $oMbqEtUser; /* user who like this */
     

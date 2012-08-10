@@ -10,10 +10,10 @@ defined('MBQ_IN_IT') or exit;
  */
 Abstract Class MbqBaseEntity {
     
-    public $exttBind;   /* binded data var comes from application,array data type. */
+    public $mbqBind;   /* binded data var comes from application,array data type.only used for application logic. */
     
     public function __construct() {
-        $this->exttBind = array();
+        $this->mbqBind = array();
     }
   
 }

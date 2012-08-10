@@ -27,8 +27,8 @@ Class MbqEtUser extends MbqBaseEntity {
     public $maxPngSize;
     public $maxJpgSize;
     public $displayText;    /* user signature or self-introduction */
-    public $regTime;
-    public $lastActivityTime;
+    public $regTime;        /* timestamp */
+    public $lastActivityTime;   /* timestamp */
     public $isOnline;
     public $acceptPm;
     public $iFollowU;
@@ -97,7 +97,8 @@ Class MbqEtUser extends MbqBaseEntity {
      * @return  String
      */
     public function getDisplayName() {
-        return $this->userName->hasSetOriValue() ? $this->userName->oriValue : $this->loginName->oriValue;
+        $oMbqRdEtUser = MbqMain::$oClk->newObj('MbqRdEtUser');
+        return $oMbqRdEtUser->getDisplayName($this);
     }
   
 }

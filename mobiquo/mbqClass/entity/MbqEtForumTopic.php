@@ -17,6 +17,7 @@ Class MbqEtForumTopic extends MbqBaseEntity {
     public $topicTitle;
     public $topicContent;
     public $prefixId;
+    public $prefixName;
     public $topicAuthorId;
     public $lastReplyAuthorId;
     public $attachmentIdArray;
@@ -25,11 +26,10 @@ Class MbqEtForumTopic extends MbqBaseEntity {
     public $isSubscribed;   /* return true if this thread has been subscribed by this user */
     public $canSubscribe;   /* returns false if the subscription feature is turned off */
     public $isClosed;       /* return true if this thread has been closed. */
-    public $postTime;       /* dateTime.iso8601 format. If this topic has no reply, use the topic creation time. */
-    public $lastReplyTime;  /* dateTime.iso8601 format. If this topic has no reply, use the topic creation time. */
+    public $postTime;       /* timestamp. If this topic has no reply, use the topic creation time. */
+    public $lastReplyTime;  /* timestamp. If this topic has no reply, use the topic creation time. */
     public $replyNumber;    /* total number of reply in this topic. If this is no reply in this return, return 0. */
     public $newPost;        /* return true if this topic contains new post since user last login */
-    public $replyNumber;    /* total number of reply in this topic. If this is no reply in this return, return 0. */
     public $viewNumber;     /* total number of view in this topic */
     public $participatedUids;
     public $canUpload;  /* return true if the user has authority to upload attachments in this thread. */
@@ -62,9 +62,11 @@ Class MbqEtForumTopic extends MbqBaseEntity {
         parent::__construct();
         $this->topicId = clone MbqMain::$simpleV;
         $this->forumId = clone MbqMain::$simpleV;
+        $this->firstPostId = clone MbqMain::$simpleV;
         $this->topicTitle = clone MbqMain::$simpleV;
         $this->topicContent = clone MbqMain::$simpleV;
         $this->prefixId = clone MbqMain::$simpleV;
+        $this->prefixName = clone MbqMain::$simpleV;
         $this->topicAuthorId = clone MbqMain::$simpleV;
         $this->lastReplyAuthorId = clone MbqMain::$simpleV;
         $this->attachmentIdArray = clone MbqMain::$simpleV;
@@ -77,7 +79,6 @@ Class MbqEtForumTopic extends MbqBaseEntity {
         $this->lastReplyTime = clone MbqMain::$simpleV;
         $this->replyNumber = clone MbqMain::$simpleV;
         $this->newPost = clone MbqMain::$simpleV;
-        $this->replyNumber = clone MbqMain::$simpleV;
         $this->viewNumber = clone MbqMain::$simpleV;
         $this->participatedUids = clone MbqMain::$simpleV;
         $this->canUpload = clone MbqMain::$simpleV;

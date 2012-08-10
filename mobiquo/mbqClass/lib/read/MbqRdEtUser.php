@@ -8,9 +8,18 @@ defined('MBQ_IN_IT') or exit;
  * @since  2012-8-6
  * @author Wu ZeTao <578014287@qq.com>
  */
-Class MbqRdEtUser {
+Class MbqRdEtUser extends MbqBaseRd {
     
     public function __construct() {
+    }
+    
+    /**
+     * make obj property
+     *
+     * @param  Object  $oMbqEtUser
+     * @param  String  $pName  property name
+     */
+    protected function makeProperty($oMbqEtUser, $pName) {
     }
     
     /**
@@ -26,7 +35,7 @@ Class MbqRdEtUser {
         }
         $data['username'] = (string) $oMbqEtUser->getDisplayName();
         if ($oMbqEtUser->userGroupIds->hasSetOriValue()) {
-            $data['usergroup_id'] = (array) MbqCm::changeArrValueToString($oMbqEtUser->userGroupIds->oriValue);
+            $data['usergroup_id'] = (array) MbqMain::$oMbqCm->changeArrValueToString($oMbqEtUser->userGroupIds->oriValue);
         }
         if ($oMbqEtUser->iconUrl->hasSetOriValue()) {
             $data['icon_url'] = (string) $oMbqEtUser->iconUrl->oriValue;
@@ -65,10 +74,10 @@ Class MbqRdEtUser {
             $data['display_text'] = (string) $oMbqEtUser->displayText->oriValue;
         }
         if ($oMbqEtUser->regTime->hasSetOriValue()) {
-            $data['reg_time'] = (string) MbqCm::datetimeIso8601Encode($oMbqEtUser->regTime->oriValue);
+            $data['reg_time'] = (string) MbqMain::$oMbqCm->datetimeIso8601Encode($oMbqEtUser->regTime->oriValue);
         }
         if ($oMbqEtUser->lastActivityTime->hasSetOriValue()) {
-            $data['last_activity_time'] = (string) MbqCm::datetimeIso8601Encode($oMbqEtUser->lastActivityTime->oriValue);
+            $data['last_activity_time'] = (string) MbqMain::$oMbqCm->datetimeIso8601Encode($oMbqEtUser->lastActivityTime->oriValue);
         }
         if ($oMbqEtUser->isOnline->hasSetOriValue()) {
             $data['is_online'] = (boolean) $oMbqEtUser->isOnline->oriValue;
@@ -113,7 +122,7 @@ Class MbqRdEtUser {
             $data['reputation'] = (int) $oMbqEtUser->reputation->oriValue;
         }
         if ($oMbqEtUser->customFieldsList->hasSetOriValue()) {
-            $data['custom_fields_list'] = (array) MbqCm::changeArrValueToString($oMbqEtUser->customFieldsList->oriValue);
+            $data['custom_fields_list'] = (array) MbqMain::$oMbqCm->changeArrValueToString($oMbqEtUser->customFieldsList->oriValue);
         }
         return $data;
     }
@@ -137,18 +146,78 @@ Class MbqRdEtUser {
     }
     
     /**
+     * get user objs
+     *
+     * @param  Mixed  $var
+     * @param  Array  $mbqOpt
+     * $mbqOpt['case'] = 'byUserIds' means get data by user ids.$var is the ids.
+     * @return  Array
+     */
+    public function getObjsMbqEtUser($var, $mbqOpt) {
+        if ($mbqOpt['case'] == 'byUserIds') {
+            require_once(MBQ_APPEXTENTION_PATH.'ExttMbqKunenaUserHelper.php');
+            $userIds = $var;
+            $objsKunenaUser = ExttMbqKunenaUserHelper::exttMbqLoadUsers($userIds);
+            $objsJUser = array();
+            $objsMbqEtUser = array();
+            foreach ($userIds as $userId) {
+                if ($oJUser = JFactory::getUser($userId)) {
+                    $objsJUser[$oJUser->id] = $oJUser;
+                }
+            }
+            foreach ($objsKunenaUser as $oKunenaUser) {
+                foreach ($objsJUser as $oJUser) {
+                    if ($oKunenaUser->userid == $oJUser->id) {
+                        $objsMbqEtUser[] = $this->initOMbqEtUser(array('oJuser' => $oJUser, 'oKunenaUser' => $oKunenaUser), array('case' => 'JUserAndKunenaUser'));
+                    }
+                }
+            }
+            return $objsMbqEtUser;
+        }
+        MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_CASE);
+    }
+    
+    /**
+     * init one user by condition
+     *
+     * @param  Mixed  $var
+     * @param  Array  $mbqOpt
+     * $mbqOpt['case'] = 'JUserAndKunenaUser' means init user by JUser obj and KunenaUser obj
+     * @return  Mixed
+     */
+    public function initOMbqEtUser($var, $mbqOpt) {
+        if ($mbqOpt['case'] == 'JUserAndKunenaUser') {
+            $oJUser = $var['oJuser'];
+            $oKunenaUser = $var['oKunenaUser'];
+            $oMbqEtUser = MbqMain::$oClk->newObj('MbqEtUser');
+            $oMbqEtUser->userId->setOriValue($oJUser->id);
+            $oMbqEtUser->loginName->setOriValue($oJUser->username);
+            $oMbqEtUser->userName->setOriValue($oJUser->name);
+            $oMbqEtUser->userGroupIds->setOriValue(MbqMain::$oMbqCm->removeArrayKey($oJUser->groups));
+            $oMbqEtUser->regTime->setOriValue(strtotime($oJUser->registerDate));
+            $oMbqEtUser->lastActivityTime->setOriValue(strtotime($oJUser->lastvisitDate));
+            return $oMbqEtUser;
+        }
+        MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_CASE);
+    }
+    
+    /**
      * init current user obj if login
      */
     public function initOCurMbqEtUser() {
         if (MbqMain::$oMbqAppEnv->oCurJUser && MbqMain::$oMbqAppEnv->oCurKunenaUser) {
-            MbqMain::$oCurMbqEtUser = MbqMain::$oClk->newObj('MbqEtUser');
-            MbqMain::$oCurMbqEtUser->userId->setOriValue(MbqMain::$oMbqAppEnv->oCurJUser->id);
-            MbqMain::$oCurMbqEtUser->loginName->setOriValue(MbqMain::$oMbqAppEnv->oCurJUser->username);
-            MbqMain::$oCurMbqEtUser->userName->setOriValue(MbqMain::$oMbqAppEnv->oCurJUser->name);
-            MbqMain::$oCurMbqEtUser->userGroupIds->setOriValue(MbqCm::removeArrayKey(MbqMain::$oMbqAppEnv->oCurJUser->groups));
-            MbqMain::$oCurMbqEtUser->regTime->setOriValue(strtotime(MbqMain::$oMbqAppEnv->oCurJUser->registerDate));
-            MbqMain::$oCurMbqEtUser->lastActivityTime->setOriValue(strtotime(MbqMain::$oMbqAppEnv->oCurJUser->lastvisitDate));
+            MbqMain::$oCurMbqEtUser = $this->initOMbqEtUser(array('oJuser' => MbqMain::$oMbqAppEnv->oCurJUser, 'oKunenaUser' => MbqMain::$oMbqAppEnv->oCurKunenaUser), array('case' => 'JUserAndKunenaUser'));
         }
+    }
+    
+    /**
+     * get user display name
+     *
+     * @param  Object  $oMbqEtUser
+     * @return  String
+     */
+    public function getDisplayName($oMbqEtUser) {
+        return $oMbqEtUser->userName->hasSetOriValue() ? $oMbqEtUser->userName->oriValue : $oMbqEtUser->loginName->oriValue;
     }
   
 }

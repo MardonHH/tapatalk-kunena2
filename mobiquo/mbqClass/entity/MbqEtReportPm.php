@@ -13,7 +13,7 @@ Class MbqEtReportPm extends MbqBaseEntity {
     public $reportId;
     public $msgId;
     public $reportByUserId;
-    public $reportTime;
+    public $reportTime;     /* timestamp */
     public $reason;
     
     public function __construct() {

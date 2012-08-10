@@ -15,7 +15,7 @@ Class MbqEtForumReportPost extends MbqBaseEntity {
     public $topicId;
     public $postId;
     public $reportByUserId;
-    public $reportTime;
+    public $reportTime;         /* timestamp */
     public $reason;
     
     public function __construct() {

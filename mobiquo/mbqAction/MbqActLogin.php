@@ -27,7 +27,7 @@ Class MbqActLogin extends MbqBaseAct {
         if ($result) {
             $data['result'] = true;
             $data1 = $oMbqRdEtUser->returnApiDataUser(MbqMain::$oCurMbqEtUser);
-            MbqCm::mergeApiData($data, $data1);
+            MbqMain::$oMbqCm->mergeApiData($data, $data1);
         } else {
             $data['result'] = false;
         }

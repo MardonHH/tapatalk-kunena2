@@ -16,7 +16,7 @@ Class MbqEtPcMsg extends MbqBaseEntity {
     public $msgAuthorId;
     public $isUnread;       /* return true if this message is not yet read by the user. Useful for app to scroll to first unread when entering a conversation. */
     public $hasLeft;        /* return true if user has left this conversation. Default is "false" if this field is missing */
-    public $postTime;       /* dateTime.iso8601 format. message creation time. */
+    public $postTime;       /* timestamp. message creation time. */
     public $newPost;
     
     public function __construct() {

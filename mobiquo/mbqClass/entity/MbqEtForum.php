@@ -13,6 +13,7 @@ Class MbqEtForum extends MbqBaseEntity {
     public $forumId;
     public $forumName;
     public $description;
+    public $totalTopicNum;  /* Total number of topics in this forum */
     public $parentId;   /* parent's forum ID of this forum, returns -1 if this forum is the root forum */
     public $logoUrl;
     public $newPost;    /* returns true if this forum contains unread topic */
@@ -36,6 +37,7 @@ Class MbqEtForum extends MbqBaseEntity {
         $this->forumId = clone MbqMain::$simpleV;
         $this->forumName = clone MbqMain::$simpleV;
         $this->description = clone MbqMain::$simpleV;
+        $this->totalTopicNum = clone MbqMain::$simpleV;
         $this->parentId = clone MbqMain::$simpleV;
         $this->logoUrl = clone MbqMain::$simpleV;
         $this->newPost = clone MbqMain::$simpleV;

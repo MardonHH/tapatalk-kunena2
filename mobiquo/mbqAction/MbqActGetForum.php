@@ -24,8 +24,7 @@ Class MbqActGetForum extends MbqBaseAct {
         $data = & MbqMain::$data;
         $oMbqRdEtForum = MbqMain::$oClk->newObj('MbqRdEtForum');
         $tree = $oMbqRdEtForum->getForumTree();
-        //MbqMain::$oMbqCm->writeLog(print_r($tree, true));
-        $data = $oMbqRdEtForum->returnApiDataForumTree($tree);
+        $data = $oMbqRdEtForum->returnApiTreeDataForum($tree);
     }
   
 }

@@ -9,6 +9,7 @@ define('MBQ_ERR_NOT_SUPPORT', 5);  /* not support corresponding function error t
 define('MBQ_ERR_APP', 7);   /* normal error that maked by program logic can be displayed,the program can works continue or not. */
 define('MBQ_ERR_INFO', 9);  /* success info that maked by program logic can be displayed,the program can works continue or not. */
 define('MBQ_ERR_DEFAULT_INFO', 'You are not logged in or you do not have permission to do this action.');
+define('MBQ_ERR_INFO_UNKNOWN_CASE', 'Unknown case value!');
 /* path constant */
 define('MBQ_DS', DIRECTORY_SEPARATOR);
 define('MBQ_PATH', dirname(__FILE__).MBQ_DS);    /* mobiquo path */
@@ -25,6 +26,9 @@ define('MBQ_FDT_PATH', MBQ_CLASS_PATH.'fdt'.MBQ_DS);    /* fdt class path */
 define('MBQ_IO_PATH', MBQ_CLASS_PATH.'io'.MBQ_DS);    /* io class path */
 define('MBQ_IO_HANDLE_PATH', MBQ_IO_PATH.'handle'.MBQ_DS);    /* io handle class path */
 define('MBQ_LIB_PATH', MBQ_CLASS_PATH.'lib'.MBQ_DS);    /* lib class path */
+define('MBQ_ACL_PATH', MBQ_LIB_PATH.'acl'.MBQ_DS);    /* acl class path */
+define('MBQ_READ_PATH', MBQ_LIB_PATH.'read'.MBQ_DS);    /* read class path */
+define('MBQ_WRITE_PATH', MBQ_LIB_PATH.'write'.MBQ_DS);    /* write class path */
 define('MBQ_ACTION_PATH', MBQ_PATH.'mbqAction'.MBQ_DS);    /* action class path */
 define('MBQ_APPEXTENTION_PATH', MBQ_PATH.'appExtt'.MBQ_DS);    /* application extention path */
 define('MBQ_CUSTOM_PATH', MBQ_PATH.'custom'.MBQ_DS);    /* user custom path */
@@ -50,6 +54,9 @@ Class MbqConfig extends MbqBaseConfig {
         MbqMain::$oClk->includeClass('MbqValue');
         MbqMain::$oClk->includeClass('MbqBaseEntity');
         MbqMain::$oClk->includeClass('MbqBaseFdt');
+        MbqMain::$oClk->includeClass('MbqBaseRd');
+        MbqMain::$oClk->includeClass('MbqBaseWr');
+        MbqMain::$oClk->includeClass('MbqBaseAcl');
         /* include fdt class */
         MbqMain::$oClk->includeClass('MbqFdtConfig');
         MbqMain::$oClk->includeClass('MbqFdtBase');
@@ -85,6 +92,10 @@ Class MbqConfig extends MbqBaseConfig {
         MbqMain::$oClk->reg('MbqValue', MBQ_FRAME_PATH.'MbqValue.php');
         MbqMain::$oClk->reg('MbqBaseEntity', MBQ_FRAME_PATH.'MbqBaseEntity.php');
         MbqMain::$oClk->reg('MbqBaseFdt', MBQ_FRAME_PATH.'MbqBaseFdt.php');
+        MbqMain::$oClk->reg('MbqBaseRd', MBQ_FRAME_PATH.'MbqBaseRd.php');
+        MbqMain::$oClk->reg('MbqBaseWr', MBQ_FRAME_PATH.'MbqBaseWr.php');
+        MbqMain::$oClk->reg('MbqBaseAcl', MBQ_FRAME_PATH.'MbqBaseAcl.php');
+        MbqMain::$oClk->reg('MbqDataPage', MBQ_FRAME_PATH.'MbqDataPage.php');
         /* other class */
         MbqMain::$oClk->reg('MbqCm', MBQ_PATH.'MbqCm.php');
         MbqMain::$oClk->reg('MbqAppEnv', MBQ_PATH.'MbqAppEnv.php');
@@ -121,8 +132,14 @@ Class MbqConfig extends MbqBaseConfig {
         MbqMain::$oClk->reg('MbqFdtFollow', MBQ_FDT_PATH.'MbqFdtFollow.php');
         MbqMain::$oClk->reg('MbqFdtFeed', MBQ_FDT_PATH.'MbqFdtFeed.php');
         /* lib class */
-        MbqMain::$oClk->reg('MbqRdEtForum', MBQ_LIB_PATH.'MbqRdEtForum.php');
-        MbqMain::$oClk->reg('MbqRdEtUser', MBQ_LIB_PATH.'MbqRdEtUser.php');
+            /* read class */
+        MbqMain::$oClk->reg('MbqRdEtForum', MBQ_READ_PATH.'MbqRdEtForum.php');
+        MbqMain::$oClk->reg('MbqRdEtUser', MBQ_READ_PATH.'MbqRdEtUser.php');
+        MbqMain::$oClk->reg('MbqRdEtForumTopic', MBQ_READ_PATH.'MbqRdEtForumTopic.php');
+            /* write class */
+            /* acl class */
+        MbqMain::$oClk->reg('MbqAclEtForum', MBQ_ACL_PATH.'MbqAclEtForum.php');
+        MbqMain::$oClk->reg('MbqAclEtForumTopic', MBQ_ACL_PATH.'MbqAclEtForumTopic.php');
         /* I/O class */
         MbqMain::$oClk->reg('MbqIo', MBQ_IO_PATH.'MbqIo.php');
         MbqMain::$oClk->reg('MbqIoHandleXmlrpc', MBQ_IO_HANDLE_PATH.'MbqIoHandleXmlrpc.php');
@@ -130,8 +147,8 @@ Class MbqConfig extends MbqBaseConfig {
         /* action class */
         MbqMain::$oClk->reg('MbqActGetConfig', MBQ_ACTION_PATH.'MbqActGetConfig.php');
         MbqMain::$oClk->reg('MbqActGetForum', MBQ_ACTION_PATH.'MbqActGetForum.php');
-        //MbqMain::$oClk->reg('MbqActGetTopic', MBQ_ACTION_PATH.'MbqActGetTopic.php');
-        //MbqMain::$oClk->reg('MbqActGetThread', MBQ_ACTION_PATH.'MbqActGetThread.php');
+        MbqMain::$oClk->reg('MbqActGetTopic', MBQ_ACTION_PATH.'MbqActGetTopic.php');
+        MbqMain::$oClk->reg('MbqActGetThread', MBQ_ACTION_PATH.'MbqActGetThread.php');
         MbqMain::$oClk->reg('MbqActLogin', MBQ_ACTION_PATH.'MbqActLogin.php');
     }
     

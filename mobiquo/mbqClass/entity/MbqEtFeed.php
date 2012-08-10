@@ -17,7 +17,7 @@ Class MbqEtFeed extends MbqBaseEntity {
     public $type;   /* user/topic/post or other anything */
     public $newFeed;   /* to indicate whether this feed is an unread feed. */
     public $message;    /* message to be displayed in the app about this feed.  */
-    public $postTime;   
+    public $postTime;   /* timestamp */
     
     public function __construct() {
         parent::__construct();

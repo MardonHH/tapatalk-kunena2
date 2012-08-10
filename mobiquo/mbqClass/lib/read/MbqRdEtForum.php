@@ -8,9 +8,18 @@ defined('MBQ_IN_IT') or exit;
  * @since  2012-8-4
  * @author Wu ZeTao <578014287@qq.com>
  */
-Class MbqRdEtForum {
+Class MbqRdEtForum extends MbqBaseRd {
     
     public function __construct() {
+    }
+    
+    /**
+     * make obj property
+     *
+     * @param  Object  $oMbqEtForum
+     * @param  String  $pName  property name
+     */
+    protected function makeProperty($oMbqEtForum, $pName) {
     }
     
     /**
@@ -29,6 +38,9 @@ Class MbqRdEtForum {
         }
         if ($oMbqEtForum->description->hasSetOriValue()) {
             $data['description'] = (string) $oMbqEtForum->description->oriValue;
+        }
+        if ($oMbqEtForum->totalTopicNum->hasSetOriValue()) {
+            $data['total_topic_num'] = (int) $oMbqEtForum->totalTopicNum->oriValue;
         }
         if ($oMbqEtForum->parentId->hasSetOriValue()) {
             $data['parent_id'] = (string) $oMbqEtForum->parentId->oriValue;
@@ -66,14 +78,12 @@ Class MbqRdEtForum {
         if ($oMbqEtForum->requirePrefix->hasSetOriValue()) {
             $data['require_prefix'] = (boolean) $oMbqEtForum->requirePrefix->oriValue;
         }
-        if ($oMbqEtForum->prefixes->hasSetOriValue()) {
-            $data['prefixes'] = (array) $oMbqEtForum->prefixes->oriValue;
-        }
+        $data['prefixes'] = (array) $oMbqEtForum->prefixes->oriValue;
         if ($oMbqEtForum->canUpload->hasSetOriValue()) {
             $data['can_upload'] = (boolean) $oMbqEtForum->canUpload->oriValue;
         }
         $data['child'] = array();
-        $this->recurMakeApiDataForumTree($data['child'], $oMbqEtForum->objsSubMbqEtForum);
+        $this->recurMakeApiTreeDataForum($data['child'], $oMbqEtForum->objsSubMbqEtForum);
         return $data;
     }
     
@@ -83,7 +93,7 @@ Class MbqRdEtForum {
      * @param  Array  $tree  forum tree
      * @return  Array
      */
-    public function returnApiDataForumTree($tree) {
+    public function returnApiTreeDataForum($tree) {
         $data = array();
         $i = 0;
         foreach ($tree as $oMbqEtForum) {
@@ -99,7 +109,7 @@ Class MbqRdEtForum {
      * @param  Array  $dataChild
      * @param  Array  $objsSubMbqEtForum
      */
-    private function recurMakeApiDataForumTree(&$dataChild, $objsSubMbqEtForum) {
+    private function recurMakeApiTreeDataForum(&$dataChild, $objsSubMbqEtForum) {
         $j = 0;
         foreach ($objsSubMbqEtForum as $$oMbqEtForum) {
             $dataChild[$j] = $this->returnApiDataForum($$oMbqEtForum);
@@ -168,21 +178,47 @@ Class MbqRdEtForum {
     }
     
     /**
-     * init forum by condition
+     * get forum objs
      *
      * @param  Mixed  $var
      * @param  Array  $mbqOpt
-     * $mbqOpt['oKunenaForumCategory'] means init forum by KunenaForumCategory obj
-     * @return  Object
+     * $mbqOpt['case'] = 'byForumIds' means get data by forum ids.$var is the ids.
+     * @return  Array
+     */
+    public function getObjsMbqEtForum($var, $mbqOpt) {
+        if ($mbqOpt['case'] == 'byForumIds') {
+            $forumIds = $var;
+            $objsKunenaForumCategory = KunenaForumCategoryHelper::getCategories($forumIds);
+            $objsMbqEtForum = array();
+            foreach ($objsKunenaForumCategory as $oKunenaForumCategory) {
+                $objsMbqEtForum[] = $this->initOMbqEtForum($oKunenaForumCategory, array('case' => 'oKunenaForumCategory'));
+            }
+            return $objsMbqEtForum;
+        }
+        MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_CASE);
+    }
+    
+    /**
+     * init one forum by condition
+     *
+     * @param  Mixed  $var
+     * @param  Array  $mbqOpt
+     * $mbqOpt['case'] = 'oKunenaForumCategory' means init forum by KunenaForumCategory obj
+     * @return  Mixed
      */
     public function initOMbqEtForum($var, $mbqOpt) {
-        $oMbqEtForum = MbqMain::$oClk->newObj('MbqEtForum');
-        $oMbqEtForum->forumId->setOriValue($var->id);
-        $oMbqEtForum->forumName->setOriValue($var->name);
-        $oMbqEtForum->description->setOriValue($var->description);
-        $oMbqEtForum->parentId->setOriValue($var->parent_id);
-        $oMbqEtForum->subOnly->setOriValue($var->parent_id == 0 ? MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.subOnly.range.yes') : MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.subOnly.range.no'));
-        return $oMbqEtForum;
+        if ($mbqOpt['case'] == 'oKunenaForumCategory') {
+            $oMbqEtForum = MbqMain::$oClk->newObj('MbqEtForum');
+            $oMbqEtForum->forumId->setOriValue($var->id);
+            $oMbqEtForum->forumName->setOriValue($var->name);
+            $oMbqEtForum->description->setOriValue($var->description);
+            $oMbqEtForum->totalTopicNum->setOriValue($var->numTopics);
+            $oMbqEtForum->parentId->setOriValue($var->parent_id);
+            $oMbqEtForum->subOnly->setOriValue($var->parent_id == 0 ? MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.subOnly.range.yes') : MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.subOnly.range.no'));
+            $oMbqEtForum->mbqBind['oKunenaForumCategory'] = $var;
+            return $oMbqEtForum;
+        }
+        MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_CASE);
     }
   
 }

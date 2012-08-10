@@ -22,7 +22,7 @@ Class MbqEtForumPost extends MbqBaseEntity {
     public $isOnline;
     public $canEdit;
     public $canDelete;
-    public $postTime;
+    public $postTime;   /* timestamp */
     public $allowSmilies;
     public $position;
     public $canThank;

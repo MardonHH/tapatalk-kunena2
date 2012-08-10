@@ -10,12 +10,13 @@ defined('MBQ_IN_IT') or exit;
  */
 Class MbqAppEnv extends MbqBaseAppEnv {
     
-    /* common properties */
-    public $timeOffset;
     /* this class fully rely the application,so you can define the properties you need come from the application. */
     public $oApp;    /* joomla application obj */
+    public $oDb;
     public $oCurKunenaUser;
     public $oCurJUser;
+    public $timeOffset;
+    public $oKunenaConfig;
     
     public function __construct() {
         parent::__construct();
@@ -32,7 +33,10 @@ Class MbqAppEnv extends MbqBaseAppEnv {
         require_once JPATH_BASE.'/includes/framework.php';
         $this->oApp = JFactory::getApplication('site');
         $this->oApp->initialise();
+        $this->oApp->route();
         
+        // Load router
+        require_once KPATH_SITE . '/router.php';
         KunenaFactory::loadLanguage('com_kunena.controllers');
         KunenaFactory::loadLanguage('com_kunena.models');
         KunenaFactory::loadLanguage('com_kunena.views');
@@ -65,6 +69,9 @@ Class MbqAppEnv extends MbqBaseAppEnv {
                 $oMbqRdEtUser->initOCurMbqEtUser();
             }
         }
+        
+        $this->oKunenaConfig = KunenaFactory::getConfig();
+        $this->oDb = JFactory::getDBO ();
     }
     
 }
