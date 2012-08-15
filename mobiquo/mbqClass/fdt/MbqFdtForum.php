@@ -264,21 +264,6 @@ Abstract Class MbqFdtForum extends MbqBaseFdt {
                     'no' => false
                 )
             )
-        ),
-        'MbqEtAtt' => array(
-            'attType' => array(
-                'range' => array(
-                    'forumPostAtt' => 'forumPostAtt',
-                    'userAvatar' => 'userAvatar'
-                )
-            ),
-            'contentType' => array(
-                'range' => array(
-                    'image' => 'image',
-                    'pdf' => 'pdf',
-                    'other' => 'other'
-                )
-            )
         )
     );
   

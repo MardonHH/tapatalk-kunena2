@@ -24,11 +24,13 @@ Abstract Class MbqBaseRd {
     
     /**
      * make obj property
+     * normally this method is used to make the object property and objects array property in $o.
      *
      * @param  Object  $o  the obj need make property
      * @param  String  $pName  property name
+     * @param  Array  $mbqOpt
      */
-    abstract protected function makeProperty($o, $pName);
+    abstract protected function makeProperty(&$o, $pName, $mbqOpt = array());
   
 }
 

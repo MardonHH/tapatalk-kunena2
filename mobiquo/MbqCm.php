@@ -15,6 +15,18 @@ Class MbqCm extends MbqBaseCm {
     }
     
     /**
+     * merge api data
+     *
+     * @param  Array  $apiData
+     * @param  Array  $addApiData
+     */
+    public function mergeApiData(&$apiData, $addApiData) {
+        foreach ($addApiData as $k => $v) {
+            $apiData[$k] = $v;
+        }
+    }
+    
+    /**
      * transform timestamp to iso8601 format
      *
      * @param  Integer  $timeStamp
@@ -55,6 +67,73 @@ Class MbqCm extends MbqBaseCm {
     	$str = html_entity_decode($str, ENT_QUOTES, 'UTF-8');
     	$str = function_exists('mb_substr') ? mb_substr($str, 0, $length) : substr($str, 0, $length);
     	return $str;
+    }
+    
+    /**
+     * get attachment ids from content
+     *
+     * @params  String  $content
+     * @return  Array
+     */
+    public function getAttIdsFromContent($content) {
+    	preg_match_all('/\[attachment=(.*?)\](.*?)\[\/attachment\]/i', $content, $mat);
+    	if ($mat[1]) {
+    	    return $mat[1];
+    	} else {
+    	    return array();
+    	}
+    }
+    
+    /**
+     * replace some code in content
+     *
+     * @param  String  $content
+     * @param  String  $strNeedReplaced
+     * @param  String  $type  replacement type.'bbcodeName' means replace bbcode name for our rules.
+     */
+    public function replaceCode($content, $strNeedReplaced = 'quote', $type = 'bbcodeName') {
+        switch ($type) {
+            case 'bbcodeName':
+                switch ($strNeedReplaced) {
+                    case 'quote':
+                    $newName = MBQ_RUNNING_NAMEPRE.'quote';
+                    $content = preg_replace('/\[quote(=.*)\]/i', "[$newName$1]", $content);
+                    $content = preg_replace('/\[\/quote\]/i', "[/$newName]", $content);
+                    break;
+                    default:
+                    break;
+                }
+            break;
+            default:
+            break;
+        }
+        return $content;
+    }
+    
+    /**
+     * upreplace some code in content
+     *
+     * @param  String  $content
+     * @param  String  $strNeedReplaced
+     * @param  String  $type  replacement type.'bbcodeName' means replace bbcode name for our rules.
+     */
+    public function unreplaceCode($content, $strNeedReplaced = 'quote', $type = 'bbcodeName') {
+        switch ($type) {
+            case 'bbcodeName':
+                switch ($strNeedReplaced) {
+                    case 'quote':
+                    $curName = MBQ_RUNNING_NAMEPRE.'quote';
+                    $content = preg_replace('/\['.$curName.'(=.*)\]/i', "[quote$1]", $content);
+                    $content = preg_replace('/\[\/'.$curName.'\]/i', "[/quote]", $content);
+                    break;
+                    default:
+                    break;
+                }
+            break;
+            default:
+            break;
+        }
+        return $content;
     }
     
 }

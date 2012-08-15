@@ -13,13 +13,12 @@ Class MbqRdEtForum extends MbqBaseRd {
     public function __construct() {
     }
     
-    /**
-     * make obj property
-     *
-     * @param  Object  $oMbqEtForum
-     * @param  String  $pName  property name
-     */
-    protected function makeProperty($oMbqEtForum, $pName) {
+    protected function makeProperty(&$oMbqEtForum, $pName, $mbqOpt = array()) {
+        switch ($pName) {
+            default:
+            MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_PNAME);
+            break;
+        }
     }
     
     /**
@@ -88,6 +87,20 @@ Class MbqRdEtForum extends MbqBaseRd {
     }
     
     /**
+     * recur make forum tree api data
+     *
+     * @param  Array  $dataChild
+     * @param  Array  $objsSubMbqEtForum
+     */
+    private function recurMakeApiTreeDataForum(&$dataChild, $objsSubMbqEtForum) {
+        $j = 0;
+        foreach ($objsSubMbqEtForum as $$oMbqEtForum) {
+            $dataChild[$j] = $this->returnApiDataForum($$oMbqEtForum);
+            $j ++;
+        }
+    }
+    
+    /**
      * return forum tree api data
      *
      * @param  Array  $tree  forum tree
@@ -101,20 +114,6 @@ Class MbqRdEtForum extends MbqBaseRd {
             $i ++;
         }
         return $data;
-    }
-    
-    /**
-     * recur make forum tree api data
-     *
-     * @param  Array  $dataChild
-     * @param  Array  $objsSubMbqEtForum
-     */
-    private function recurMakeApiTreeDataForum(&$dataChild, $objsSubMbqEtForum) {
-        $j = 0;
-        foreach ($objsSubMbqEtForum as $$oMbqEtForum) {
-            $dataChild[$j] = $this->returnApiDataForum($$oMbqEtForum);
-            $j ++;
-        }
     }
     
     /**

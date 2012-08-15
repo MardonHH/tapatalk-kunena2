@@ -27,7 +27,7 @@ Class MbqMain extends MbqBaseMain {
 
     public function __construct() {
         parent::__construct();
-        MbqMain::$oMbqCm->changeWorkDir('..');  /* change work dir to parent dir. */
+        MbqMain::$oMbqCm->changeWorkDir('..');  /* change work dir to parent dir.Important!!! */
         ob_start();
     }
     
@@ -35,7 +35,7 @@ Class MbqMain extends MbqBaseMain {
      * action
      */
     public function action() {
-        self::$oMbqConfig->calCfg();    /* you should do some modify with this function in multiple different type applications! */
+        self::$oMbqConfig->calCfg();    /* you should do some modify within this function in multiple different type applications! */
         if (!self::$oMbqConfig->pluginIsOpen()) {
             MbqError::alert('', "Plugin is not in service!");
         }

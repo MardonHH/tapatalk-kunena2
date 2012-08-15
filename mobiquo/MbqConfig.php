@@ -10,11 +10,18 @@ define('MBQ_ERR_APP', 7);   /* normal error that maked by program logic can be d
 define('MBQ_ERR_INFO', 9);  /* success info that maked by program logic can be displayed,the program can works continue or not. */
 define('MBQ_ERR_DEFAULT_INFO', 'You are not logged in or you do not have permission to do this action.');
 define('MBQ_ERR_INFO_UNKNOWN_CASE', 'Unknown case value!');
+define('MBQ_ERR_INFO_UNKNOWN_PNAME', 'Unknown property name!');
+define('MBQ_ERR_INFO_NOT_ACHIEVE', 'Has not been achieved!');
+define('MBQ_RUNNING_NAMEPRE', 'mbqnamepre_');   /* mobiquo running time vars name prefix,for example bbcode names. */
 /* path constant */
 define('MBQ_DS', DIRECTORY_SEPARATOR);
 define('MBQ_PATH', dirname(__FILE__).MBQ_DS);    /* mobiquo path */
+define('MBQ_DIRNAME', basename(MBQ_PATH));    /* mobiquo dir name */
 define('MBQ_PARENT_PATH', realpath(dirname(__FILE__).MBQ_DS.'..').MBQ_DS);    /* mobiquo parent dir path */
 define('MBQ_FRAME_PATH', MBQ_PATH.'mbqFrame'.MBQ_DS);    /* frame path */
+$_SERVER['PHP_SELF'] = str_replace(MBQ_DIRNAME.'/', '', $_SERVER['PHP_SELF']);  /* Important!!! */
+$_SERVER['SCRIPT_NAME'] = str_replace(MBQ_DIRNAME.'/', '', $_SERVER['SCRIPT_NAME']);    /* Important!!! */
+$_SERVER['REQUEST_URI'] = str_replace(MBQ_DIRNAME.'/', '', $_SERVER['REQUEST_URI']);    /* Important!!! */
 require_once(MBQ_FRAME_PATH.'MbqError.php');
 require_once(MBQ_FRAME_PATH.'MbqBaseConfig.php');
 require_once(MBQ_FRAME_PATH.'MbqBaseMain.php');
@@ -69,6 +76,7 @@ Class MbqConfig extends MbqBaseConfig {
         MbqMain::$oClk->includeClass('MbqFdtThank');
         MbqMain::$oClk->includeClass('MbqFdtFollow');
         MbqMain::$oClk->includeClass('MbqFdtFeed');
+        MbqMain::$oClk->includeClass('MbqFdtAtt');
         /* include custom config */
         require_once(MBQ_CUSTOM_PATH.'customConfig.php');
         $this->initCfg();
@@ -131,12 +139,16 @@ Class MbqConfig extends MbqBaseConfig {
         MbqMain::$oClk->reg('MbqFdtThank', MBQ_FDT_PATH.'MbqFdtThank.php');
         MbqMain::$oClk->reg('MbqFdtFollow', MBQ_FDT_PATH.'MbqFdtFollow.php');
         MbqMain::$oClk->reg('MbqFdtFeed', MBQ_FDT_PATH.'MbqFdtFeed.php');
+        MbqMain::$oClk->reg('MbqFdtAtt', MBQ_FDT_PATH.'MbqFdtAtt.php');
         /* lib class */
             /* read class */
         MbqMain::$oClk->reg('MbqRdEtForum', MBQ_READ_PATH.'MbqRdEtForum.php');
         MbqMain::$oClk->reg('MbqRdEtUser', MBQ_READ_PATH.'MbqRdEtUser.php');
         MbqMain::$oClk->reg('MbqRdEtForumTopic', MBQ_READ_PATH.'MbqRdEtForumTopic.php');
+        MbqMain::$oClk->reg('MbqRdEtForumPost', MBQ_READ_PATH.'MbqRdEtForumPost.php');
+        MbqMain::$oClk->reg('MbqRdEtAtt', MBQ_READ_PATH.'MbqRdEtAtt.php');
             /* write class */
+        MbqMain::$oClk->reg('MbqWrEtForumTopic', MBQ_WRITE_PATH.'MbqWrEtForumTopic.php');
             /* acl class */
         MbqMain::$oClk->reg('MbqAclEtForum', MBQ_ACL_PATH.'MbqAclEtForum.php');
         MbqMain::$oClk->reg('MbqAclEtForumTopic', MBQ_ACL_PATH.'MbqAclEtForumTopic.php');
@@ -305,6 +317,16 @@ Class MbqConfig extends MbqBaseConfig {
         /* because the forum module is the main function,so the is_open setting relys on the forum module status. */
         if (!$this->moduleIsEnable('forum')) {
             $this->cfg['base']['is_open']->setOriValue(MbqBaseFdt::getFdt('MbqFdtConfig.base.is_open.range.no'));
+        }
+        if ($this->moduleIsEnable('user') && !MbqMain::$oMbqAppEnv->oKunenaConfig->regonly && ($this->getCfg('user.guest_okay')->oriValue == MbqBaseFdt::getFdt('MbqFdtConfig.user.guest_okay.range.support'))) {
+            $this->cfg['user']['guest_okay']->setOriValue(MbqBaseFdt::getFdt('MbqFdtConfig.user.guest_okay.range.support'));
+        } else {
+            $this->cfg['user']['guest_okay']->setOriValue(MbqBaseFdt::getFdt('MbqFdtConfig.user.guest_okay.range.notSupport'));
+        }
+        if ($this->moduleIsEnable('user') && MbqMain::$oMbqAppEnv->oKunenaConfig->showwhoisonline && ($this->getCfg('user.guest_whosonline')->oriValue == MbqBaseFdt::getFdt('MbqFdtConfig.user.guest_whosonline.range.support'))) {
+            $this->cfg['user']['guest_whosonline']->setOriValue(MbqBaseFdt::getFdt('MbqFdtConfig.user.guest_whosonline.range.support'));
+        } else {
+            $this->cfg['user']['guest_whosonline']->setOriValue(MbqBaseFdt::getFdt('MbqFdtConfig.user.guest_whosonline.range.notSupport'));
         }
     }
     

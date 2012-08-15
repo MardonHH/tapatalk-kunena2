@@ -11,6 +11,7 @@ defined('MBQ_IN_IT') or exit;
 Class MbqEtForumPost extends MbqBaseEntity {
     
     public $postId;
+    public $parentPostId;    /* parent post id */
     public $forumId;
     public $topicId;
     public $postTitle;
@@ -21,7 +22,6 @@ Class MbqEtForumPost extends MbqBaseEntity {
     public $state;      /* 1 = post is success but need moderation. Otherwise no need to return this key */
     public $isOnline;
     public $canEdit;
-    public $canDelete;
     public $postTime;   /* timestamp */
     public $allowSmilies;
     public $position;
@@ -42,13 +42,15 @@ Class MbqEtForumPost extends MbqBaseEntity {
     public $oMbqEtForum;
     public $oMbqEtForumTopic;
     public $oAuthorMbqEtUser;
-    public $objsMbqEtAtt = array();
-    public $objsMbqEtForumThank = array();
-    public $objsMbqEtForumLike = array();
+    public $objsMbqEtAtt;           /* the all attachment objs in this post. */
+    public $objsNotInContentMbqEtAtt;   /* the attachement objs not in the content of this post. */
+    public $objsMbqEtForumThank;
+    public $objsMbqEtForumLike;
     
     public function __construct() {
         parent::__construct();
         $this->postId = clone MbqMain::$simpleV;
+        $this->parentPostId = clone MbqMain::$simpleV;
         $this->forumId = clone MbqMain::$simpleV;
         $this->topicId = clone MbqMain::$simpleV;
         $this->postTitle = clone MbqMain::$simpleV;
@@ -59,7 +61,6 @@ Class MbqEtForumPost extends MbqBaseEntity {
         $this->state = clone MbqMain::$simpleV;
         $this->isOnline = clone MbqMain::$simpleV;
         $this->canEdit = clone MbqMain::$simpleV;
-        $this->canDelete = clone MbqMain::$simpleV;
         $this->postTime = clone MbqMain::$simpleV;
         $this->allowSmilies = clone MbqMain::$simpleV;
         $this->position = clone MbqMain::$simpleV;
@@ -83,6 +84,7 @@ Class MbqEtForumPost extends MbqBaseEntity {
         $this->objsMbqEtAtt = array();
         $this->objsMbqEtForumThank = array();
         $this->objsMbqEtForumLike = array();
+        $this->objsNotInContentMbqEtAtt = array();
     }
   
 }

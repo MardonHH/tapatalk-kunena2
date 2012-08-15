@@ -11,6 +11,7 @@ defined('MBQ_IN_IT') or exit;
 Class MbqEtForumTopic extends MbqBaseEntity {
     
     /* some properties comes from $this->oFirstMbqEtForumPost */
+    public $totalPostNum;   /* total number of posts in this topic */
     public $topicId;
     public $forumId;
     public $firstPostId;    /* first post id.in some appcations the first post id = topic id perhaps. */
@@ -60,6 +61,7 @@ Class MbqEtForumTopic extends MbqBaseEntity {
     
     public function __construct() {
         parent::__construct();
+        $this->totalPostNum = clone MbqMain::$simpleV;
         $this->topicId = clone MbqMain::$simpleV;
         $this->forumId = clone MbqMain::$simpleV;
         $this->firstPostId = clone MbqMain::$simpleV;

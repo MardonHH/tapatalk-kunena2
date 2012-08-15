@@ -40,6 +40,24 @@ Class MbqEtAtt extends MbqBaseEntity {
         
         $this->oMbqEtUser = NULL;
     }
+    
+    /**
+     * judge if this is forum post att
+     *
+     * @return  Boolean
+     */
+    public function isForumPostAtt() {
+        return ($this->attType->oriValue == MbqBaseFdt::getFdt('MbqFdtAtt.MbqEtAtt.attType.range.forumPostAtt')) ? true : false;
+    }
+    
+    /**
+     * judge if this is user avatar
+     *
+     * @return  Boolean
+     */
+    public function isUserAvatar() {
+        return ($this->attType->oriValue == MbqBaseFdt::getFdt('MbqFdtAtt.MbqEtAtt.attType.range.userAvatar')) ? true : false;
+    }
   
 }
 

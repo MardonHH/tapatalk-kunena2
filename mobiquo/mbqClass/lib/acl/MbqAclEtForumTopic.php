@@ -25,6 +25,19 @@ Class MbqAclEtForumTopic extends MbqBaseAcl {
         }
         return false;
     }
+    
+    /**
+     * judge can get thread
+     *
+     * @param  Object  $oMbqEtForumTopic
+     * @return  Boolean
+     */
+    public function canAclGetThread($oMbqEtForumTopic) {
+        if ($oMbqEtForumTopic->mbqBind['oKunenaForumTopic'] && $oMbqEtForumTopic->mbqBind['oKunenaForumTopic']->authorise('read') && KunenaForumMessageHelper::get($oMbqEtForumTopic->mbqBind['oKunenaForumTopic']->first_post_id)->exists()) {
+            return true;
+        }
+        return false;
+    }
   
 }
 

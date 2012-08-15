@@ -13,13 +13,12 @@ Class MbqRdEtUser extends MbqBaseRd {
     public function __construct() {
     }
     
-    /**
-     * make obj property
-     *
-     * @param  Object  $oMbqEtUser
-     * @param  String  $pName  property name
-     */
-    protected function makeProperty($oMbqEtUser, $pName) {
+    protected function makeProperty(&$oMbqEtUser, $pName, $mbqOpt = array()) {
+        switch ($pName) {
+            default:
+            MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_PNAME);
+            break;
+        }
     }
     
     /**
@@ -167,7 +166,7 @@ Class MbqRdEtUser extends MbqBaseRd {
             }
             foreach ($objsKunenaUser as $oKunenaUser) {
                 foreach ($objsJUser as $oJUser) {
-                    if ($oKunenaUser->userid == $oJUser->id) {
+                    if ($oKunenaUser->userid && ($oKunenaUser->userid == $oJUser->id)) {
                         $objsMbqEtUser[] = $this->initOMbqEtUser(array('oJuser' => $oJUser, 'oKunenaUser' => $oKunenaUser), array('case' => 'JUserAndKunenaUser'));
                     }
                 }
@@ -182,7 +181,8 @@ Class MbqRdEtUser extends MbqBaseRd {
      *
      * @param  Mixed  $var
      * @param  Array  $mbqOpt
-     * $mbqOpt['case'] = 'JUserAndKunenaUser' means init user by JUser obj and KunenaUser obj
+     * $mbqOpt['case'] = 'JUserAndKunenaUser' means init user by JUser obj and KunenaUser obj.$var['oJuser'] is JUser obj,$var['oKunenaUser'] is KunenaUser obj.
+     * $mbqOpt['case'] = 'byUserId' means init user by user id.$var is user id.
      * @return  Mixed
      */
     public function initOMbqEtUser($var, $mbqOpt) {
@@ -197,6 +197,13 @@ Class MbqRdEtUser extends MbqBaseRd {
             $oMbqEtUser->regTime->setOriValue(strtotime($oJUser->registerDate));
             $oMbqEtUser->lastActivityTime->setOriValue(strtotime($oJUser->lastvisitDate));
             return $oMbqEtUser;
+        } elseif ($mbqOpt['case'] == 'byUserId') {
+            $userIds = array($var);
+            $objsMbqEtUser = $this->getObjsMbqEtUser($userIds, array('case' => 'byUserIds'));
+            if (is_array($objsMbqEtUser) && (count($objsMbqEtUser) == 1)) {
+                return $objsMbqEtUser[0];
+            }
+            return false;
         }
         MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_CASE);
     }
@@ -217,7 +224,8 @@ Class MbqRdEtUser extends MbqBaseRd {
      * @return  String
      */
     public function getDisplayName($oMbqEtUser) {
-        return $oMbqEtUser->userName->hasSetOriValue() ? $oMbqEtUser->userName->oriValue : $oMbqEtUser->loginName->oriValue;
+        //return $oMbqEtUser->userName->hasSetOriValue() ? $oMbqEtUser->userName->oriValue : $oMbqEtUser->loginName->oriValue;
+        return $oMbqEtUser->loginName->oriValue;
     }
   
 }

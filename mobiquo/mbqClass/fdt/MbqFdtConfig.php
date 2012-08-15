@@ -60,7 +60,7 @@ Abstract Class MbqFdtConfig extends MbqBaseFdt {
                 'default' => '/'
             ),
             'guest_okay' => array(
-                'default' => true,
+                'default' => false,
                 'range' => array (
                     'support' => true,
                     'notSupport' => false
@@ -116,7 +116,7 @@ Abstract Class MbqFdtConfig extends MbqBaseFdt {
                 )
             ),
             'user_id' => array(
-                'default' => 1,
+                'default' => 0,
                 'range' => array (
                     'support' => 1,
                     'notSupport' => 0
