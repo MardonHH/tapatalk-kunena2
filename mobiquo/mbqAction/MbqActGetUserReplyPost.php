@@ -3,12 +3,12 @@
 defined('MBQ_IN_IT') or exit;
 
 /**
- * get_forum action
+ * get_user_reply_post action
  * 
- * @since  2012-8-3
+ * @since  2012-8-16
  * @author Wu ZeTao <578014287@qq.com>
  */
-Class MbqActGetForum extends MbqBaseAct {
+Class MbqActGetUserReplyPost extends MbqBaseAct {
     
     public function __construct() {
         parent::__construct();
@@ -18,12 +18,14 @@ Class MbqActGetForum extends MbqBaseAct {
      * action implement
      */
     public function actionImplement() {
+        if (!MbqMain::$oMbqConfig->moduleIsEnable('user')) {
+            MbqError::alert('', "Not support module user!", '', MBQ_ERR_NOT_SUPPORT);
+        }
         if (!MbqMain::$oMbqConfig->moduleIsEnable('forum')) {
             MbqError::alert('', "Not support module forum!", '', MBQ_ERR_NOT_SUPPORT);
         }
-        $oMbqRdEtForum = MbqMain::$oClk->newObj('MbqRdEtForum');
-        $tree = $oMbqRdEtForum->getForumTree();
-        $this->data = $oMbqRdEtForum->returnApiTreeDataForum($tree);
+        /* TODO */
+        $this->data['posts'] = array();
     }
   
 }

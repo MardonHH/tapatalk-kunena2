@@ -44,21 +44,33 @@ Class MbqRdEtUser extends MbqBaseRd {
         }
         if ($oMbqEtUser->canPm->hasSetOriValue()) {
             $data['can_pm'] = (boolean) $oMbqEtUser->canPm->oriValue;
+        } else {
+            $data['can_pm'] = (boolean) MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.canPm.default');
         }
         if ($oMbqEtUser->canSendPm->hasSetOriValue()) {
             $data['can_send_pm'] = (boolean) $oMbqEtUser->canSendPm->oriValue;
+        } else {
+            $data['can_send_pm'] = (boolean) MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.canSendPm.default');
         }
         if ($oMbqEtUser->canModerate->hasSetOriValue()) {
             $data['can_moderate'] = (boolean) $oMbqEtUser->canModerate->oriValue;
+        } else {
+            $data['can_moderate'] = (boolean) MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.canModerate.default');
         }
         if ($oMbqEtUser->canSearch->hasSetOriValue()) {
             $data['can_search'] = (boolean) $oMbqEtUser->canSearch->oriValue;
+        } else {
+            $data['can_search'] = (boolean) MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.canSearch.default');
         }
         if ($oMbqEtUser->canWhosonline->hasSetOriValue()) {
             $data['can_whosonline'] = (boolean) $oMbqEtUser->canWhosonline->oriValue;
+        } else {
+            $data['can_whosonline'] = (boolean) MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.canWhosonline.default');
         }
         if ($oMbqEtUser->canUploadAvatar->hasSetOriValue()) {
             $data['can_upload_avatar'] = (string) $oMbqEtUser->canUploadAvatar->oriValue;
+        } else {
+            $data['can_upload_avatar'] = (boolean) MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.canUploadAvatar.default');
         }
         if ($oMbqEtUser->maxAttachment->hasSetOriValue()) {
             $data['max_attachment'] = (int) $oMbqEtUser->maxAttachment->oriValue;
@@ -83,15 +95,23 @@ Class MbqRdEtUser extends MbqBaseRd {
         }
         if ($oMbqEtUser->acceptPm->hasSetOriValue()) {
             $data['accept_pm'] = (boolean) $oMbqEtUser->acceptPm->oriValue;
+        } else {
+            $data['accept_pm'] = (boolean) MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.acceptPm.default');
         }
         if ($oMbqEtUser->iFollowU->hasSetOriValue()) {
             $data['i_follow_u'] = (boolean) $oMbqEtUser->iFollowU->oriValue;
+        } else {
+            $data['i_follow_u'] = (boolean) MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.iFollowU.default');
         }
         if ($oMbqEtUser->uFollowMe->hasSetOriValue()) {
             $data['u_follow_me'] = (boolean) $oMbqEtUser->uFollowMe->oriValue;
+        } else {
+            $data['u_follow_me'] = (boolean) MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.uFollowMe.default');
         }
         if ($oMbqEtUser->acceptFollow->hasSetOriValue()) {
             $data['accept_follow'] = (boolean) $oMbqEtUser->acceptFollow->oriValue;
+        } else {
+            $data['accept_follow'] = (boolean) MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.acceptFollow.default');
         }
         if ($oMbqEtUser->followingCount->hasSetOriValue()) {
             $data['following_count'] = (int) $oMbqEtUser->followingCount->oriValue;
@@ -107,12 +127,16 @@ Class MbqRdEtUser extends MbqBaseRd {
         }
         if ($oMbqEtUser->canBan->hasSetOriValue()) {
             $data['can_ban'] = (boolean) $oMbqEtUser->canBan->oriValue;
+        } else {
+            $data['can_ban'] = (boolean) MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.canBan.default');
         }
         if ($oMbqEtUser->isBan->hasSetOriValue()) {
             $data['is_ban'] = (boolean) $oMbqEtUser->isBan->oriValue;
         }
         if ($oMbqEtUser->canMarkSpam->hasSetOriValue()) {
             $data['can_mark_spam'] = (boolean) $oMbqEtUser->canMarkSpam->oriValue;
+        } else {
+            $data['can_mark_spam'] = (boolean) MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.canMarkSpam.default');
         }
         if ($oMbqEtUser->isSpam->hasSetOriValue()) {
             $data['is_spam'] = (boolean) $oMbqEtUser->isSpam->oriValue;
@@ -183,6 +207,7 @@ Class MbqRdEtUser extends MbqBaseRd {
      * @param  Array  $mbqOpt
      * $mbqOpt['case'] = 'JUserAndKunenaUser' means init user by JUser obj and KunenaUser obj.$var['oJuser'] is JUser obj,$var['oKunenaUser'] is KunenaUser obj.
      * $mbqOpt['case'] = 'byUserId' means init user by user id.$var is user id.
+     * $mbqOpt['case'] = 'byLoginName' means init user by login name.$var is login name.
      * @return  Mixed
      */
     public function initOMbqEtUser($var, $mbqOpt) {
@@ -194,8 +219,15 @@ Class MbqRdEtUser extends MbqBaseRd {
             $oMbqEtUser->loginName->setOriValue($oJUser->username);
             $oMbqEtUser->userName->setOriValue($oJUser->name);
             $oMbqEtUser->userGroupIds->setOriValue(MbqMain::$oMbqCm->removeArrayKey($oJUser->groups));
+            $oMbqEtUser->iconUrl->setOriValue($var['oKunenaUser']->getAvatarURL());
+            $oMbqEtUser->postCount->setOriValue($var['oKunenaUser']->posts);
+            $oMbqEtUser->displayText->setOriValue($var['oKunenaUser']->signature);
             $oMbqEtUser->regTime->setOriValue(strtotime($oJUser->registerDate));
             $oMbqEtUser->lastActivityTime->setOriValue(strtotime($oJUser->lastvisitDate));
+            $oMbqEtUser->isOnline->setOriValue($var['oKunenaUser']->isOnline() ? MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.isOnline.range.yes') : MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.isOnline.range.no'));
+            $oMbqEtUser->isBan->setOriValue($var['oKunenaUser']->isBanned() ? MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.isBan.range.yes') : MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.isBan.range.no'));
+            $oMbqEtUser->mbqBind['oJuser'] = $var['oJuser'];
+            $oMbqEtUser->mbqBind['oKunenaUser'] = $var['oKunenaUser'];
             return $oMbqEtUser;
         } elseif ($mbqOpt['case'] == 'byUserId') {
             $userIds = array($var);
@@ -204,6 +236,14 @@ Class MbqRdEtUser extends MbqBaseRd {
                 return $objsMbqEtUser[0];
             }
             return false;
+        } elseif ($mbqOpt['case'] == 'byLoginName') {
+            $loginName = $var;
+            $oKunenaUser = KunenaFactory::getUser($loginName);
+            if ($oKunenaUser->userid) {
+                return $this->initOMbqEtUser($oKunenaUser->userid, array('case' => 'byUserId'));
+            } else {
+                return false;
+            }
         }
         MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_CASE);
     }

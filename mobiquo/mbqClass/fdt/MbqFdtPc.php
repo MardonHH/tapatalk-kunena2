@@ -19,18 +19,21 @@ Abstract Class MbqFdtPc extends MbqBaseFdt {
                 )
             ),
             'canInvite' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false
                 )
             ),
             'canEdit' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false
                 )
             ),
             'canClose' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false

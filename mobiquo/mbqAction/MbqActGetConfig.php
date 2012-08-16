@@ -18,19 +18,18 @@ Class MbqActGetConfig extends MbqBaseAct {
      * action implement
      */
     public function actionImplement() {
-        $data = & MbqMain::$data;
         $cfg = MbqMain::$oMbqConfig->getAllCfg();
         foreach ($cfg as $moduleName => $module) {
             foreach ($module as $k => $v) {
                 if ($k !== 'module_name' && $k != 'module_version' && $k != 'module_enable') {
-                    if (isset($data[$k])) {
+                    if (isset($this->data[$k])) {
                         MbqError::alert('', "Find repeat config $k!");
                     } else {
                         if ($v->hasSetOriValue()) {
                             if ($k == 'is_open' || $k == 'guest_okay' || $k == 'min_search_length') {
-                                $data[$k] = $v->oriValue;
+                                $this->data[$k] = $v->oriValue;
                             } else {
-                                $data[$k] = (string) $v->oriValue;
+                                $this->data[$k] = (string) $v->oriValue;
                             }
                         } else {
                             MbqError::alert('', "Need set config $k!");

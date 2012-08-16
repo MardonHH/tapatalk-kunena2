@@ -3,12 +3,12 @@
 defined('MBQ_IN_IT') or exit;
 
 /**
- * get_forum action
+ * get_unread_topic action
  * 
- * @since  2012-8-3
+ * @since  2012-8-16
  * @author Wu ZeTao <578014287@qq.com>
  */
-Class MbqActGetForum extends MbqBaseAct {
+Class MbqActGetUnreadTopic extends MbqBaseAct {
     
     public function __construct() {
         parent::__construct();
@@ -21,9 +21,10 @@ Class MbqActGetForum extends MbqBaseAct {
         if (!MbqMain::$oMbqConfig->moduleIsEnable('forum')) {
             MbqError::alert('', "Not support module forum!", '', MBQ_ERR_NOT_SUPPORT);
         }
-        $oMbqRdEtForum = MbqMain::$oClk->newObj('MbqRdEtForum');
-        $tree = $oMbqRdEtForum->getForumTree();
-        $this->data = $oMbqRdEtForum->returnApiTreeDataForum($tree);
+        /* TODO */
+        $this->data['result'] = true;
+        $this->data['total_topic_num'] = 0;
+        $this->data['topics'] = array();
     }
   
 }

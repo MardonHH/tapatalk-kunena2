@@ -35,6 +35,11 @@ Class MbqRdEtForum extends MbqBaseRd {
         if ($oMbqEtForum->forumName->hasSetOriValue()) {
             $data['forum_name'] = (string) $oMbqEtForum->forumName->oriValue;
         }
+        if ($oMbqEtForum->canPost->hasSetOriValue()) {
+            $data['can_post'] = (boolean) $oMbqEtForum->canPost->oriValue;
+        } else {
+            $data['can_post'] = (boolean) MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.canPost.default');
+        }
         if ($oMbqEtForum->description->hasSetOriValue()) {
             $data['description'] = (string) $oMbqEtForum->description->oriValue;
         }
@@ -58,6 +63,8 @@ Class MbqRdEtForum extends MbqBaseRd {
         }
         if ($oMbqEtForum->canSubscribe->hasSetOriValue()) {
             $data['can_subscribe'] = (boolean) $oMbqEtForum->canSubscribe->oriValue;
+        } else {
+            $data['can_subscribe'] = (boolean) MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.canSubscribe.default');
         }
         if ($oMbqEtForum->url->hasSetOriValue()) {
             $data['url'] = (string) $oMbqEtForum->url->oriValue;
@@ -67,6 +74,8 @@ Class MbqRdEtForum extends MbqBaseRd {
         }
         if ($oMbqEtForum->canPost->hasSetOriValue()) {
             $data['can_post'] = (boolean) $oMbqEtForum->canPost->oriValue;
+        } else {
+            $data['can_post'] = (boolean) MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.canPost.default');
         }
         if ($oMbqEtForum->unreadStickyCount->hasSetOriValue()) {
             $data['unread_sticky_count'] = (int) $oMbqEtForum->unreadStickyCount->oriValue;
@@ -80,6 +89,8 @@ Class MbqRdEtForum extends MbqBaseRd {
         $data['prefixes'] = (array) $oMbqEtForum->prefixes->oriValue;
         if ($oMbqEtForum->canUpload->hasSetOriValue()) {
             $data['can_upload'] = (boolean) $oMbqEtForum->canUpload->oriValue;
+        } else {
+            $data['can_upload'] = (boolean) MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.canUpload.default');
         }
         $data['child'] = array();
         $this->recurMakeApiTreeDataForum($data['child'], $oMbqEtForum->objsSubMbqEtForum);

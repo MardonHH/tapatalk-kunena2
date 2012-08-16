@@ -21,15 +21,14 @@ Class MbqActLogin extends MbqBaseAct {
         if (!MbqMain::$oMbqConfig->moduleIsEnable('user')) {
             MbqError::alert('', "Not support module user!", '', MBQ_ERR_NOT_SUPPORT);
         }
-        $data = & MbqMain::$data;
         $oMbqRdEtUser = MbqMain::$oClk->newObj('MbqRdEtUser');
         $result = $oMbqRdEtUser->login(MbqMain::$input[0], MbqMain::$input[1]);
         if ($result) {
-            $data['result'] = true;
+            $this->data['result'] = true;
             $data1 = $oMbqRdEtUser->returnApiDataUser(MbqMain::$oCurMbqEtUser);
-            MbqMain::$oMbqCm->mergeApiData($data, $data1);
+            MbqMain::$oMbqCm->mergeApiData($this->data, $data1);
         } else {
-            $data['result'] = false;
+            $this->data['result'] = false;
         }
     }
   

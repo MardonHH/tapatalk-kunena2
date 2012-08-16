@@ -162,6 +162,14 @@ Class MbqConfig extends MbqBaseConfig {
         MbqMain::$oClk->reg('MbqActGetTopic', MBQ_ACTION_PATH.'MbqActGetTopic.php');
         MbqMain::$oClk->reg('MbqActGetThread', MBQ_ACTION_PATH.'MbqActGetThread.php');
         MbqMain::$oClk->reg('MbqActLogin', MBQ_ACTION_PATH.'MbqActLogin.php');
+        MbqMain::$oClk->reg('MbqActGetInboxStat', MBQ_ACTION_PATH.'MbqActGetInboxStat.php');
+        MbqMain::$oClk->reg('MbqActGetUnreadTopic', MBQ_ACTION_PATH.'MbqActGetUnreadTopic.php');
+        MbqMain::$oClk->reg('MbqActGetSubscribedTopic', MBQ_ACTION_PATH.'MbqActGetSubscribedTopic.php');
+        MbqMain::$oClk->reg('MbqActGetSubscribedForum', MBQ_ACTION_PATH.'MbqActGetSubscribedForum.php');
+        MbqMain::$oClk->reg('MbqActGetUserTopic', MBQ_ACTION_PATH.'MbqActGetUserTopic.php');
+        MbqMain::$oClk->reg('MbqActGetUserReplyPost', MBQ_ACTION_PATH.'MbqActGetUserReplyPost.php');
+        MbqMain::$oClk->reg('MbqActGetBoardStat', MBQ_ACTION_PATH.'MbqActGetBoardStat.php');
+        MbqMain::$oClk->reg('MbqActGetUserInfo', MBQ_ACTION_PATH.'MbqActGetUserInfo.php');
     }
     
     /**

@@ -33,6 +33,7 @@ Abstract Class MbqFdtForum extends MbqBaseFdt {
                 )
             ),
             'canSubscribe' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false
@@ -45,6 +46,7 @@ Abstract Class MbqFdtForum extends MbqBaseFdt {
                 )
             ),
             'canPost' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false
@@ -63,6 +65,7 @@ Abstract Class MbqFdtForum extends MbqBaseFdt {
                 )
             ),
             'canUpload' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false
@@ -83,6 +86,7 @@ Abstract Class MbqFdtForum extends MbqBaseFdt {
                 )
             ),
             'canSubscribe' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false
@@ -101,18 +105,21 @@ Abstract Class MbqFdtForum extends MbqBaseFdt {
                 )
             ),
             'canUpload' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false
                 )
             ),
             'canThank' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false
                 )
             ),
             'canLike' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false
@@ -125,6 +132,7 @@ Abstract Class MbqFdtForum extends MbqBaseFdt {
                 )
             ),
             'canDelete' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false
@@ -137,6 +145,7 @@ Abstract Class MbqFdtForum extends MbqBaseFdt {
                 )
             ),
             'canApprove' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false
@@ -149,6 +158,7 @@ Abstract Class MbqFdtForum extends MbqBaseFdt {
                 )
             ),
             'canStick' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false
@@ -161,24 +171,28 @@ Abstract Class MbqFdtForum extends MbqBaseFdt {
                 )
             ),
             'canClose' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false
                 )
             ),
             'canRename' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false
                 )
             ),
             'canMove' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false
                 )
             ),
             'canReply' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false
@@ -199,12 +213,14 @@ Abstract Class MbqFdtForum extends MbqBaseFdt {
                 )
             ),
             'canEdit' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false
                 )
             ),
             'canDelete' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false
@@ -217,12 +233,14 @@ Abstract Class MbqFdtForum extends MbqBaseFdt {
                 )
             ),
             'canThank' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false
                 )
             ),
             'canLike' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false
@@ -235,6 +253,7 @@ Abstract Class MbqFdtForum extends MbqBaseFdt {
                 )
             ),
             'canDelete' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false
@@ -247,6 +266,7 @@ Abstract Class MbqFdtForum extends MbqBaseFdt {
                 )
             ),
             'canApprove' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false
@@ -259,6 +279,7 @@ Abstract Class MbqFdtForum extends MbqBaseFdt {
                 )
             ),
             'canMove' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false

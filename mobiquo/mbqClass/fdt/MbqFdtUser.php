@@ -13,36 +13,42 @@ Abstract Class MbqFdtUser extends MbqBaseFdt {
     public static $df = array(
         'MbqEtUser' => array(
             'canPm' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false
                 )
             ),
             'canSendPm' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false
                 )
             ),
             'canModerate' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false
                 )
             ),
             'canSearch' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false
                 )
             ),
             'canWhosonline' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false
                 )
             ),
             'canUploadAvatar' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false
@@ -55,30 +61,35 @@ Abstract Class MbqFdtUser extends MbqBaseFdt {
                 )
             ),
             'acceptPm' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false
                 )
             ),
             'iFollowU' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false
                 )
             ),
             'uFollowMe' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false
                 )
             ),
             'acceptFollow' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false
                 )
             ),
             'canBan' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false
@@ -91,6 +102,7 @@ Abstract Class MbqFdtUser extends MbqBaseFdt {
                 )
             ),
             'canMarkSpam' => array(
+                'default' => false,
                 'range' => array(
                     'yes' => true,
                     'no' => false

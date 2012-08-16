@@ -35,6 +35,16 @@ Class MbqRdEtForumPost extends MbqBaseRd {
                 }
             }
             break;
+            case 'byOAuthorMbqEtUser':   /* make properties by oAuthorMbqEtUser */
+            if ($oMbqEtForumPost->oAuthorMbqEtUser) {
+                if ($oMbqEtForumPost->oAuthorMbqEtUser->isOnline->hasSetOriValue()) {
+                    $oMbqEtForumPost->isOnline->setOriValue($oMbqEtForumPost->oAuthorMbqEtUser->isOnline->oriValue ? MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumPost.isOnline.range.yes') : MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumPost.isOnline.range.no'));
+                }
+                if ($oMbqEtForumPost->oAuthorMbqEtUser->iconUrl->hasSetOriValue()) {
+                    $oMbqEtForumPost->authorIconUrl->setOriValue($oMbqEtForumPost->oAuthorMbqEtUser->iconUrl->oriValue);
+                }
+            }
+            break;
             default:
             MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_PNAME);
             break;
@@ -91,9 +101,16 @@ Class MbqRdEtForumPost extends MbqBaseRd {
         }
         if ($oMbqEtForumPost->canEdit->hasSetOriValue()) {
             $data['can_edit'] = (boolean) $oMbqEtForumPost->canEdit->oriValue;
+        } else {
+            $data['can_edit'] = (boolean) MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumPost.canEdit.default');
         }
         if ($oMbqEtForumPost->canDelete->hasSetOriValue()) {
             $data['can_delete'] = (boolean) $oMbqEtForumPost->canDelete->oriValue;
+        } else {
+            $data['can_delete'] = (boolean) MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumPost.canDelete.default');
+        }
+        if ($oMbqEtForumPost->authorIconUrl->hasSetOriValue()) {
+            $data['icon_url'] = (string) $oMbqEtForumPost->authorIconUrl->oriValue;
         }
         if ($oMbqEtForumPost->postTime->hasSetOriValue()) {
             $data['post_time'] = (string) MbqMain::$oMbqCm->datetimeIso8601Encode($oMbqEtForumPost->postTime->oriValue);
@@ -106,12 +123,16 @@ Class MbqRdEtForumPost extends MbqBaseRd {
         }
         if ($oMbqEtForumPost->canThank->hasSetOriValue()) {
             $data['can_thank'] = (boolean) $oMbqEtForumPost->canThank->oriValue;
+        } else {
+            $data['can_thank'] = (boolean) MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumPost.canThank.default');
         }
         if ($oMbqEtForumPost->thankCount->hasSetOriValue()) {
             $data['thank_count'] = (int) $oMbqEtForumPost->thankCount->oriValue;
         }
         if ($oMbqEtForumPost->canLike->hasSetOriValue()) {
             $data['can_like'] = (boolean) $oMbqEtForumPost->canLike->oriValue;
+        } else {
+            $data['can_like'] = (boolean) MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumPost.canLike.default');
         }
         if ($oMbqEtForumPost->isLiked->hasSetOriValue()) {
             $data['is_liked'] = (boolean) $oMbqEtForumPost->isLiked->oriValue;
@@ -121,18 +142,24 @@ Class MbqRdEtForumPost extends MbqBaseRd {
         }
         if ($oMbqEtForumPost->canDelete->hasSetOriValue()) {
             $data['can_delete'] = (boolean) $oMbqEtForumPost->canDelete->oriValue;
+        } else {
+            $data['can_delete'] = (boolean) MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumPost.canDelete.default');
         }
         if ($oMbqEtForumPost->isDeleted->hasSetOriValue()) {
             $data['is_deleted'] = (boolean) $oMbqEtForumPost->isDeleted->oriValue;
         }
         if ($oMbqEtForumPost->canApprove->hasSetOriValue()) {
             $data['can_approve'] = (boolean) $oMbqEtForumPost->canApprove->oriValue;
+        } else {
+            $data['can_approve'] = (boolean) MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumPost.canApprove.default');
         }
         if ($oMbqEtForumPost->isApproved->hasSetOriValue()) {
             $data['is_approved'] = (boolean) $oMbqEtForumPost->isApproved->oriValue;
         }
         if ($oMbqEtForumPost->canMove->hasSetOriValue()) {
             $data['can_move'] = (boolean) $oMbqEtForumPost->canMove->oriValue;
+        } else {
+            $data['can_move'] = (boolean) MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumPost.canMove.default');
         }
         if ($oMbqEtForumPost->modByUserId->hasSetOriValue()) {
             $data['moderated_by_id'] = (string) $oMbqEtForumPost->modByUserId->oriValue;
@@ -222,6 +249,9 @@ Class MbqRdEtForumPost extends MbqBaseRd {
                 foreach ($objsMbqEtForumPost as &$oMbqEtForumPost) {
                     $this->makeProperty($oMbqEtForumPost, 'objsNotInContentMbqEtAtt');
                 }
+                foreach ($objsMbqEtForumPost as &$oMbqEtForumPost) {
+                    $this->makeProperty($oMbqEtForumPost, 'byOAuthorMbqEtUser');
+                }
                 $oMbqDataPage->datas = $objsMbqEtForumPost;
                 return $oMbqDataPage;
             }
@@ -273,6 +303,7 @@ Class MbqRdEtForumPost extends MbqBaseRd {
                 /* load objsNotInContentMbqEtAtt */
                 $this->makeProperty($oMbqEtForumPost, 'objsNotInContentMbqEtAtt');
             }
+            $this->makeProperty($oMbqEtForumPost, 'byOAuthorMbqEtUser');
             return $oMbqEtForumPost;
         }
         MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_CASE);

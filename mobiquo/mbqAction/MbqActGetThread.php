@@ -21,7 +21,6 @@ Class MbqActGetThread extends MbqBaseAct {
         if (!MbqMain::$oMbqConfig->moduleIsEnable('forum')) {
             MbqError::alert('', "Not support module forum!", '', MBQ_ERR_NOT_SUPPORT);
         }
-        $data = & MbqMain::$data;
         $topicId = MbqMain::$input[0];
         $startNum = (int) MbqMain::$input[1];
         $lastNum = (int) MbqMain::$input[2];
@@ -40,9 +39,9 @@ Class MbqActGetThread extends MbqBaseAct {
             if ($oMbqAclEtForumTopic->canAclGetThread($oMbqEtForumTopic)) {    //acl judge
                 $oMbqRdEtForumPost = MbqMain::$oClk->newObj('MbqRdEtForumPost');
                 $oMbqDataPage = $oMbqRdEtForumPost->getObjsMbqEtForumPost($oMbqEtForumTopic, array('case' => 'byTopic', 'oMbqDataPage' => $oMbqDataPage));
-                $data = $oMbqRdEtForumTopic->returnApiDataForumTopic($oMbqEtForumTopic);
-                $data['forum_name'] = (string) $oMbqEtForum->forumName->oriValue;
-                $data['posts'] = $oMbqRdEtForumPost->returnApiArrDataForumPost($oMbqDataPage->datas, $returnHtml);
+                $this->data = $oMbqRdEtForumTopic->returnApiDataForumTopic($oMbqEtForumTopic);
+                $this->data['forum_name'] = (string) $oMbqEtForum->forumName->oriValue;
+                $this->data['posts'] = $oMbqRdEtForumPost->returnApiArrDataForumPost($oMbqDataPage->datas, $returnHtml);
                 $oMbqWrEtForumTopic = MbqMain::$oClk->newObj('MbqWrEtForumTopic');
                 /* add forum topic view num */
                 $oMbqWrEtForumTopic->addForumTopicViewNum($oMbqEtForumTopic);

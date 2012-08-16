@@ -21,7 +21,6 @@ Class MbqActGetTopic extends MbqBaseAct {
         if (!MbqMain::$oMbqConfig->moduleIsEnable('forum')) {
             MbqError::alert('', "Not support module forum!", '', MBQ_ERR_NOT_SUPPORT);
         }
-        $data = & MbqMain::$data;
         $forumId = MbqMain::$input[0];
         $startNum = (int) MbqMain::$input[1];
         $lastNum = (int) MbqMain::$input[2];
@@ -34,17 +33,19 @@ Class MbqActGetTopic extends MbqBaseAct {
             $oMbqAclEtForumTopic = MbqMain::$oClk->newObj('MbqAclEtForumTopic');
             if ($oMbqAclEtForumTopic->canAclGetTopic($oMbqEtForum)) {    //acl judge
                 switch ($mode) {
-                    case 'TOP':     /* returns sticky topics */
-                    MbqError::alert('', "Not support return sticky topics!", '', MBQ_ERR_NOT_SUPPORT);  /* TODO */
+                    case 'TOP':     /* returns sticky topics.TODO */
+                    $this->data = $oMbqRdEtForum->returnApiDataForum($oMbqEtForum);
+                    $this->data['topics'] = array();
                     break;
-                    case 'ANN':     /* returns "Announcement" topics */
-                    MbqError::alert('', "Not support return Announcement topics!", '', MBQ_ERR_NOT_SUPPORT);  /* TODO */
+                    case 'ANN':     /* returns "Announcement" topics.TODO */
+                    $this->data = $oMbqRdEtForum->returnApiDataForum($oMbqEtForum);
+                    $this->data['topics'] = array();
                     break;
                     default:        /* returns standard topics */
                     $oMbqRdEtForumTopic = MbqMain::$oClk->newObj('MbqRdEtForumTopic');
                     $oMbqDataPage = $oMbqRdEtForumTopic->getObjsMbqEtForumTopic($oMbqEtForum, array('case' => 'byForum', 'oMbqDataPage' => $oMbqDataPage));
-                    $data = $oMbqRdEtForum->returnApiDataForum($oMbqEtForum);
-                    $data['topics'] = $oMbqRdEtForumTopic->returnApiArrDataForumTopic($oMbqDataPage->datas);
+                    $this->data = $oMbqRdEtForum->returnApiDataForum($oMbqEtForum);
+                    $this->data['topics'] = $oMbqRdEtForumTopic->returnApiArrDataForumTopic($oMbqDataPage->datas);
                     break;
                 }
             } else {

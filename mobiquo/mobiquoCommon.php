@@ -62,11 +62,20 @@ Class MbqMain extends MbqBaseMain {
     }
     
     /**
+     * judge if has login
+     *
+     * @return  Boolean
+     */
+    public static function hasLogin() {
+        return self::$oCurMbqEtUser ? true : false;
+    }
+    
+    /**
      * do something before output
      */
     public function beforeOutPut() {
         ob_end_clean();
-        if (self::$oCurMbqEtUser) {
+        if (self::hasLogin()) {
             header('Mobiquo_is_login: true');
         } else {
             header('Mobiquo_is_login: false');

@@ -21,6 +21,13 @@ Class MbqRdEtForumTopic extends MbqBaseRd {
                 $oMbqEtForumTopic->oAuthorMbqEtUser = $oMbqEtUser;
             }
             break;
+            case 'byOAuthorMbqEtUser':   /* make properties by oAuthorMbqEtUser */
+            if ($oMbqEtForumTopic->oAuthorMbqEtUser) {
+                if ($oMbqEtForumTopic->oAuthorMbqEtUser->iconUrl->hasSetOriValue()) {
+                    $oMbqEtForumTopic->authorIconUrl->setOriValue($oMbqEtForumTopic->oAuthorMbqEtUser->iconUrl->oriValue);
+                }
+            }
+            break;
             default:
             MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_PNAME);
             break;
@@ -74,12 +81,17 @@ Class MbqRdEtForumTopic extends MbqBaseRd {
         }
         if ($oMbqEtForumTopic->canSubscribe->hasSetOriValue()) {
             $data['can_subscribe'] = (boolean) $oMbqEtForumTopic->canSubscribe->oriValue;
+        } else {
+            $data['can_subscribe'] = (boolean) MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canSubscribe.default');
         }
         if ($oMbqEtForumTopic->isClosed->hasSetOriValue()) {
             $data['is_closed'] = (boolean) $oMbqEtForumTopic->isClosed->oriValue;
         }
         if ($oMbqEtForumTopic->postTime->hasSetOriValue()) {
             $data['post_time'] = (string) MbqMain::$oMbqCm->datetimeIso8601Encode($oMbqEtForumTopic->postTime->oriValue);
+        }
+        if ($oMbqEtForumTopic->authorIconUrl->hasSetOriValue()) {
+            $data['icon_url'] = (string) $oMbqEtForumTopic->authorIconUrl->oriValue;
         }
         if ($oMbqEtForumTopic->lastReplyTime->hasSetOriValue()) {
             $data['last_reply_time'] = (string) MbqMain::$oMbqCm->datetimeIso8601Encode($oMbqEtForumTopic->lastReplyTime->oriValue);
@@ -98,15 +110,21 @@ Class MbqRdEtForumTopic extends MbqBaseRd {
         }
         if ($oMbqEtForumTopic->canUpload->hasSetOriValue()) {
             $data['can_upload'] = (boolean) $oMbqEtForumTopic->canUpload->oriValue;
+        } else {
+            $data['can_upload'] = (boolean) MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canUpload.default');
         }
         if ($oMbqEtForumTopic->canThank->hasSetOriValue()) {
             $data['can_thank'] = (boolean) $oMbqEtForumTopic->canThank->oriValue;
+        } else {
+            $data['can_thank'] = (boolean) MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canThank.default');
         }
         if ($oMbqEtForumTopic->thankCount->hasSetOriValue()) {
             $data['thank_count'] = (int) $oMbqEtForumTopic->thankCount->oriValue;
         }
         if ($oMbqEtForumTopic->canLike->hasSetOriValue()) {
             $data['can_like'] = (boolean) $oMbqEtForumTopic->canLike->oriValue;
+        } else {
+            $data['can_like'] = (boolean) MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canLike.default');
         }
         if ($oMbqEtForumTopic->isLiked->hasSetOriValue()) {
             $data['is_liked'] = (boolean) $oMbqEtForumTopic->isLiked->oriValue;
@@ -116,30 +134,42 @@ Class MbqRdEtForumTopic extends MbqBaseRd {
         }
         if ($oMbqEtForumTopic->canDelete->hasSetOriValue()) {
             $data['can_delete'] = (boolean) $oMbqEtForumTopic->canDelete->oriValue;
+        } else {
+            $data['can_delete'] = (boolean) MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canDelete.default');
         }
         if ($oMbqEtForumTopic->isDeleted->hasSetOriValue()) {
             $data['is_deleted'] = (boolean) $oMbqEtForumTopic->isDeleted->oriValue;
         }
         if ($oMbqEtForumTopic->canApprove->hasSetOriValue()) {
             $data['can_approve'] = (boolean) $oMbqEtForumTopic->canApprove->oriValue;
+        } else {
+            $data['can_approve'] = (boolean) MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canApprove.default');
         }
         if ($oMbqEtForumTopic->isApproved->hasSetOriValue()) {
             $data['is_approved'] = (boolean) $oMbqEtForumTopic->isApproved->oriValue;
         }
         if ($oMbqEtForumTopic->canStick->hasSetOriValue()) {
             $data['can_stick'] = (boolean) $oMbqEtForumTopic->canStick->oriValue;
+        } else {
+            $data['can_stick'] = (boolean) MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canStick.default');
         }
         if ($oMbqEtForumTopic->isSticky->hasSetOriValue()) {
             $data['is_sticky'] = (boolean) $oMbqEtForumTopic->isSticky->oriValue;
         }
         if ($oMbqEtForumTopic->canClose->hasSetOriValue()) {
             $data['can_close'] = (boolean) $oMbqEtForumTopic->canClose->oriValue;
+        } else {
+            $data['can_close'] = (boolean) MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canClose.default');
         }
         if ($oMbqEtForumTopic->canRename->hasSetOriValue()) {
             $data['can_rename'] = (boolean) $oMbqEtForumTopic->canRename->oriValue;
+        } else {
+            $data['can_rename'] = (boolean) MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canRename.default');
         }
         if ($oMbqEtForumTopic->canMove->hasSetOriValue()) {
             $data['can_move'] = (boolean) $oMbqEtForumTopic->canMove->oriValue;
+        } else {
+            $data['can_move'] = (boolean) MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canMove.default');
         }
         if ($oMbqEtForumTopic->modByUserId->hasSetOriValue()) {
             $data['moderated_by_id'] = (string) $oMbqEtForumTopic->modByUserId->oriValue;
@@ -152,6 +182,8 @@ Class MbqRdEtForumTopic extends MbqBaseRd {
         }
         if ($oMbqEtForumTopic->canReply->hasSetOriValue()) {
             $data['can_reply'] = (boolean) $oMbqEtForumTopic->canReply->oriValue;
+        } else {
+            $data['can_reply'] = (boolean) MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canReply.default');
         }
         return $data;
     }
@@ -208,6 +240,9 @@ Class MbqRdEtForumTopic extends MbqBaseRd {
                         }
                     }
                 }
+                foreach ($objsMbqEtForumTopic as &$oMbqEtForumTopic) {
+                    $this->makeProperty($oMbqEtForumTopic, 'byOAuthorMbqEtUser');
+                }
                 $oMbqDataPage->datas = $objsMbqEtForumTopic;
                 return $oMbqDataPage;
             }
@@ -247,6 +282,7 @@ Class MbqRdEtForumTopic extends MbqBaseRd {
                 /* load topic author */
                 $this->makeProperty($oMbqEtForumTopic, 'oAuthorMbqEtUser');
             }
+            $this->makeProperty($oMbqEtForumTopic, 'byOAuthorMbqEtUser');
             return $oMbqEtForumTopic;
         } elseif ($mbqOpt['case'] == 'byTopicId') {
             $topicId = $var;
