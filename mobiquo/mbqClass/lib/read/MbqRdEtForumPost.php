@@ -58,7 +58,7 @@ Class MbqRdEtForumPost extends MbqBaseRd {
      * @param  Boolean  $returnHtml
      * @return  Array
      */
-    public function returnApiDataForumPost($oMbqEtForumPost, $returnHtml) {
+    public function returnApiDataForumPost($oMbqEtForumPost, $returnHtml = true) {
         $data = array();
         if ($oMbqEtForumPost->postId->hasSetOriValue()) {
             $data['post_id'] = (string) $oMbqEtForumPost->postId->oriValue;
@@ -265,6 +265,7 @@ Class MbqRdEtForumPost extends MbqBaseRd {
      * @param  Mixed  $var
      * @param  Array  $mbqOpt
      * $mbqOpt['case'] = 'oKunenaForumMessage' means init forum post by KunenaForumMessage obj
+     * $mbqOpt['case'] = 'byPostId' means init forum post by post id
      * $mbqOpt['withAuthor'] = true means load post author,default is true
      * $mbqOpt['withAtt'] = true means load post attachments,default is true
      * $mbqOpt['withObjsNotInContentMbqEtAtt'] = true means load the attachement objs not in the content,default is true
@@ -273,6 +274,7 @@ Class MbqRdEtForumPost extends MbqBaseRd {
     public function initOMbqEtForumPost($var, $mbqOpt) {
         $mbqOpt['withAuthor'] = isset($mbqOpt['withAuthor']) ? $mbqOpt['withAuthor'] : true;
         $mbqOpt['withAtt'] = isset($mbqOpt['withAtt']) ? $mbqOpt['withAtt'] : true;
+        $mbqOpt['withObjsNotInContentMbqEtAtt'] = isset($mbqOpt['withObjsNotInContentMbqEtAtt']) ? $mbqOpt['withObjsNotInContentMbqEtAtt'] : true;
         if ($mbqOpt['case'] == 'oKunenaForumMessage') {
             require_once(MBQ_APPEXTENTION_PATH.'ExttMbqKunenaViewTopic.php');
             $oExttMbqKunenaViewTopic = new ExttMbqKunenaViewTopic();
@@ -305,6 +307,13 @@ Class MbqRdEtForumPost extends MbqBaseRd {
             }
             $this->makeProperty($oMbqEtForumPost, 'byOAuthorMbqEtUser');
             return $oMbqEtForumPost;
+        } elseif ($mbqOpt['case'] == 'byPostId') {
+            require_once(KPATH_ADMIN.'/libraries/forum/message/helper.php');
+            if (($oKunenaForumMessage = KunenaForumMessageHelper::get($var)) && $oKunenaForumMessage->id) {
+                $mbqOpt['case'] = 'oKunenaForumMessage';
+                return $this->initOMbqEtForumPost($oKunenaForumMessage, $mbqOpt);
+            }
+            return false;
         }
         MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_CASE);
     }
@@ -393,6 +402,21 @@ Class MbqRdEtForumPost extends MbqBaseRd {
         }
     	$post = trim($post);
     	return $post;
+    }
+    
+    /**
+     * return quote post content
+     *
+     * @param  Object  $oMbqEtForumPost
+     */
+    public function getQuotePostContent($oMbqEtForumPost) {
+        if (MbqMain::$oCurMbqEtUser) {
+            $name = MbqMain::$oCurMbqEtUser->loginName->oriValue;
+        } else {
+            $name = '';
+        }
+        $content = "[quote=\"$name\" post=".$oMbqEtForumPost->postId->oriValue."]".$oMbqEtForumPost->postContent->oriValue."[/quote]";
+        return $content;
     }
   
 }

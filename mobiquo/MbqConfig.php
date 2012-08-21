@@ -149,9 +149,11 @@ Class MbqConfig extends MbqBaseConfig {
         MbqMain::$oClk->reg('MbqRdEtAtt', MBQ_READ_PATH.'MbqRdEtAtt.php');
             /* write class */
         MbqMain::$oClk->reg('MbqWrEtForumTopic', MBQ_WRITE_PATH.'MbqWrEtForumTopic.php');
+        MbqMain::$oClk->reg('MbqWrEtForumPost', MBQ_WRITE_PATH.'MbqWrEtForumPost.php');
             /* acl class */
         MbqMain::$oClk->reg('MbqAclEtForum', MBQ_ACL_PATH.'MbqAclEtForum.php');
         MbqMain::$oClk->reg('MbqAclEtForumTopic', MBQ_ACL_PATH.'MbqAclEtForumTopic.php');
+        MbqMain::$oClk->reg('MbqAclEtForumPost', MBQ_ACL_PATH.'MbqAclEtForumPost.php');
         /* I/O class */
         MbqMain::$oClk->reg('MbqIo', MBQ_IO_PATH.'MbqIo.php');
         MbqMain::$oClk->reg('MbqIoHandleXmlrpc', MBQ_IO_HANDLE_PATH.'MbqIoHandleXmlrpc.php');
@@ -170,6 +172,9 @@ Class MbqConfig extends MbqBaseConfig {
         MbqMain::$oClk->reg('MbqActGetUserReplyPost', MBQ_ACTION_PATH.'MbqActGetUserReplyPost.php');
         MbqMain::$oClk->reg('MbqActGetBoardStat', MBQ_ACTION_PATH.'MbqActGetBoardStat.php');
         MbqMain::$oClk->reg('MbqActGetUserInfo', MBQ_ACTION_PATH.'MbqActGetUserInfo.php');
+        MbqMain::$oClk->reg('MbqActNewTopic', MBQ_ACTION_PATH.'MbqActNewTopic.php');
+        MbqMain::$oClk->reg('MbqActReplyPost', MBQ_ACTION_PATH.'MbqActReplyPost.php');
+        MbqMain::$oClk->reg('MbqActGetQuotePost', MBQ_ACTION_PATH.'MbqActGetQuotePost.php');
     }
     
     /**

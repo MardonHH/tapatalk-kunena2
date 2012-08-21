@@ -97,7 +97,7 @@ Class MbqCm extends MbqBaseCm {
                 switch ($strNeedReplaced) {
                     case 'quote':
                     $newName = MBQ_RUNNING_NAMEPRE.'quote';
-                    $content = preg_replace('/\[quote(=.*)\]/i', "[$newName$1]", $content);
+                    $content = preg_replace('/\[quote(=.*?)\]/i', "[$newName$1]", $content);
                     $content = preg_replace('/\[\/quote\]/i', "[/$newName]", $content);
                     break;
                     default:
@@ -123,7 +123,7 @@ Class MbqCm extends MbqBaseCm {
                 switch ($strNeedReplaced) {
                     case 'quote':
                     $curName = MBQ_RUNNING_NAMEPRE.'quote';
-                    $content = preg_replace('/\['.$curName.'(=.*)\]/i', "[quote$1]", $content);
+                    $content = preg_replace('/\['.$curName.'(=.*?)\]/i', "[quote$1]", $content);
                     $content = preg_replace('/\[\/'.$curName.'\]/i', "[/quote]", $content);
                     break;
                     default:

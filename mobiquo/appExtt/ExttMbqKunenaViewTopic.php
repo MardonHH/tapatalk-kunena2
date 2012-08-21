@@ -10,8 +10,8 @@ require_once(KPATH_SITE.'/views/topic/view.html.php');
  * @since  2012-8-15
  * @modified by Wu ZeTao <578014287@qq.com>
  */
-//class ExttMbqKunenaViewTopic extends KunenaViewTopic {
-class ExttMbqKunenaViewTopic extends KunenaView {
+class ExttMbqKunenaViewTopic extends KunenaViewTopic {
+//class ExttMbqKunenaViewTopic extends KunenaView {
 
     /**
      * return forum post content displayed in web page.

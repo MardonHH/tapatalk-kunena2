@@ -3,69 +3,22 @@
 defined('MBQ_IN_IT') or exit;
 
 /**
- * forum topic write class
+ * forum post write class
  * 
- * @since  2012-8-15
+ * @since  2012-8-21
  * @author Wu ZeTao <578014287@qq.com>
  */
-Class MbqWrEtForumTopic extends MbqBaseWr {
+Class MbqWrEtForumPost extends MbqBaseWr {
     
     public function __construct() {
     }
     
     /**
-     * add forum topic view num
+     * add forum post
      *
-     * @param  Mixed  $var($oMbqEtForumTopic or $objsMbqEtForumTopic)
+     * @param  Mixed  $var($oMbqEtForumPost or $objsMbqEtForumPost)
      */
-    public function addForumTopicViewNum(&$var) {
-        if (is_array($var)) {
-            MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
-        } else {
-            $var->mbqBind['oKunenaForumTopic']->hit();
-        }
-    }
-    
-    /**
-     * mark forum topic read
-     *
-     * @param  Mixed  $var($oMbqEtForumTopic or $objsMbqEtForumTopic)
-     */
-    public function markForumTopicRead(&$var) {
-        if (is_array($var)) {
-            MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
-        } else {
-            $var->mbqBind['oKunenaForumTopic']->markRead();
-        }
-    }
-    
-    /**
-     * reset forum topic subscription
-     *
-     * @param  Mixed  $var($oMbqEtForumTopic or $objsMbqEtForumTopic)
-     */
-    public function resetForumTopicSubscription(&$var) {
-        if (is_array($var)) {
-            MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
-        } else {
-            $var->mbqBind['oKunenaForumTopic']->markRead();
-            // Check is subscriptions have been sent and reset the value
-            if ($var->mbqBind['oKunenaForumTopic']->authorise('subscribe')) {
-                $usertopic = $var->mbqBind['oKunenaForumTopic']->getUserTopic();
-                if ($usertopic->subscribed == 2) {
-                    $usertopic->subscribed = 1;
-                    $usertopic->save();
-                }
-            }
-        }
-    }
-    
-    /**
-     * add forum topic
-     *
-     * @param  Mixed  $var($oMbqEtForumTopic or $objsMbqEtForumTopic)
-     */
-    public function addMbqEtForumTopic(&$var) {
+    public function addMbqEtForumPost(&$var) {
         if (is_array($var)) {
             MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
         } else {
@@ -79,9 +32,9 @@ Class MbqWrEtForumTopic extends MbqBaseWr {
                 'name' => (MbqMain::$oCurMbqEtUser ? MbqMain::$oCurMbqEtUser->loginName : ''),
                 'email' => JRequest::getString ( 'email', null ),
                 //'subject' => JRequest::getVar ( 'subject', null, 'POST', 'string', JREQUEST_ALLOWRAW ),
-                'subject' => $var->topicTitle->oriValue,
+                'subject' => $var->postTitle->oriValue,
                 //'message' => JRequest::getVar ( 'message', null, 'POST', 'string', JREQUEST_ALLOWRAW ),
-                'message' => $var->topicContent->oriValue,
+                'message' => $var->postContent->oriValue,
                 'icon_id' => JRequest::getInt ( 'topic_emoticon', null ),
                 'anonymous' => JRequest::getInt ( 'anonymous', 0 ),
                 'poll_title' => JRequest::getString ( 'poll_title', '' ),
@@ -111,14 +64,15 @@ Class MbqWrEtForumTopic extends MbqBaseWr {
                 }
             }
             */
-    
-            $category = KunenaForumCategoryHelper::get($var->forumId->oriValue);
-            if (!$category->authorise('topic.create')) {
-                //$this->app->enqueueMessage ( $category->getError(), 'notice' );
+            
+            $parent = KunenaForumMessageHelper::get($var->parentPostId->oriValue);
+            if (!$parent->authorise('reply')) {
+                //$this->app->enqueueMessage ( $parent->getError(), 'notice' );
                 //$this->redirectBack ();
                 MbqError::alert('', '', '', MBQ_ERR_APP);
             }
-            list ($topic, $message) = $category->newTopic($fields);
+            list ($topic, $message) = $parent->newReply($fields);
+            $category = $topic->getCategory();
     
             // Flood protection
             //if ($this->config->floodprotection && ! $this->me->isModerator($category)) {
@@ -179,7 +133,7 @@ Class MbqWrEtForumTopic extends MbqBaseWr {
                     $activity->onBeforeReply($message);
                 }
                 */
-                $activity->onBeforePost($message);
+                $activity->onBeforeReply($message);
             }
     
             // Save message
@@ -258,11 +212,11 @@ Class MbqWrEtForumTopic extends MbqBaseWr {
             }
             */
             
-            $var->topicId->setOriValue($topic->id);
-            if ($topic->hold == 1) {
-                $var->state->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.state.range.postOkNeedModeration'));
+            $var->postId->setOriValue($message->id);
+            if ($message->hold == 1) {
+                $var->state->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumPost.state.range.postOkNeedModeration'));
             } else {
-                $var->state->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.state.range.postOk'));
+                $var->state->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumPost.state.range.postOk'));
             }
         }
     }

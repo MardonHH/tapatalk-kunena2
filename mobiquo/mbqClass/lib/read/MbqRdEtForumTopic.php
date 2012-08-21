@@ -28,6 +28,14 @@ Class MbqRdEtForumTopic extends MbqBaseRd {
                 }
             }
             break;
+            case 'oFirstMbqEtForumPost':
+            if ($oMbqEtForumTopic->firstPostId->hasSetOriValue()) {
+                $oMbqRdEtForumPost = MbqMain::$oClk->newObj('MbqRdEtForumPost');
+                if ($oMbqEtForumPost = $oMbqRdEtForumPost->initOMbqEtForumPost($oMbqEtForumTopic->firstPostId->oriValue, array('case' => 'byPostId'))) {
+                    $oMbqEtForumTopic->oFirstMbqEtForumPost = $oMbqEtForumPost;
+                }
+            }
+            break;
             default:
             MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_PNAME);
             break;
@@ -274,7 +282,7 @@ Class MbqRdEtForumTopic extends MbqBaseRd {
             $oMbqEtForumTopic->lastReplyAuthorId->setOriValue($var->last_post_userid);
             $oMbqEtForumTopic->postTime->setOriValue($var->first_post_time);
             $oMbqEtForumTopic->lastReplyTime->setOriValue($var->last_post_time);
-            $oMbqEtForumTopic->replyNumber->setOriValue($var->posts - 1);
+            $oMbqEtForumTopic->replyNumber->setOriValue(($var->posts > 0) ? ($var->posts - 1) : $var->posts);
             $oMbqEtForumTopic->newPost->setOriValue($var->unread ? MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.newPost.range.yes') : MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.newPost.range.no'));
             $oMbqEtForumTopic->viewNumber->setOriValue($var->hits);
             $oMbqEtForumTopic->mbqBind['oKunenaForumTopic'] = $var;
@@ -283,6 +291,12 @@ Class MbqRdEtForumTopic extends MbqBaseRd {
                 $this->makeProperty($oMbqEtForumTopic, 'oAuthorMbqEtUser');
             }
             $this->makeProperty($oMbqEtForumTopic, 'byOAuthorMbqEtUser');
+            $this->makeProperty($oMbqEtForumTopic, 'oFirstMbqEtForumPost');
+            if ($oMbqEtForumTopic->oFirstMbqEtForumPost && $oMbqEtForumTopic->oFirstMbqEtForumPost->mbqBind['oKunenaForumMessage'] && $oMbqEtForumTopic->oFirstMbqEtForumPost->mbqBind['oKunenaForumMessage']->authorise('reply')) {
+                $oMbqEtForumTopic->canReply->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canReply.range.yes'));
+            } else {
+                $oMbqEtForumTopic->canReply->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canReply.range.no'));
+            }
             return $oMbqEtForumTopic;
         } elseif ($mbqOpt['case'] == 'byTopicId') {
             $topicId = $var;

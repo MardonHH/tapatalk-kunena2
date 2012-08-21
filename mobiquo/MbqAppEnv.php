@@ -35,6 +35,9 @@ Class MbqAppEnv extends MbqBaseAppEnv {
         $this->oApp->initialise();
         $this->oApp->route();
         
+        // Initialize Kunena (if Kunena System Plugin isn't enabled)
+        $api = JPATH_ADMINISTRATOR . '/components/com_kunena/api.php';
+        if (file_exists($api)) require_once $api;
         // Load router
         require_once KPATH_SITE . '/router.php';
         KunenaFactory::loadLanguage('com_kunena.controllers');

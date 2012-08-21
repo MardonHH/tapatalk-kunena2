@@ -38,6 +38,19 @@ Class MbqAclEtForumTopic extends MbqBaseAcl {
         }
         return false;
     }
+    
+    /**
+     * judge can new topic
+     *
+     * @param  Object  $oMbqEtForumTopic
+     * @return  Boolean
+     */
+    public function canAclNewTopic($oMbqEtForum) {
+        if ($oMbqEtForum->mbqBind['oKunenaForumCategory'] && $oMbqEtForum->mbqBind['oKunenaForumCategory']->authorise('topic.create')) {
+            return true;
+        }
+        return false;
+    }
   
 }
 
