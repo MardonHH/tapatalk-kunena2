@@ -51,6 +51,15 @@ Class MbqAclEtForumTopic extends MbqBaseAcl {
         }
         return false;
     }
+    
+    /**
+     * judge can get subscribed topic
+     *
+     * @return  Boolean
+     */
+    public function canAclGetSubscribedTopic() {
+        return MbqMain::hasLogin();
+    }
   
 }
 

@@ -193,12 +193,21 @@ Class MbqRdEtForum extends MbqBaseRd {
      * @param  Mixed  $var
      * @param  Array  $mbqOpt
      * $mbqOpt['case'] = 'byForumIds' means get data by forum ids.$var is the ids.
+     * $mbqOpt['case'] = 'subscribed' means get subscribed data.$var is the user id.
      * @return  Array
      */
     public function getObjsMbqEtForum($var, $mbqOpt) {
         if ($mbqOpt['case'] == 'byForumIds') {
             $forumIds = $var;
             $objsKunenaForumCategory = KunenaForumCategoryHelper::getCategories($forumIds);
+            $objsMbqEtForum = array();
+            foreach ($objsKunenaForumCategory as $oKunenaForumCategory) {
+                $objsMbqEtForum[] = $this->initOMbqEtForum($oKunenaForumCategory, array('case' => 'oKunenaForumCategory'));
+            }
+            return $objsMbqEtForum;
+        } elseif ($mbqOpt['case'] == 'subscribed') {
+            $arr = KunenaForumCategoryHelper::getLatestSubscriptions($var);
+            $objsKunenaForumCategory = $arr[1];
             $objsMbqEtForum = array();
             foreach ($objsKunenaForumCategory as $oKunenaForumCategory) {
                 $objsMbqEtForum[] = $this->initOMbqEtForum($oKunenaForumCategory, array('case' => 'oKunenaForumCategory'));

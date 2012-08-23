@@ -21,9 +21,15 @@ Class MbqActGetSubscribedForum extends MbqBaseAct {
         if (!MbqMain::$oMbqConfig->moduleIsEnable('forum')) {
             MbqError::alert('', "Not support module forum!", '', MBQ_ERR_NOT_SUPPORT);
         }
-        /* TODO */
-        $this->data['total_forums_num'] = 0;
-        $this->data['forums'] = array();
+        $oMbqAclEtForum = MbqMain::$oClk->newObj('MbqAclEtForum');
+        if ($oMbqAclEtForum->canAclGetSubscribedForum()) {
+            $oMbqRdEtForum = MbqMain::$oClk->newObj('MbqRdEtForum');
+            $objsMbqEtForum = $oMbqRdEtForum->getObjsMbqEtForum(MbqMain::$oCurMbqEtUser->userId->oriValue, array('case' => 'subscribed'));
+            $this->data['total_forums_num'] = count($objsMbqEtForum);
+            $this->data['forums'] = $oMbqRdEtForum->returnApiTreeDataForum($objsMbqEtForum);
+        } else {
+            MbqError::alert('', '', '', MBQ_ERR_APP);
+        }
     }
   
 }

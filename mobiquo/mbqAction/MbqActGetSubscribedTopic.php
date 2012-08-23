@@ -12,6 +12,7 @@ Class MbqActGetSubscribedTopic extends MbqBaseAct {
     
     public function __construct() {
         parent::__construct();
+        $this->level = 4;
     }
     
     /**
@@ -21,9 +22,19 @@ Class MbqActGetSubscribedTopic extends MbqBaseAct {
         if (!MbqMain::$oMbqConfig->moduleIsEnable('forum')) {
             MbqError::alert('', "Not support module forum!", '', MBQ_ERR_NOT_SUPPORT);
         }
-        /* TODO */
-        $this->data['total_topic_num'] = 0;
-        $this->data['topics'] = array();
+        $startNum = (int) MbqMain::$input[0];
+        $lastNum = (int) MbqMain::$input[1];
+        $oMbqDataPage = MbqMain::$oClk->newObj('MbqDataPage');
+        $oMbqDataPage->initByStartAndLast($startNum, $lastNum);
+        $oMbqAclEtForumTopic = MbqMain::$oClk->newObj('MbqAclEtForumTopic');
+        if ($oMbqAclEtForumTopic->canAclGetSubscribedTopic()) {     //acl judge
+            $oMbqRdEtForumTopic = MbqMain::$oClk->newObj('MbqRdEtForumTopic');
+            $oMbqDataPage = $oMbqRdEtForumTopic->getObjsMbqEtForumTopic(MbqMain::$oCurMbqEtUser->userId->oriValue, array('case' => 'subscribed', 'oMbqDataPage' => $oMbqDataPage));
+            $this->data['total_topic_num'] = $oMbqDataPage->totalNum;
+            $this->data['topics'] = $oMbqRdEtForumTopic->returnApiArrDataForumTopic($oMbqDataPage->datas);
+        } else {
+            MbqError::alert('', '', '', MBQ_ERR_APP);
+        }
     }
   
 }

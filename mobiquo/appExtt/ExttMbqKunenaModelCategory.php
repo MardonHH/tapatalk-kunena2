@@ -233,8 +233,8 @@ class ExttMbqKunenaModelCategory extends KunenaAdminModelCategories {
 	 *
 	 * @param  $params
 	 * $params['catId'] means category id,in the original getTopics() method it always be changed to 0,so add this parameter to hack it.
-	 * $params['start'] means the data num need to be get start,in the original getTopics() method it always be changed to 0,so add this parameter to hack it.
-	 * $params['limit'] means the data num need to be get,in the original getTopics() method it always be changed to config setting,so add this parameter to hack it.
+	 * $params['start'] means the data index num need to be get start,in the original getTopics() method it always be changed to 0,so add this parameter to hack it.
+	 * $params['limit'] means the data num per page,in the original getTopics() method it always be changed to config setting,so add this parameter to hack it.
 	 */
 	public function exttMbqGetTopics($params = array()) {
 		if ($this->topics === false) {

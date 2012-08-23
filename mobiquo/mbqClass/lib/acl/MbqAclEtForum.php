@@ -12,6 +12,15 @@ Class MbqAclEtForum extends MbqBaseAcl {
     
     public function __construct() {
     }
+    
+    /**
+     * judge can get subscribed forum
+     *
+     * @return  Boolean
+     */
+    public function canAclGetSubscribedForum() {
+        return MbqMain::hasLogin();
+    }
   
 }
 

@@ -11,9 +11,11 @@ defined('MBQ_IN_IT') or exit;
 Abstract Class MbqBaseAct {
     
     public $data;   /* data need return.reference to MbqMain::$data */
+    public $level;  /* supported level degree,default is level 3 */
     
     public function __construct() {
         $this->data = & MbqMain::$data;
+        $this->level = 3;
     }
     
     /**

@@ -58,8 +58,8 @@ class ExttMbqKunenaModelTopic extends KunenaModelTopic {
 	 *
 	 * @param  $params
 	 * $params['topicId'] means topic id,in the original getMessages() method it always be changed to 0,so add this parameter to hack it.
-	 * $params['start'] means the data num need to be get start,in the original getMessages() method it always be changed to 0,so add this parameter to hack it.
-	 * $params['limit'] means the data num need to be get,in the original getMessages() method it always be changed to config setting,so add this parameter to hack 
+	 * $params['start'] means the data index num need to be get start,in the original getMessages() method it always be changed to 0,so add this parameter to hack it.
+	 * $params['limit'] means the data num per page,in the original getMessages() method it always be changed to config setting,so add this parameter to hack 
 	 */
 	public function exttMbqGetMessages($params) {
 		if ($this->messages === false) {
