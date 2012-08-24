@@ -16,6 +16,7 @@ Class MbqEtForumPost extends MbqBaseEntity {
     public $topicId;
     public $postTitle;
     public $postContent;
+    public $shortContent;
     public $postAuthorId;
     public $attachmentIdArray;
     public $groupId;
@@ -56,6 +57,7 @@ Class MbqEtForumPost extends MbqBaseEntity {
         $this->topicId = clone MbqMain::$simpleV;
         $this->postTitle = clone MbqMain::$simpleV;
         $this->postContent = clone MbqMain::$simpleV;
+        $this->shortContent = clone MbqMain::$simpleV;
         $this->postAuthorId = clone MbqMain::$simpleV;
         $this->attachmentIdArray = clone MbqMain::$simpleV;
         $this->groupId = clone MbqMain::$simpleV;

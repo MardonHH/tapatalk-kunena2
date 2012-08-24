@@ -17,6 +17,7 @@ Class MbqEtForumTopic extends MbqBaseEntity {
     public $firstPostId;    /* first post id.in some appcations the first post id = topic id perhaps. */
     public $topicTitle;
     public $topicContent;
+    public $shortContent;
     public $prefixId;
     public $prefixName;
     public $topicAuthorId;
@@ -68,6 +69,7 @@ Class MbqEtForumTopic extends MbqBaseEntity {
         $this->firstPostId = clone MbqMain::$simpleV;
         $this->topicTitle = clone MbqMain::$simpleV;
         $this->topicContent = clone MbqMain::$simpleV;
+        $this->shortContent = clone MbqMain::$simpleV;
         $this->prefixId = clone MbqMain::$simpleV;
         $this->prefixName = clone MbqMain::$simpleV;
         $this->topicAuthorId = clone MbqMain::$simpleV;

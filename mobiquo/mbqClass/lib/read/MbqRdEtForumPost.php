@@ -81,6 +81,7 @@ Class MbqRdEtForumPost extends MbqBaseRd {
                 $data['post_content'] = (string) $oMbqEtForumPost->postContent->tmlDisplayValueNoHtml;
             }
         }
+        $data['short_content'] = (string) $oMbqEtForumPost->shortContent->oriValue;
         if ($oMbqEtForumPost->postAuthorId->hasSetOriValue()) {
             $data['post_author_id'] = (string) $oMbqEtForumPost->postAuthorId->oriValue;
         }
@@ -290,6 +291,7 @@ Class MbqRdEtForumPost extends MbqBaseRd {
             $oMbqEtForumPost->postContent->setAppDisplayValue($oExttMbqKunenaViewTopic->exttMbqReturnDisplayMessageContents($var));
             $oMbqEtForumPost->postContent->setTmlDisplayValue($this->processContentForDisplay($oExttMbqKunenaViewTopic->exttMbqReturnDisplayMessageContents($newVar), true));
             $oMbqEtForumPost->postContent->setTmlDisplayValueNoHtml($this->processContentForDisplay($oExttMbqKunenaViewTopic->exttMbqReturnDisplayMessageContents($newVar), false));
+            $oMbqEtForumPost->shortContent->setOriValue(MbqMain::$oMbqCm->getShortContent($var->message));
             $oMbqEtForumPost->postAuthorId->setOriValue($var->userid);
             $oMbqEtForumPost->postTime->setOriValue($var->time);
             $oMbqEtForumPost->mbqBind['oKunenaForumMessage'] = $var;

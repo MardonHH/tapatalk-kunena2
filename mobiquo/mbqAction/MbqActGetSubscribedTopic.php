@@ -12,7 +12,8 @@ Class MbqActGetSubscribedTopic extends MbqBaseAct {
     
     public function __construct() {
         parent::__construct();
-        $this->level = 4;
+        $this->supportLevels = array(4);
+        $this->currLevel = 4;
     }
     
     /**

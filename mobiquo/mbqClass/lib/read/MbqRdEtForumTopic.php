@@ -73,7 +73,7 @@ Class MbqRdEtForumTopic extends MbqBaseRd {
         if ($oMbqEtForumTopic->topicTitle->hasSetOriValue()) {
             $data['topic_title'] = (string) $oMbqEtForumTopic->topicTitle->oriValue;
         }
-        $data['short_content'] = (string) MbqMain::$oMbqCm->getShortContent($oMbqEtForumTopic->topicContent->oriValue);
+        $data['short_content'] = (string) $oMbqEtForumTopic->shortContent->oriValue;
         if ($oMbqEtForumTopic->prefixId->hasSetOriValue()) {
             $data['prefix_id'] = (string) $oMbqEtForumTopic->prefixId->oriValue;
         }
@@ -361,6 +361,7 @@ Class MbqRdEtForumTopic extends MbqBaseRd {
             $oMbqEtForumTopic->firstPostId->setOriValue($var->first_post_id);
             $oMbqEtForumTopic->topicTitle->setOriValue($var->subject);
             $oMbqEtForumTopic->topicContent->setOriValue($var->first_post_message);
+            $oMbqEtForumTopic->shortContent->setOriValue(MbqMain::$oMbqCm->getShortContent($var->first_post_message));
             $oMbqEtForumTopic->topicAuthorId->setOriValue($var->first_post_userid);
             $oMbqEtForumTopic->lastReplyAuthorId->setOriValue($var->last_post_userid);
             $oMbqEtForumTopic->postTime->setOriValue($var->first_post_time);
