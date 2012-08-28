@@ -35,6 +35,19 @@ Class MbqAclEtForumPost extends MbqBaseAcl {
     public function canAclGetQuotePost($oMbqEtForumPost) {
         return $this->canAclReplyPost($oMbqEtForumPost);
     }
+    
+    /**
+     * judge can search_post
+     *
+     * @return  Boolean
+     */
+    public function canAclSearchPost() {
+        if (MbqMain::$oMbqConfig->getCfg('forum.guest_search')->oriValue == MbqBaseFdt::getFdt('MbqFdtConfig.forum.guest_search.range.support')) {
+            return true;
+        } else {
+            return MbqMain::hasLogin();
+        }
+    }
   
 }
 

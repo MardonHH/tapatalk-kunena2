@@ -12,6 +12,7 @@ define('MBQ_ERR_DEFAULT_INFO', 'You are not logged in or you do not have permiss
 define('MBQ_ERR_INFO_UNKNOWN_CASE', 'Unknown case value!');
 define('MBQ_ERR_INFO_UNKNOWN_PNAME', 'Unknown property name!');
 define('MBQ_ERR_INFO_NOT_ACHIEVE', 'Has not been achieved!');
+define('MBQ_ERR_INFO_SAVE_FAIL', 'Can not save data!');
 define('MBQ_RUNNING_NAMEPRE', 'mbqnamepre_');   /* mobiquo running time vars name prefix,for example bbcode names. */
 /* path constant */
 define('MBQ_DS', DIRECTORY_SEPARATOR);
@@ -147,6 +148,7 @@ Class MbqConfig extends MbqBaseConfig {
         MbqMain::$oClk->reg('MbqRdEtForumTopic', MBQ_READ_PATH.'MbqRdEtForumTopic.php');
         MbqMain::$oClk->reg('MbqRdEtForumPost', MBQ_READ_PATH.'MbqRdEtForumPost.php');
         MbqMain::$oClk->reg('MbqRdEtAtt', MBQ_READ_PATH.'MbqRdEtAtt.php');
+        MbqMain::$oClk->reg('MbqRdForumSearch', MBQ_READ_PATH.'MbqRdForumSearch.php');
             /* write class */
         MbqMain::$oClk->reg('MbqWrEtForumTopic', MBQ_WRITE_PATH.'MbqWrEtForumTopic.php');
         MbqMain::$oClk->reg('MbqWrEtForumPost', MBQ_WRITE_PATH.'MbqWrEtForumPost.php');
@@ -175,6 +177,12 @@ Class MbqConfig extends MbqBaseConfig {
         MbqMain::$oClk->reg('MbqActNewTopic', MBQ_ACTION_PATH.'MbqActNewTopic.php');
         MbqMain::$oClk->reg('MbqActReplyPost', MBQ_ACTION_PATH.'MbqActReplyPost.php');
         MbqMain::$oClk->reg('MbqActGetQuotePost', MBQ_ACTION_PATH.'MbqActGetQuotePost.php');
+        MbqMain::$oClk->reg('MbqActMarkAllAsRead', MBQ_ACTION_PATH.'MbqActMarkAllAsRead.php');
+        MbqMain::$oClk->reg('MbqActGetLatestTopic', MBQ_ACTION_PATH.'MbqActGetLatestTopic.php');
+        MbqMain::$oClk->reg('MbqActGetParticipatedTopic', MBQ_ACTION_PATH.'MbqActGetParticipatedTopic.php');
+        MbqMain::$oClk->reg('MbqActLogoutUser', MBQ_ACTION_PATH.'MbqActLogoutUser.php');
+        MbqMain::$oClk->reg('MbqActSearchTopic', MBQ_ACTION_PATH.'MbqActSearchTopic.php');
+        MbqMain::$oClk->reg('MbqActSearchPost', MBQ_ACTION_PATH.'MbqActSearchPost.php');
     }
     
     /**

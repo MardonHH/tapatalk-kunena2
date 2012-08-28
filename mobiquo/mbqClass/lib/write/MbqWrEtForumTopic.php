@@ -30,12 +30,22 @@ Class MbqWrEtForumTopic extends MbqBaseWr {
      * mark forum topic read
      *
      * @param  Mixed  $var($oMbqEtForumTopic or $objsMbqEtForumTopic)
+     * @param  Array  $mbqOpt
+     * $mbqOpt['case'] = 'markAllAsRead' means mark all my unread topics as read
      */
-    public function markForumTopicRead(&$var) {
-        if (is_array($var)) {
-            MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
+    public function markForumTopicRead(&$var = NULL, $mbqOpt = array()) {
+        if ($mbqOpt['case'] == 'markAllAsRead') {
+            $session = KunenaFactory::getSession();
+            $session->markAllCategoriesRead();
+            if (!$session->save ()) {
+                MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_SAVE_FAIL);
+            }
         } else {
-            $var->mbqBind['oKunenaForumTopic']->markRead();
+            if (is_array($var)) {
+                MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
+            } else {
+                $var->mbqBind['oKunenaForumTopic']->markRead();
+            }
         }
     }
     

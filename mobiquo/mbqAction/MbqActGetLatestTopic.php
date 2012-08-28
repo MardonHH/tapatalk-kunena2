@@ -3,12 +3,12 @@
 defined('MBQ_IN_IT') or exit;
 
 /**
- * get_unread_topic action
+ * get_latest_topic action
  * 
- * @since  2012-8-16
+ * @since  2012-8-27
  * @author Wu ZeTao <578014287@qq.com>
  */
-Class MbqActGetUnreadTopic extends MbqBaseAct {
+Class MbqActGetLatestTopic extends MbqBaseAct {
     
     public function __construct() {
         parent::__construct();
@@ -35,9 +35,9 @@ Class MbqActGetUnreadTopic extends MbqBaseAct {
         }
         $filter['showposts'] = 0;
         $oMbqAclEtForumTopic = MbqMain::$oClk->newObj('MbqAclEtForumTopic');
-        if ($oMbqAclEtForumTopic->canAclGetUnreadTopic()) {    //acl judge
+        if ($oMbqAclEtForumTopic->canAclGetLatestTopic()) {    //acl judge
             $oMbqRdForumSearch = MbqMain::$oClk->newObj('MbqRdForumSearch');
-            $oMbqDataPage = $oMbqRdForumSearch->forumAdvancedSearch($filter, $oMbqDataPage, array('case' => 'getUnreadTopic', 'unread' => true));
+            $oMbqDataPage = $oMbqRdForumSearch->forumAdvancedSearch($filter, $oMbqDataPage, array('case' => 'getLatestTopic'));
             $oMbqRdEtForumTopic = MbqMain::$oClk->newObj('MbqRdEtForumTopic');
             $this->data['result'] = true;
             $this->data['total_topic_num'] = (int) $oMbqDataPage->totalNum;

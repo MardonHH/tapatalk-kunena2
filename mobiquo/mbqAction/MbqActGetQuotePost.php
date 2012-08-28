@@ -25,7 +25,7 @@ Class MbqActGetQuotePost extends MbqBaseAct {
         $oMbqRdEtForumPost = MbqMain::$oClk->newObj('MbqRdEtForumPost');
         if ($oMbqEtForumPost = $oMbqRdEtForumPost->initOMbqEtForumPost($postId, array('case' => 'byPostId'))) {
             $oMbqAclEtForumPost = MbqMain::$oClk->newObj('MbqAclEtForumPost');
-            if ($oMbqAclEtForumPost->canAclGetQuotePost($oMbqEtForumPost)) {
+            if ($oMbqAclEtForumPost->canAclGetQuotePost($oMbqEtForumPost)) {    //acl judge
                 $this->data = $oMbqRdEtForumPost->returnApiDataForumPost($oMbqEtForumPost);
                 $this->data['post_content'] = $oMbqRdEtForumPost->getQuotePostContent($oMbqEtForumPost);
             } else {

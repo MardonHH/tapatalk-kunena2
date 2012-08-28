@@ -3,12 +3,12 @@
 defined('MBQ_IN_IT') or exit;
 
 /**
- * get_unread_topic action
+ * search_topic action
  * 
- * @since  2012-8-16
+ * @since  2012-8-27
  * @author Wu ZeTao <578014287@qq.com>
  */
-Class MbqActGetUnreadTopic extends MbqBaseAct {
+Class MbqActSearchTopic extends MbqBaseAct {
     
     public function __construct() {
         parent::__construct();
@@ -21,25 +21,25 @@ Class MbqActGetUnreadTopic extends MbqBaseAct {
         if (!MbqMain::$oMbqConfig->moduleIsEnable('forum')) {
             MbqError::alert('', "Not support module forum!", '', MBQ_ERR_NOT_SUPPORT);
         }
-        $startNum = (int) MbqMain::$input[0];
-        $lastNum = (int) MbqMain::$input[1];
+        $startNum = (int) MbqMain::$input[1];
+        $lastNum = (int) MbqMain::$input[2];
         $oMbqDataPage = MbqMain::$oClk->newObj('MbqDataPage');
         $oMbqDataPage->initByStartAndLast($startNum, $lastNum);
         $filter = array(
-            'searchid' => MbqMain::$input[2],
+            'keywords' => MbqMain::$input[0],
+            'searchid' => MbqMain::$input[3],
             'page' => $oMbqDataPage->curPage,
             'perpage' => $oMbqDataPage->numPerPage
         );
-        if (MbqMain::$input[3] && is_array(MbqMain::$input[3])) {
-            $filter = array_merge($filter, MbqMain::$input[3]);
-        }
         $filter['showposts'] = 0;
+        if (strlen(MbqMain::$input[0]) < MbqBaseFdt::getFdt('MbqFdtConfig.forum.min_search_length.default')) {
+            MbqError::alert('', "Search words too short!", '', MBQ_ERR_APP);
+        }
         $oMbqAclEtForumTopic = MbqMain::$oClk->newObj('MbqAclEtForumTopic');
-        if ($oMbqAclEtForumTopic->canAclGetUnreadTopic()) {    //acl judge
+        if ($oMbqAclEtForumTopic->canAclSearchTopic()) {    //acl judge
             $oMbqRdForumSearch = MbqMain::$oClk->newObj('MbqRdForumSearch');
-            $oMbqDataPage = $oMbqRdForumSearch->forumAdvancedSearch($filter, $oMbqDataPage, array('case' => 'getUnreadTopic', 'unread' => true));
+            $oMbqDataPage = $oMbqRdForumSearch->forumAdvancedSearch($filter, $oMbqDataPage, array('case' => 'advanced'));
             $oMbqRdEtForumTopic = MbqMain::$oClk->newObj('MbqRdEtForumTopic');
-            $this->data['result'] = true;
             $this->data['total_topic_num'] = (int) $oMbqDataPage->totalNum;
             $this->data['topics'] = $oMbqRdEtForumTopic->returnApiArrDataForumTopic($oMbqDataPage->datas);
         } else {

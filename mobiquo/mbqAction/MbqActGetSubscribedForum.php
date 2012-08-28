@@ -22,7 +22,7 @@ Class MbqActGetSubscribedForum extends MbqBaseAct {
             MbqError::alert('', "Not support module forum!", '', MBQ_ERR_NOT_SUPPORT);
         }
         $oMbqAclEtForum = MbqMain::$oClk->newObj('MbqAclEtForum');
-        if ($oMbqAclEtForum->canAclGetSubscribedForum()) {
+        if ($oMbqAclEtForum->canAclGetSubscribedForum()) {  //acl judge
             $oMbqRdEtForum = MbqMain::$oClk->newObj('MbqRdEtForum');
             $objsMbqEtForum = $oMbqRdEtForum->getObjsMbqEtForum(MbqMain::$oCurMbqEtUser->userId->oriValue, array('case' => 'subscribed'));
             $this->data['total_forums_num'] = count($objsMbqEtForum);

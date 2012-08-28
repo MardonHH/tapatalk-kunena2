@@ -60,6 +60,55 @@ Class MbqAclEtForumTopic extends MbqBaseAcl {
     public function canAclGetSubscribedTopic() {
         return MbqMain::hasLogin();
     }
+    
+    /**
+     * judge can mark all my unread topics as read
+     *
+     * @return  Boolean
+     */
+    public function canAclMarkAllAsRead() {
+        return MbqMain::hasLogin();
+    }
+    
+    /**
+     * judge can get_unread_topic
+     *
+     * @return  Boolean
+     */
+    public function canAclGetUnreadTopic() {
+        return MbqMain::hasLogin();
+    }
+    
+    /**
+     * judge can get_participated_topic
+     *
+     * @return  Boolean
+     */
+    public function canAclGetParticipatedTopic() {
+        return MbqMain::hasLogin();
+    }
+    
+    /**
+     * judge can get_latest_topic
+     *
+     * @return  Boolean
+     */
+    public function canAclGetLatestTopic() {
+        return MbqMain::hasLogin();
+    }
+    
+    /**
+     * judge can search_topic
+     *
+     * @return  Boolean
+     */
+    public function canAclSearchTopic() {
+        if (MbqMain::$oMbqConfig->getCfg('forum.guest_search')->oriValue == MbqBaseFdt::getFdt('MbqFdtConfig.forum.guest_search.range.support')) {
+            return true;
+        } else {
+            return MbqMain::hasLogin();
+        }
+    }
   
 }
 

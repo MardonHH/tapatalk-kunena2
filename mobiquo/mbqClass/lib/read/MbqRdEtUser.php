@@ -169,6 +169,16 @@ Class MbqRdEtUser extends MbqBaseRd {
     }
     
     /**
+     * logout
+     *
+     * @return  Boolean  return true when logout success.
+     */
+    public function logout() {
+        $result = MbqMain::$oMbqAppEnv->oApp->logout();
+        return $result ? true : false;
+    }
+    
+    /**
      * get user objs
      *
      * @param  Mixed  $var
@@ -220,6 +230,7 @@ Class MbqRdEtUser extends MbqBaseRd {
             $oMbqEtUser->userName->setOriValue($oJUser->name);
             $oMbqEtUser->userGroupIds->setOriValue(MbqMain::$oMbqCm->removeArrayKey($oJUser->groups));
             $oMbqEtUser->iconUrl->setOriValue($var['oKunenaUser']->getAvatarURL());
+            $oMbqEtUser->canSearch->setOriValue(MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.canSearch.range.yes'));
             $oMbqEtUser->postCount->setOriValue($var['oKunenaUser']->posts);
             $oMbqEtUser->displayText->setOriValue($var['oKunenaUser']->signature);
             $oMbqEtUser->regTime->setOriValue(strtotime($oJUser->registerDate));

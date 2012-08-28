@@ -41,6 +41,7 @@ Class MbqMain extends MbqBaseMain {
         }
         if (self::$cmd) {
             self::$cmd = (string) self::$cmd;
+            //MbqError::alert('', self::$cmd);
             if (preg_match('/[A-Za-z0-9_]{1,128}/', self::$cmd)) {
                 $arr = explode('_', self::$cmd);
                 foreach ($arr as &$v) {

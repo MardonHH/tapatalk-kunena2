@@ -11,6 +11,7 @@ defined('MBQ_IN_IT') or exit;
 Class MbqDataPage {
     
     public $totalNum;   /* total data num */
+    public $totalUnreadNum;     /* total unread num */
     public $numPerPage; /* data number per page */
     public $totalPage;  /* total page num */
     public $curPage;    /* current page num */
@@ -21,6 +22,20 @@ Class MbqDataPage {
     
     public function __construct() {
         $this->datas = array();
+    }
+    
+    /**
+     * init by $curPage and $numPerPage
+     *
+     * @param  Integer  $curPage
+     * @param  Integer  $numPerPage
+     */
+    public function init($curPage, $numPerPage) {
+        $curPage = $curPage ? 1 : $curPage;
+        $numPerPage = $numPerPage ? 1 : $numPerPage;
+        $startNum = ($curPage - 1) * $numPerPage;
+        $lastNum = $curPage * $numPerPage - 1;
+        $this->initByStartAndLast($startNum, $lastNum);
     }
     
     /**
