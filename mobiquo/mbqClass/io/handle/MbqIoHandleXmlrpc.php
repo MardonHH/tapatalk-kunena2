@@ -119,7 +119,6 @@ Class MbqIoHandleXmlrpc {
             'current_action',
             'current_activity',
             'description',
-            'delete_reason',
             'deleted_by_name',
             'display_text',
             'forum_name',
@@ -148,6 +147,10 @@ Class MbqIoHandleXmlrpc {
             'username',
             'value',
         );
+        
+        // compatibility fix, 'delete_reason' should be string in get_config, and base64 in others
+        if ($this->cmd != 'get_config')
+            $this->base64Keys[] = 'delete_reason';
     }
 }
 
