@@ -19,5 +19,9 @@
 get_config/get_forum/get_topic/get_thread/login/new_topic/reply_post/get_user_info/get_quote_post/get_subscribed_forum/get_subscribed_topic/logout_user/mark_all_as_read/get_latest_topic/get_participated_topic/get_unread_topic/search_topic/search_post
 4.not support attachment
 5.the ios app support the new plugin better than android app before the new android app be published
+6.the new plugin not support sevral flags like is_deleted,is_sticky etc,and not support moderation.these will be done in september
+
+For more important update info please visit:
+http://support.tapatalk.com/threads/tapatalk-for-kunena-plugin-release-announcement-and-changelog.6632/
 
 20120831
