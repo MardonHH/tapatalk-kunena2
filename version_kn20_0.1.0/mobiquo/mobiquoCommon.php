@@ -1,14 +1,14 @@
 <?php
 
 define('MBQ_IN_IT', true);  /* is in mobiquo flag */
-define('MBQ_DEBUG', true);  /* is in debug mode flag */
+define('MBQ_DEBUG', false);  /* is in debug mode flag */
 
 if (MBQ_DEBUG) {
     ini_set('display_errors','1');
     ini_set('display_startup_errors','1');
     //error_reporting(E_ALL);
     error_reporting(E_ALL ^ E_NOTICE);
-} else {
+} else {    // Turn off all error reporting
     error_reporting(0);
 }
 set_time_limit(60);
@@ -28,7 +28,8 @@ Class MbqMain extends MbqBaseMain {
     public function __construct() {
         parent::__construct();
         MbqMain::$oMbqCm->changeWorkDir('..');  /* change work dir to parent dir.Important!!! */
-        ob_start();
+        @ob_start();
+        $this->regShutDown();
     }
     
     /**
@@ -75,12 +76,19 @@ Class MbqMain extends MbqBaseMain {
      * do something before output
      */
     public function beforeOutPut() {
-        ob_end_clean();
+        @ob_end_clean();
         if (self::hasLogin()) {
             header('Mobiquo_is_login: true');
         } else {
             header('Mobiquo_is_login: false');
         }
+    }
+    
+    /**
+     * register shutdown function
+     */
+    public function regShutDown() {
+        if (function_exists('mbqShutdownHandle') && function_exists('register_shutdown_function')) register_shutdown_function('mbqShutdownHandle');
     }
     
 }

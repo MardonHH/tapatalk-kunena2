@@ -35,18 +35,18 @@ Class MbqCm extends MbqBaseCm {
      */
     public function datetimeIso8601Encode($timeStamp, $timeOffset = NULL) {
         $timeOffset = $timeOffset ? $timeOffset : MbqMain::$oMbqAppEnv->timeOffset;
-    	$date = JFactory::getDate($timeStamp);
-    	if (is_numeric($timeOffset)) {
-    		$date->setOffset($timeOffset);
-    	} else {
-    		// Joomla 1.6 support
-    		$offset = new DateTimeZone($timeOffset);
-    		$date->setTimezone($offset);
-    	}
-    	$timezone = method_exists($date, 'getOffsetFromGMT') ? $date->getOffsetFromGMT(true) : 0;
-    	$t = $date->toFormat("%Y%m%dT%H:%M:%S", true);
-    	$t .= sprintf("%+03d:%02d", intval($timezone), abs($timezone - intval($timezone)) * 60);
-    	return $t;
+        $date = JFactory::getDate($timeStamp);
+        if (is_numeric($timeOffset)) {
+            $date->setOffset($timeOffset);
+        } else {
+            // Joomla 1.6 support
+            $offset = new DateTimeZone($timeOffset);
+            $date->setTimezone($offset);
+        }
+        $timezone = method_exists($date, 'getOffsetFromGMT') ? $date->getOffsetFromGMT(true) : 0;
+        $t = $date->toFormat("%Y%m%dT%H:%M:%S", true);
+        $t .= sprintf("%+03d:%02d", intval($timezone), abs($timezone - intval($timezone)) * 60);
+        return $t;
     }
     
     /**
@@ -58,15 +58,15 @@ Class MbqCm extends MbqBaseCm {
      * TODO:need to be made more useful.
      */
     public function getShortContent($str, $length = 200) {
-    	$str = preg_replace('/\[url.*?\].*?\[\/url.*?\]/', '[url]', $str);
-    	$str = preg_replace('/\[img.*?\].*?\[\/img.*?\]/', '[img]', $str);
-    	$str = preg_replace('/[\n\r\t]+/', ' ', $str);
-    	
-    	$str = preg_replace('/\[\/?.*?]/s', '', $str);
+        $str = preg_replace('/\[url.*?\].*?\[\/url.*?\]/', '[url]', $str);
+        $str = preg_replace('/\[img.*?\].*?\[\/img.*?\]/', '[img]', $str);
+        $str = preg_replace('/[\n\r\t]+/', ' ', $str);
+        
+        $str = preg_replace('/\[\/?.*?]/s', '', $str);
     
-    	$str = html_entity_decode($str, ENT_QUOTES, 'UTF-8');
-    	$str = function_exists('mb_substr') ? mb_substr($str, 0, $length) : substr($str, 0, $length);
-    	return $str;
+        $str = html_entity_decode($str, ENT_QUOTES, 'UTF-8');
+        $str = function_exists('mb_substr') ? mb_substr($str, 0, $length) : substr($str, 0, $length);
+        return $str;
     }
     
     /**
@@ -76,12 +76,12 @@ Class MbqCm extends MbqBaseCm {
      * @return  Array
      */
     public function getAttIdsFromContent($content) {
-    	preg_match_all('/\[attachment=(.*?)\](.*?)\[\/attachment\]/i', $content, $mat);
-    	if ($mat[1]) {
-    	    return $mat[1];
-    	} else {
-    	    return array();
-    	}
+        preg_match_all('/\[attachment=(.*?)\](.*?)\[\/attachment\]/i', $content, $mat);
+        if ($mat[1]) {
+            return $mat[1];
+        } else {
+            return array();
+        }
     }
     
     /**
@@ -136,6 +136,25 @@ Class MbqCm extends MbqBaseCm {
         return $content;
     }
     
+}
+    
+/**
+ * shutdown handle
+ */
+function mbqShutdownHandle() {
+    $error = error_get_last();
+    if(!empty($error)){
+        switch($error['type']){
+            case E_ERROR:
+            case E_CORE_ERROR:
+            case E_COMPILE_ERROR:
+            case E_USER_ERROR:
+            case E_PARSE:
+                @ob_end_clean();
+                MbqError::alert('', "Server error occurred: '{$error['message']} (".basename($error['file']).":{$error['line']})'");
+                break;
+        }
+    }
 }
 
 ?>

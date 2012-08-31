@@ -38,7 +38,7 @@ Class MbqActSearchPost extends MbqBaseAct {
         $oMbqAclEtForumPost = MbqMain::$oClk->newObj('MbqAclEtForumPost');
         if ($oMbqAclEtForumPost->canAclSearchPost()) {    //acl judge
             $oMbqRdForumSearch = MbqMain::$oClk->newObj('MbqRdForumSearch');
-            $oMbqDataPage = $oMbqRdForumSearch->forumAdvancedSearch($filter, $oMbqDataPage, array('case' => 'advanced'));
+            $oMbqDataPage = $oMbqRdForumSearch->forumAdvancedSearch($filter, $oMbqDataPage, array('case' => 'searchPost'));
             $oMbqRdEtForumPost = MbqMain::$oClk->newObj('MbqRdEtForumPost');
             $this->data['total_post_num'] = (int) $oMbqDataPage->totalNum;
             $this->data['posts'] = $oMbqRdEtForumPost->returnApiArrDataForumPost($oMbqDataPage->datas);

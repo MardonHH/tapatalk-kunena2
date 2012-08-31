@@ -244,17 +244,25 @@ Abstract Class MbqFdtConfig extends MbqBaseFdt {
                 )
             ),
             'subscribe_topic_mode' => array(
-                'default' => 0,
+                'default' => '',
                 'range' => array (
-                    'support' => 1,
-                    'notSupport' => 0
+                    'noOption' => '',
+                    'noNotification' => 0,
+                    'instantly' => 1,
+                    'daily' => 2,
+                    'weekly' => 3,
+                    'onlyWhenOffline' => 4
                 )
             ),
             'subscribe_forum_mode' => array(
-                'default' => 0,
+                'default' => '',
                 'range' => array (
-                    'support' => 1,
-                    'notSupport' => 0
+                    'noOption' => '',
+                    'noNotification' => 0,
+                    'instantly' => 1,
+                    'daily' => 2,
+                    'weekly' => 3,
+                    'onlyWhenOffline' => 4
                 )
             ),
             'min_search_length' => array(

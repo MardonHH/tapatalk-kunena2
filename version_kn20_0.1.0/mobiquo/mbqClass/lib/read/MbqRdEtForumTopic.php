@@ -230,6 +230,7 @@ Class MbqRdEtForumTopic extends MbqBaseRd {
      * $mbqOpt['case'] = 'byForum' means get data by forum obj.$var is the forum obj.
      * $mbqOpt['case'] = 'subscribed' means get subscribed data.$var is the user id.
      * $mbqOpt['case'] = 'byObjsKunenaForumTopic' means get data by objsKunenaForumTopic.$var is the objsKunenaForumTopic.
+     * $mbqOpt['case'] = 'byTopicIds' means get data by topic ids.$var is the ids.
      * $mbqOpt['top'] = true means get sticky data.
      * @return  Mixed
      */
@@ -270,49 +271,57 @@ Class MbqRdEtForumTopic extends MbqBaseRd {
                 return $this->getObjsMbqEtForumTopic($objsKunenaForumTopic, $mbqOpt);
                 /* common end */
             }
+        } elseif ($mbqOpt['case'] == 'byTopicIds') {
+            $objsKunenaForumTopic = KunenaForumTopicHelper::getTopics($var);
+            /* common begin */
+            $mbqOpt['case'] = 'byObjsKunenaForumTopic';
+            return $this->getObjsMbqEtForumTopic($objsKunenaForumTopic, $mbqOpt);
+            /* common end */
         } elseif ($mbqOpt['case'] == 'byObjsKunenaForumTopic') {
+            $objsKunenaForumTopic = $var;
+            /* common begin */
+            $objsMbqEtForumTopic = array();
+            $authorUserIds = array();
+            $forumIds = array();
+            foreach ($objsKunenaForumTopic as $oKunenaForumTopic) {
+                $objsMbqEtForumTopic[] = $this->initOMbqEtForumTopic($oKunenaForumTopic, array('case' => 'oKunenaForumTopic', 'withAuthor' => false, 'oMbqEtForum' => false));
+            }
+            foreach ($objsMbqEtForumTopic as $oMbqEtForumTopic) {
+                $authorUserIds[$oMbqEtForumTopic->topicAuthorId->oriValue] = $oMbqEtForumTopic->topicAuthorId->oriValue;
+                $forumIds[$oMbqEtForumTopic->forumId->oriValue] = $oMbqEtForumTopic->forumId->oriValue;
+            }
+            /* load oMbqEtForum property */
+            $oMbqRdEtForum = MbqMain::$oClk->newObj('MbqRdEtForum');
+            $objsMbqEtForum = $oMbqRdEtForum->getObjsMbqEtForum($forumIds, array('case' => 'byForumIds'));
+            foreach ($objsMbqEtForum as $oNewMbqEtForum) {
+                foreach ($objsMbqEtForumTopic as &$oMbqEtForumTopic) {
+                    if ($oNewMbqEtForum->forumId->oriValue == $oMbqEtForumTopic->forumId->oriValue) {
+                        $oMbqEtForumTopic->oMbqEtForum = $oNewMbqEtForum;
+                    }
+                }
+            }
+            /* load topic author */
+            $oMbqRdEtUser = MbqMain::$oClk->newObj('MbqRdEtUser');
+            $objsAuthorMbqEtUser = $oMbqRdEtUser->getObjsMbqEtUser($authorUserIds, array('case' => 'byUserIds'));
+            foreach ($objsMbqEtForumTopic as &$oMbqEtForumTopic) {
+                foreach ($objsAuthorMbqEtUser as $oAuthorMbqEtUser) {
+                    if ($oMbqEtForumTopic->topicAuthorId->oriValue == $oAuthorMbqEtUser->userId->oriValue) {
+                        $oMbqEtForumTopic->oAuthorMbqEtUser = $oAuthorMbqEtUser;
+                        break;
+                    }
+                }
+            }
+            foreach ($objsMbqEtForumTopic as &$oMbqEtForumTopic) {
+                $this->makeProperty($oMbqEtForumTopic, 'byOAuthorMbqEtUser');
+            }
             if ($mbqOpt['oMbqDataPage']) {
                 $oMbqDataPage = $mbqOpt['oMbqDataPage'];
-                $objsKunenaForumTopic = $var;
-                /* common begin */
-                $objsMbqEtForumTopic = array();
-                $authorUserIds = array();
-                $forumIds = array();
-                foreach ($objsKunenaForumTopic as $oKunenaForumTopic) {
-                    $objsMbqEtForumTopic[] = $this->initOMbqEtForumTopic($oKunenaForumTopic, array('case' => 'oKunenaForumTopic', 'withAuthor' => false, 'oMbqEtForum' => false));
-                }
-                foreach ($objsMbqEtForumTopic as $oMbqEtForumTopic) {
-                    $authorUserIds[$oMbqEtForumTopic->topicAuthorId->oriValue] = $oMbqEtForumTopic->topicAuthorId->oriValue;
-                    $forumIds[$oMbqEtForumTopic->forumId->oriValue] = $oMbqEtForumTopic->forumId->oriValue;
-                }
-                /* load oMbqEtForum property */
-                $oMbqRdEtForum = MbqMain::$oClk->newObj('MbqRdEtForum');
-                $objsMbqEtForum = $oMbqRdEtForum->getObjsMbqEtForum($forumIds, array('case' => 'byForumIds'));
-                foreach ($objsMbqEtForum as $oNewMbqEtForum) {
-                    foreach ($objsMbqEtForumTopic as &$oMbqEtForumTopic) {
-                        if ($oNewMbqEtForum->forumId->oriValue == $oMbqEtForumTopic->forumId->oriValue) {
-                            $oMbqEtForumTopic->oMbqEtForum = $oNewMbqEtForum;
-                        }
-                    }
-                }
-                /* load topic author */
-                $oMbqRdEtUser = MbqMain::$oClk->newObj('MbqRdEtUser');
-                $objsAuthorMbqEtUser = $oMbqRdEtUser->getObjsMbqEtUser($authorUserIds, array('case' => 'byUserIds'));
-                foreach ($objsMbqEtForumTopic as &$oMbqEtForumTopic) {
-                    foreach ($objsAuthorMbqEtUser as $oAuthorMbqEtUser) {
-                        if ($oMbqEtForumTopic->topicAuthorId->oriValue == $oAuthorMbqEtUser->userId->oriValue) {
-                            $oMbqEtForumTopic->oAuthorMbqEtUser = $oAuthorMbqEtUser;
-                            break;
-                        }
-                    }
-                }
-                foreach ($objsMbqEtForumTopic as &$oMbqEtForumTopic) {
-                    $this->makeProperty($oMbqEtForumTopic, 'byOAuthorMbqEtUser');
-                }
                 $oMbqDataPage->datas = $objsMbqEtForumTopic;
                 return $oMbqDataPage;
-                /* common end */
+            } else {
+                return $objsMbqEtForumTopic;
             }
+            /* common end */
         }
         MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_CASE);
     }
@@ -326,11 +335,13 @@ Class MbqRdEtForumTopic extends MbqBaseRd {
      * $mbqOpt['case'] = 'byTopicId' means init forum topic by topic id
      * $mbqOpt['withAuthor'] = true means load topic author,default is true
      * $mbqOpt['oMbqEtForum'] = true means load oMbqEtForum property of this topic,default is true
+     * $mbqOpt['oFirstMbqEtForumPost'] = true means load oFirstMbqEtForumPost property of this topic,default is true
      * @return  Mixed
      */
     public function initOMbqEtForumTopic($var, $mbqOpt) {
         $mbqOpt['withAuthor'] = isset($mbqOpt['withAuthor']) ? $mbqOpt['withAuthor'] : true;
         $mbqOpt['oMbqEtForum'] = isset($mbqOpt['oMbqEtForum']) ? $mbqOpt['oMbqEtForum'] : true;
+        $mbqOpt['oFirstMbqEtForumPost'] = isset($mbqOpt['oFirstMbqEtForumPost']) ? $mbqOpt['oFirstMbqEtForumPost'] : true;
         if ($mbqOpt['case'] == 'oKunenaForumTopic') {
             $oMbqEtForumTopic = MbqMain::$oClk->newObj('MbqEtForumTopic');
             $oMbqEtForumTopic->totalPostNum->setOriValue($var->posts);
@@ -357,7 +368,10 @@ Class MbqRdEtForumTopic extends MbqBaseRd {
                 $this->makeProperty($oMbqEtForumTopic, 'oAuthorMbqEtUser');
             }
             $this->makeProperty($oMbqEtForumTopic, 'byOAuthorMbqEtUser');
-            $this->makeProperty($oMbqEtForumTopic, 'oFirstMbqEtForumPost');
+            if ($mbqOpt['oFirstMbqEtForumPost']) {
+                /* load oFirstMbqEtForumPost author */
+                $this->makeProperty($oMbqEtForumTopic, 'oFirstMbqEtForumPost');
+            }
             if ($oMbqEtForumTopic->oFirstMbqEtForumPost && $oMbqEtForumTopic->oFirstMbqEtForumPost->mbqBind['oKunenaForumMessage'] && $oMbqEtForumTopic->oFirstMbqEtForumPost->mbqBind['oKunenaForumMessage']->authorise('reply')) {
                 $oMbqEtForumTopic->canReply->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canReply.range.yes'));
             } else {

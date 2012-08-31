@@ -20,7 +20,7 @@ class ExttMbqKunenaModelTopics extends KunenaModelTopics {
 	 * $p['catId'] means category id,in the original getTopics() method it always be changed to 0,so add this parameter to hack it.
 	 * $p['start'] means the data index num need to be get start,in the original getTopics() method it always be changed to 0,so add this parameter to hack it.
 	 * $p['limit'] means the data num per page,in the original getTopics() method it always be changed to config setting,so add this parameter to hack it.
-	 * @p['mode'] means the list mode.
+	 * $p['mode'] means the list mode.
      */
 	public function exttMbqGetRecentTopics($p) {
 		//$catid = $this->getState ( 'item.id' );

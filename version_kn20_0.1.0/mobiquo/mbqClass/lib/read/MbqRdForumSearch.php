@@ -43,6 +43,28 @@ Class MbqRdForumSearch {
             $newMbqOpt['oMbqDataPage'] = $oMbqDataPage;
             $oMbqDataPage = $oMbqRdEtForumTopic->getObjsMbqEtForumTopic($objsKunenaForumTopic, $newMbqOpt);
             return $oMbqDataPage;
+        } elseif ($mbqOpt['case'] == 'searchTopic') {
+            require_once(MBQ_APPEXTENTION_PATH.'ExttMbqKunenaModelSearch.php');
+            $oExttMbqKunenaModelSearch = new ExttMbqKunenaModelSearch();
+            $oMbqRdEtForumTopic = MbqMain::$oClk->newObj('MbqRdEtForumTopic');
+            $arr = $oExttMbqKunenaModelSearch->exttMbqSearchTopic(array('keywords' => $filter['keywords'], 'oMbqDataPage' => $oMbqDataPage));
+            $oMbqDataPage->totalNum = $arr[0];
+            $objsKunenaForumTopic = $arr[1];
+            $newMbqOpt['case'] = 'byObjsKunenaForumTopic';
+            $newMbqOpt['oMbqDataPage'] = $oMbqDataPage;
+            $oMbqDataPage = $oMbqRdEtForumTopic->getObjsMbqEtForumTopic($objsKunenaForumTopic, $newMbqOpt);
+            return $oMbqDataPage;
+        } elseif ($mbqOpt['case'] == 'searchPost') {
+            require_once(MBQ_APPEXTENTION_PATH.'ExttMbqKunenaModelSearch.php');
+            $oExttMbqKunenaModelSearch = new ExttMbqKunenaModelSearch();
+            $oMbqRdEtForumPost = MbqMain::$oClk->newObj('MbqRdEtForumPost');
+            $arr = $oExttMbqKunenaModelSearch->exttMbqSearchPost(array('keywords' => $filter['keywords'], 'oMbqDataPage' => $oMbqDataPage));
+            $oMbqDataPage->totalNum = $arr[0];
+            $objsKunenaForumMessage = $arr[1];
+            $newMbqOpt['case'] = 'byObjsKunenaForumMessage';
+            $newMbqOpt['oMbqDataPage'] = $oMbqDataPage;
+            $oMbqDataPage = $oMbqRdEtForumPost->getObjsMbqEtForumPost($objsKunenaForumMessage, $newMbqOpt);
+            return $oMbqDataPage;
         } elseif ($mbqOpt['case'] == 'advanced') {
             /* dummy */
             $oMbqDataPage->totalNum = 0;

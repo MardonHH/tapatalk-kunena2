@@ -38,7 +38,7 @@ Class MbqActSearchTopic extends MbqBaseAct {
         $oMbqAclEtForumTopic = MbqMain::$oClk->newObj('MbqAclEtForumTopic');
         if ($oMbqAclEtForumTopic->canAclSearchTopic()) {    //acl judge
             $oMbqRdForumSearch = MbqMain::$oClk->newObj('MbqRdForumSearch');
-            $oMbqDataPage = $oMbqRdForumSearch->forumAdvancedSearch($filter, $oMbqDataPage, array('case' => 'advanced'));
+            $oMbqDataPage = $oMbqRdForumSearch->forumAdvancedSearch($filter, $oMbqDataPage, array('case' => 'searchTopic'));
             $oMbqRdEtForumTopic = MbqMain::$oClk->newObj('MbqRdEtForumTopic');
             $this->data['total_topic_num'] = (int) $oMbqDataPage->totalNum;
             $this->data['topics'] = $oMbqRdEtForumTopic->returnApiArrDataForumTopic($oMbqDataPage->datas);
