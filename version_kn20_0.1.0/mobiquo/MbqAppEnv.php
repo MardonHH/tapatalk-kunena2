@@ -75,6 +75,8 @@ Class MbqAppEnv extends MbqBaseAppEnv {
         
         $this->oKunenaConfig = KunenaFactory::getConfig();
         $this->oDb = JFactory::getDBO ();
+        
+        require_once(KPATH_SITE.'/lib/kunena.link.class.php');
     }
     
 }
