@@ -86,6 +86,7 @@ Class MbqIoHandleXmlrpc {
     
     public function output(&$data) {
         header('Content-Type: text/xml');
+        $this->resetGlobals();
         $options = array('auto_dates', 'extension_api');
         $options['base64keys'] = $this->base64Keys;
         $xmlrpcData = php_xmlrpc_encode($data, $options);
@@ -101,6 +102,7 @@ Class MbqIoHandleXmlrpc {
      */
     public static function alert($message, $result = false) {
         header('Content-Type: text/xml');
+        self::resetGlobals();
         $response = new xmlrpcresp(new xmlrpcval(array(
             'result'        => new xmlrpcval($result, 'boolean'),
             'result_text'   => new xmlrpcval($message, 'base64'),
@@ -151,6 +153,35 @@ Class MbqIoHandleXmlrpc {
         // compatibility fix, 'delete_reason' should be string in get_config, and base64 in others
         if ($this->cmd != 'get_config')
             $this->base64Keys[] = 'delete_reason';
+    }
+    
+    private function resetGlobals() {
+        if (!isset($GLOBALS['xmlrpcI4'])) {
+            $GLOBALS['xmlrpcI4']='i4';
+            $GLOBALS['xmlrpcInt']='int';
+            $GLOBALS['xmlrpcBoolean']='boolean';
+            $GLOBALS['xmlrpcDouble']='double';
+            $GLOBALS['xmlrpcString']='string';
+            $GLOBALS['xmlrpcDateTime']='dateTime.iso8601';
+            $GLOBALS['xmlrpcBase64']='base64';
+            $GLOBALS['xmlrpcArray']='array';
+            $GLOBALS['xmlrpcStruct']='struct';
+            $GLOBALS['xmlrpcValue']='undefined';
+            
+            $GLOBALS['xmlrpcTypes']=array(
+                $GLOBALS['xmlrpcI4']       => 1,
+                $GLOBALS['xmlrpcInt']      => 1,
+                $GLOBALS['xmlrpcBoolean']  => 1,
+                $GLOBALS['xmlrpcString']   => 1,
+                $GLOBALS['xmlrpcDouble']   => 1,
+                $GLOBALS['xmlrpcDateTime'] => 1,
+                $GLOBALS['xmlrpcBase64']   => 1,
+                $GLOBALS['xmlrpcArray']    => 2,
+                $GLOBALS['xmlrpcStruct']   => 3
+            );
+            
+            $GLOBALS['xmlrpc_internalencoding']='ISO-8859-1';
+        }
     }
 }
 
