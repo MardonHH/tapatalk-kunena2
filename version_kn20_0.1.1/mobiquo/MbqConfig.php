@@ -332,16 +332,8 @@ Class MbqConfig extends MbqBaseConfig {
             }
         }
       /* calculate the final config through MbqMain::$oMbqAppEnv */
-        /*
-        //it can be used in joomla 2.5.6 and kunena 2.0.1,but can not be used in joomla 1.5.26 and kunena 2.0.1,error occurred: 'Call to a member function isAdmin() on a non-object when call JComponentHelper::isEnabled() in KunenaForum::enabled()'
         if ( class_exists('KunenaForum') && KunenaForum::isCompatible('2.0') && KunenaForum::enabled() ) {
             $this->cfg['forum']['module_enable']->setOriValue(MbqBaseFdt::getFdt('MbqFdtConfig.forum.module_enable.range.enable'));
-        }
-        */
-        if (class_exists('KunenaForum') && KunenaForum::isCompatible('2.0')) {
-            if (!KunenaFactory::getConfig()->board_offline || (KunenaForum::installed() && KunenaUserHelper::getMyself()->isAdmin())) {
-                $this->cfg['forum']['module_enable']->setOriValue(MbqBaseFdt::getFdt('MbqFdtConfig.forum.module_enable.range.enable'));
-            }
         }
         /* because the forum module is the main function,so the is_open setting relys on the forum module status. */
         if (!$this->moduleIsEnable('forum')) {

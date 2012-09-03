@@ -144,9 +144,10 @@ Class MbqCm extends MbqBaseCm {
 function mbqShutdownHandle() {
     $error = error_get_last();
     if(!empty($error)){
-        $errorInfo = "Server error occurred: '{$error['message']} (".basename($error['file']).":{$error['line']})'";
-        //MbqError::alert('', $errorInfo);
-        //MbqMain::$oMbqCm->writeLog($errorInfo, true);
+        $errorInfo1 = "Server error occurred: '{$error['message']} (".$error['file'].":{$error['line']})'";
+        $errorInfo2 = "Server error occurred: '{$error['message']} (".basename($error['file']).":{$error['line']})'";
+        //MbqError::alert('', $errorInfo2);
+        //MbqMain::$oMbqCm->writeLog($errorInfo1, true);
         switch($error['type']){
             case E_ERROR:
             case E_CORE_ERROR:
@@ -154,7 +155,7 @@ function mbqShutdownHandle() {
             case E_USER_ERROR:
             case E_PARSE:
                 @ ob_end_clean();
-                MbqError::alert('', $errorInfo);
+                MbqError::alert('', $errorInfo2);
                 break;
         }
     }

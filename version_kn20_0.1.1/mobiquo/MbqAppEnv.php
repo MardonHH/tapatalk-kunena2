@@ -34,6 +34,7 @@ Class MbqAppEnv extends MbqBaseAppEnv {
         $this->oApp = JFactory::getApplication('site');
         $this->oApp->initialise();
         $this->oApp->route();
+        $GLOBALS['mainframe'] = $this->oApp;    //only for old joomla version,for example joomla 1.5.26
         
         // Initialize Kunena (if Kunena System Plugin isn't enabled)
         $api = JPATH_ADMINISTRATOR . '/components/com_kunena/api.php';
