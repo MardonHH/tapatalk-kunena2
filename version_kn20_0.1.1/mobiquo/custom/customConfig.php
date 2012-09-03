@@ -11,7 +11,7 @@ defined('MBQ_IN_IT') or exit;
  */
 MbqMain::$customConfig['base']['is_open'] = MbqBaseFdt::getFdt('MbqFdtConfig.base.is_open.range.yes');
 MbqMain::$customConfig['base']['sys_version'] = '2.0.1';
-MbqMain::$customConfig['base']['version'] = 'kn20_0.1.0';
+MbqMain::$customConfig['base']['version'] = 'kn20_0.1.1';
 MbqMain::$customConfig['base']['api_level'] = 3;
 MbqMain::$customConfig['user']['guest_okay'] = MbqBaseFdt::getFdt('MbqFdtConfig.user.guest_okay.range.support');
 MbqMain::$customConfig['user']['user_id'] = MbqBaseFdt::getFdt('MbqFdtConfig.user.user_id.range.support');
