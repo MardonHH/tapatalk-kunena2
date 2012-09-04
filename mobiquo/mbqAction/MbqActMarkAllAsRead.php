@@ -2,13 +2,15 @@
 
 defined('MBQ_IN_IT') or exit;
 
+MbqMain::$oClk->includeClass('MbqBaseActMarkAllAsRead');
+
 /**
  * mark_all_as_read action
  * 
  * @since  2012-8-27
  * @author Wu ZeTao <578014287@qq.com>
  */
-Class MbqActMarkAllAsRead extends MbqBaseAct {
+Class MbqActMarkAllAsRead extends MbqBaseActMarkAllAsRead {
     
     public function __construct() {
         parent::__construct();
@@ -18,17 +20,7 @@ Class MbqActMarkAllAsRead extends MbqBaseAct {
      * action implement
      */
     public function actionImplement() {
-        if (!MbqMain::$oMbqConfig->moduleIsEnable('forum')) {
-            MbqError::alert('', "Not support module forum!", '', MBQ_ERR_NOT_SUPPORT);
-        }
-        $oMbqAclEtForumTopic = MbqMain::$oClk->newObj('MbqAclEtForumTopic');
-        if ($oMbqAclEtForumTopic->canAclMarkAllAsRead()) {    //acl judge
-            $oMbqWrEtForumTopic = MbqMain::$oClk->newObj('MbqWrEtForumTopic');
-            $oMbqWrEtForumTopic->markForumTopicRead($dummy = NULL, array('case' => 'markAllAsRead'));
-            $this->data['result'] = true;
-        } else {
-            MbqError::alert('', '', '', MBQ_ERR_APP);
-        }
+        parent::actionImplement();
     }
   
 }

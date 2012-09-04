@@ -2,13 +2,15 @@
 
 defined('MBQ_IN_IT') or exit;
 
+MbqMain::$oClk->includeClass('MbqBaseActGetUserReplyPost');
+
 /**
  * get_user_reply_post action
  * 
  * @since  2012-8-16
  * @author Wu ZeTao <578014287@qq.com>
  */
-Class MbqActGetUserReplyPost extends MbqBaseAct {
+Class MbqActGetUserReplyPost extends MbqBaseActGetUserReplyPost {
     
     public function __construct() {
         parent::__construct();
@@ -18,14 +20,7 @@ Class MbqActGetUserReplyPost extends MbqBaseAct {
      * action implement
      */
     public function actionImplement() {
-        if (!MbqMain::$oMbqConfig->moduleIsEnable('user')) {
-            MbqError::alert('', "Not support module user!", '', MBQ_ERR_NOT_SUPPORT);
-        }
-        if (!MbqMain::$oMbqConfig->moduleIsEnable('forum')) {
-            MbqError::alert('', "Not support module forum!", '', MBQ_ERR_NOT_SUPPORT);
-        }
-        /* TODO */
-        $this->data['posts'] = array();
+        parent::actionImplement();
     }
   
 }

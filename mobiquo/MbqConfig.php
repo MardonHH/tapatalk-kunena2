@@ -37,6 +37,7 @@ define('MBQ_LIB_PATH', MBQ_CLASS_PATH.'lib'.MBQ_DS);    /* lib class path */
 define('MBQ_ACL_PATH', MBQ_LIB_PATH.'acl'.MBQ_DS);    /* acl class path */
 define('MBQ_READ_PATH', MBQ_LIB_PATH.'read'.MBQ_DS);    /* read class path */
 define('MBQ_WRITE_PATH', MBQ_LIB_PATH.'write'.MBQ_DS);    /* write class path */
+define('MBQ_BASE_ACTION_PATH', MBQ_FRAME_PATH.MBQ_DS.'mbqBaseAction'.MBQ_DS);    /* base action class path */
 define('MBQ_ACTION_PATH', MBQ_PATH.'mbqAction'.MBQ_DS);    /* action class path */
 define('MBQ_APPEXTENTION_PATH', MBQ_PATH.'appExtt'.MBQ_DS);    /* application extention path */
 define('MBQ_CUSTOM_PATH', MBQ_PATH.'custom'.MBQ_DS);    /* user custom path */
@@ -160,6 +161,28 @@ Class MbqConfig extends MbqBaseConfig {
         MbqMain::$oClk->reg('MbqIo', MBQ_IO_PATH.'MbqIo.php');
         MbqMain::$oClk->reg('MbqIoHandleXmlrpc', MBQ_IO_HANDLE_PATH.'MbqIoHandleXmlrpc.php');
         MbqMain::$oClk->reg('MbqIoHandleJson', MBQ_IO_HANDLE_PATH.'MbqIoHandleJson.php');
+        /* base action class */
+        MbqMain::$oClk->reg('MbqBaseActGetConfig', MBQ_BASE_ACTION_PATH.'MbqBaseActGetConfig.php');
+        MbqMain::$oClk->reg('MbqBaseActGetForum', MBQ_BASE_ACTION_PATH.'MbqBaseActGetForum.php');
+        MbqMain::$oClk->reg('MbqBaseActGetTopic', MBQ_BASE_ACTION_PATH.'MbqBaseActGetTopic.php');
+        MbqMain::$oClk->reg('MbqBaseActGetThread', MBQ_BASE_ACTION_PATH.'MbqBaseActGetThread.php');
+        MbqMain::$oClk->reg('MbqBaseActLogin', MBQ_BASE_ACTION_PATH.'MbqBaseActLogin.php');
+        MbqMain::$oClk->reg('MbqBaseActGetInboxStat', MBQ_BASE_ACTION_PATH.'MbqBaseActGetInboxStat.php');
+        MbqMain::$oClk->reg('MbqBaseActGetUnreadTopic', MBQ_BASE_ACTION_PATH.'MbqBaseActGetUnreadTopic.php');
+        MbqMain::$oClk->reg('MbqBaseActGetSubscribedTopic', MBQ_BASE_ACTION_PATH.'MbqBaseActGetSubscribedTopic.php');
+        MbqMain::$oClk->reg('MbqBaseActGetSubscribedForum', MBQ_BASE_ACTION_PATH.'MbqBaseActGetSubscribedForum.php');
+        MbqMain::$oClk->reg('MbqBaseActGetUserTopic', MBQ_BASE_ACTION_PATH.'MbqBaseActGetUserTopic.php');
+        MbqMain::$oClk->reg('MbqBaseActGetUserReplyPost', MBQ_BASE_ACTION_PATH.'MbqBaseActGetUserReplyPost.php');
+        MbqMain::$oClk->reg('MbqBaseActGetUserInfo', MBQ_BASE_ACTION_PATH.'MbqBaseActGetUserInfo.php');
+        MbqMain::$oClk->reg('MbqBaseActNewTopic', MBQ_BASE_ACTION_PATH.'MbqBaseActNewTopic.php');
+        MbqMain::$oClk->reg('MbqBaseActReplyPost', MBQ_BASE_ACTION_PATH.'MbqBaseActReplyPost.php');
+        MbqMain::$oClk->reg('MbqBaseActGetQuotePost', MBQ_BASE_ACTION_PATH.'MbqBaseActGetQuotePost.php');
+        MbqMain::$oClk->reg('MbqBaseActMarkAllAsRead', MBQ_BASE_ACTION_PATH.'MbqBaseActMarkAllAsRead.php');
+        MbqMain::$oClk->reg('MbqBaseActGetLatestTopic', MBQ_BASE_ACTION_PATH.'MbqBaseActGetLatestTopic.php');
+        MbqMain::$oClk->reg('MbqBaseActGetParticipatedTopic', MBQ_BASE_ACTION_PATH.'MbqBaseActGetParticipatedTopic.php');
+        MbqMain::$oClk->reg('MbqBaseActLogoutUser', MBQ_BASE_ACTION_PATH.'MbqBaseActLogoutUser.php');
+        MbqMain::$oClk->reg('MbqBaseActSearchTopic', MBQ_BASE_ACTION_PATH.'MbqBaseActSearchTopic.php');
+        MbqMain::$oClk->reg('MbqBaseActSearchPost', MBQ_BASE_ACTION_PATH.'MbqBaseActSearchPost.php');
         /* action class */
         MbqMain::$oClk->reg('MbqActGetConfig', MBQ_ACTION_PATH.'MbqActGetConfig.php');
         MbqMain::$oClk->reg('MbqActGetForum', MBQ_ACTION_PATH.'MbqActGetForum.php');
@@ -172,7 +195,6 @@ Class MbqConfig extends MbqBaseConfig {
         MbqMain::$oClk->reg('MbqActGetSubscribedForum', MBQ_ACTION_PATH.'MbqActGetSubscribedForum.php');
         MbqMain::$oClk->reg('MbqActGetUserTopic', MBQ_ACTION_PATH.'MbqActGetUserTopic.php');
         MbqMain::$oClk->reg('MbqActGetUserReplyPost', MBQ_ACTION_PATH.'MbqActGetUserReplyPost.php');
-        MbqMain::$oClk->reg('MbqActGetBoardStat', MBQ_ACTION_PATH.'MbqActGetBoardStat.php');
         MbqMain::$oClk->reg('MbqActGetUserInfo', MBQ_ACTION_PATH.'MbqActGetUserInfo.php');
         MbqMain::$oClk->reg('MbqActNewTopic', MBQ_ACTION_PATH.'MbqActNewTopic.php');
         MbqMain::$oClk->reg('MbqActReplyPost', MBQ_ACTION_PATH.'MbqActReplyPost.php');

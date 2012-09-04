@@ -2,13 +2,15 @@
 
 defined('MBQ_IN_IT') or exit;
 
+MbqMain::$oClk->includeClass('MbqBaseActLogoutUser');
+
 /**
  * logout_user action
  * 
  * @since  2012-8-27
  * @author Wu ZeTao <578014287@qq.com>
  */
-Class MbqActLogoutUser extends MbqBaseAct {
+Class MbqActLogoutUser extends MbqBaseActLogoutUser {
     
     public function __construct() {
         parent::__construct();
@@ -18,16 +20,7 @@ Class MbqActLogoutUser extends MbqBaseAct {
      * action implement
      */
     public function actionImplement() {
-        if (!MbqMain::$oMbqConfig->moduleIsEnable('user')) {
-            MbqError::alert('', "Not support module user!", '', MBQ_ERR_NOT_SUPPORT);
-        }
-        $oMbqRdEtUser = MbqMain::$oClk->newObj('MbqRdEtUser');
-        $result = $oMbqRdEtUser->logout();
-        if ($result) {
-            $this->data['result'] = true;
-        } else {
-            $this->data['result'] = false;
-        }
+        parent::actionImplement();
     }
   
 }

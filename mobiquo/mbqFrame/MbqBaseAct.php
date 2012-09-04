@@ -23,7 +23,7 @@ Abstract Class MbqBaseAct {
     /**
      * action implement
      */
-    abstract public function actionImplement();
+    abstract protected function actionImplement();
   
 }
 
