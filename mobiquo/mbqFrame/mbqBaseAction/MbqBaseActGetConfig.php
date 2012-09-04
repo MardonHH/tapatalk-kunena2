@@ -17,7 +17,7 @@ Abstract Class MbqBaseActGetConfig extends MbqBaseAct {
     /**
      * action implement
      */
-    protected public function actionImplement() {
+    protected function actionImplement() {
         $cfg = MbqMain::$oMbqConfig->getAllCfg();
         foreach ($cfg as $moduleName => $module) {
             foreach ($module as $k => $v) {

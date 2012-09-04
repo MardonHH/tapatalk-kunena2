@@ -1,7 +1,7 @@
 <?php
 
 define('MBQ_IN_IT', true);  /* is in mobiquo flag */
-define('MBQ_DEBUG', false);  /* is in debug mode flag */
+define('MBQ_DEBUG', true);  /* is in debug mode flag */
 define('MBQ_REG_SHUTDOWN', true);  /* regist shutdown function flag */
 
 if (MBQ_DEBUG) {
@@ -23,8 +23,6 @@ require_once('MbqConfig.php');
  * @author Wu ZeTao <578014287@qq.com>
  */
 Abstract Class MbqMain extends MbqBaseMain {
-    
-    public static $oCurMbqEtUser;  /* current user obj after login. */
 
     public static function init() {
         parent::init();
@@ -62,35 +60,6 @@ Abstract Class MbqMain extends MbqBaseMain {
         } else {
             MbqError::alert('', "Need not empty cmd!");
         }
-    }
-    
-    /**
-     * judge if has login
-     *
-     * @return  Boolean
-     */
-    public static function hasLogin() {
-        return self::$oCurMbqEtUser ? true : false;
-    }
-    
-    /**
-     * do something before output
-     */
-    public static function beforeOutPut() {
-        @ ob_end_clean();
-        if (self::hasLogin()) {
-            header('Mobiquo_is_login: true');
-        } else {
-            header('Mobiquo_is_login: false');
-        }
-    }
-    
-    /**
-     * regist shutdown function
-     */
-    public static function regShutDown() {
-        if (MBQ_REG_SHUTDOWN && function_exists('mbqShutdownHandle') && function_exists('register_shutdown_function')) 
-        register_shutdown_function('mbqShutdownHandle');
     }
     
 }

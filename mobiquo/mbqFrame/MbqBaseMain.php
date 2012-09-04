@@ -27,6 +27,8 @@ Abstract Class MbqBaseMain {
     
     public static $data;   /* data need return */
     public static $oAct;   /* action object */
+    
+    public static $oCurMbqEtUser;  /* current user obj after login. */
 
     public static function init() {
         self::$simpleV = new MbqValue();
@@ -64,6 +66,35 @@ Abstract Class MbqBaseMain {
      */
     public static function output() {
         self::$oMbqIo->output();
+    }
+    
+    /**
+     * judge if has login
+     *
+     * @return  Boolean
+     */
+    public static function hasLogin() {
+        return self::$oCurMbqEtUser ? true : false;
+    }
+    
+    /**
+     * do something before output
+     */
+    public static function beforeOutPut() {
+        @ ob_end_clean();
+        if (self::hasLogin()) {
+            header('Mobiquo_is_login: true');
+        } else {
+            header('Mobiquo_is_login: false');
+        }
+    }
+    
+    /**
+     * regist shutdown function
+     */
+    public static function regShutDown() {
+        if (MBQ_REG_SHUTDOWN && function_exists('mbqShutdownHandle') && function_exists('register_shutdown_function')) 
+        register_shutdown_function('mbqShutdownHandle');
     }
   
 }
