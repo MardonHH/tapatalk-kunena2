@@ -2,15 +2,13 @@
 
 defined('MBQ_IN_IT') or exit;
 
-MbqMain::$oClk->includeClass('MbqBaseAclEtForum');
-
 /**
  * forum acl class
  * 
  * @since  2012-8-8
  * @author Wu ZeTao <578014287@qq.com>
  */
-Class MbqAclEtForum extends MbqBaseAclEtForum {
+Abstract Class MbqBaseAclEtForum extends MbqBaseAcl {
     
     public function __construct() {
     }
@@ -21,7 +19,7 @@ Class MbqAclEtForum extends MbqBaseAclEtForum {
      * @return  Boolean
      */
     public function canAclGetSubscribedForum() {
-        return MbqMain::hasLogin();
+        MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NEED_ACHIEVE_IN_INHERITED_CLASSE);
     }
   
 }

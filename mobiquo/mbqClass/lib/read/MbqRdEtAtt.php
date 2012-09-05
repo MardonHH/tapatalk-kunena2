@@ -2,13 +2,15 @@
 
 defined('MBQ_IN_IT') or exit;
 
+MbqMain::$oClk->includeClass('MbqBaseRdEtAtt');
+
 /**
  * attachment read class
  * 
  * @since  2012-8-14
  * @author Wu ZeTao <578014287@qq.com>
  */
-Class MbqRdEtAtt extends MbqBaseRd {
+Class MbqRdEtAtt extends MbqBaseRdEtAtt {
     
     public function __construct() {
     }
@@ -16,58 +18,9 @@ Class MbqRdEtAtt extends MbqBaseRd {
     protected function makeProperty(&$oMbqEtAtt, $pName, $mbqOpt = array()) {
         switch ($pName) {
             default:
-            MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_PNAME);
+            MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_PNAME . ':' . $pName . '.');
             break;
         }
-    }
-    
-    /**
-     * return attachment api data
-     *
-     * @param  Object  $oMbqEtAtt
-     * @return  Array
-     */
-    public function returnApiDataAttachment($oMbqEtAtt) {
-        $data = array();
-        if ($oMbqEtAtt->attId->hasSetOriValue()) {
-            $data['attachment_id'] = (string) $oMbqEtAtt->attId->oriValue;
-        }
-        if ($oMbqEtAtt->groupId->hasSetOriValue()) {
-            $data['group_id'] = (string) $oMbqEtAtt->groupId->oriValue;
-        }
-        if ($oMbqEtAtt->forumId->hasSetOriValue()) {
-            $data['forum_id'] = (string) $oMbqEtAtt->forumId->oriValue;
-        }
-        if ($oMbqEtAtt->postId->hasSetOriValue()) {
-            $data['post_id'] = (string) $oMbqEtAtt->postId->oriValue;
-        }
-        if ($oMbqEtAtt->filtersSize->hasSetOriValue()) {
-            $data['filters_size'] = (int) $oMbqEtAtt->filtersSize->oriValue;
-        }
-        if ($oMbqEtAtt->contentType->hasSetOriValue()) {
-            $data['content_type'] = (string) $oMbqEtAtt->contentType->oriValue;
-        }
-        if ($oMbqEtAtt->thumbnailUrl->hasSetOriValue()) {
-            $data['thumbnail_url'] = (string) $oMbqEtAtt->thumbnailUrl->oriValue;
-        }
-        if ($oMbqEtAtt->url->hasSetOriValue()) {
-            $data['url'] = (string) $oMbqEtAtt->url->oriValue;
-        }
-        return $data;
-    }
-    
-    /**
-     * return attachment array api data
-     *
-     * @param  Array  $objsMbqEtAtt
-     * @return  Array
-     */
-    public function returnApiArrDataAttachment($objsMbqEtAtt) {
-        $data = array();
-        foreach ($objsMbqEtAtt as $oMbqEtAtt) {
-            $data[] = $this->returnApiDataAttachment($oMbqEtAtt);
-        }
-        return $data;
     }
     
     /**

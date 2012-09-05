@@ -2,13 +2,15 @@
 
 defined('MBQ_IN_IT') or exit;
 
+MbqMain::$oClk->includeClass('MbqBaseRdEtForum');
+
 /**
  * forum read class
  * 
  * @since  2012-8-4
  * @author Wu ZeTao <578014287@qq.com>
  */
-Class MbqRdEtForum extends MbqBaseRd {
+Class MbqRdEtForum extends MbqBaseRdEtForum {
     
     public function __construct() {
     }
@@ -16,115 +18,9 @@ Class MbqRdEtForum extends MbqBaseRd {
     protected function makeProperty(&$oMbqEtForum, $pName, $mbqOpt = array()) {
         switch ($pName) {
             default:
-            MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_PNAME);
+            MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_PNAME . ':' . $pName . '.');
             break;
         }
-    }
-    
-    /**
-     * return forum api data
-     *
-     * @param  Object  $oMbqEtForum
-     * @return  Array
-     */
-    public function returnApiDataForum($oMbqEtForum) {
-        $data = array();
-        if ($oMbqEtForum->forumId->hasSetOriValue()) {
-            $data['forum_id'] = (string) $oMbqEtForum->forumId->oriValue;
-        }
-        if ($oMbqEtForum->forumName->hasSetOriValue()) {
-            $data['forum_name'] = (string) $oMbqEtForum->forumName->oriValue;
-        }
-        if ($oMbqEtForum->canPost->hasSetOriValue()) {
-            $data['can_post'] = (boolean) $oMbqEtForum->canPost->oriValue;
-        } else {
-            $data['can_post'] = (boolean) MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.canPost.default');
-        }
-        if ($oMbqEtForum->description->hasSetOriValue()) {
-            $data['description'] = (string) $oMbqEtForum->description->oriValue;
-        }
-        if ($oMbqEtForum->totalTopicNum->hasSetOriValue()) {
-            $data['total_topic_num'] = (int) $oMbqEtForum->totalTopicNum->oriValue;
-        }
-        if ($oMbqEtForum->parentId->hasSetOriValue()) {
-            $data['parent_id'] = (string) $oMbqEtForum->parentId->oriValue;
-        }
-        if ($oMbqEtForum->logoUrl->hasSetOriValue()) {
-            $data['logo_url'] = (string) $oMbqEtForum->logoUrl->oriValue;
-        }
-        if ($oMbqEtForum->newPost->hasSetOriValue()) {
-            $data['new_post'] = (boolean) $oMbqEtForum->newPost->oriValue;
-        }
-        if ($oMbqEtForum->isProtected->hasSetOriValue()) {
-            $data['is_protected'] = (boolean) $oMbqEtForum->isProtected->oriValue;
-        }
-        if ($oMbqEtForum->isSubscribed->hasSetOriValue()) {
-            $data['is_subscribed'] = (boolean) $oMbqEtForum->isSubscribed->oriValue;
-        }
-        if ($oMbqEtForum->canSubscribe->hasSetOriValue()) {
-            $data['can_subscribe'] = (boolean) $oMbqEtForum->canSubscribe->oriValue;
-        } else {
-            $data['can_subscribe'] = (boolean) MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.canSubscribe.default');
-        }
-        if ($oMbqEtForum->url->hasSetOriValue()) {
-            $data['url'] = (string) $oMbqEtForum->url->oriValue;
-        }
-        if ($oMbqEtForum->subOnly->hasSetOriValue()) {
-            $data['sub_only'] = (boolean) $oMbqEtForum->subOnly->oriValue;
-        }
-        if ($oMbqEtForum->canPost->hasSetOriValue()) {
-            $data['can_post'] = (boolean) $oMbqEtForum->canPost->oriValue;
-        } else {
-            $data['can_post'] = (boolean) MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.canPost.default');
-        }
-        if ($oMbqEtForum->unreadStickyCount->hasSetOriValue()) {
-            $data['unread_sticky_count'] = (int) $oMbqEtForum->unreadStickyCount->oriValue;
-        }
-        if ($oMbqEtForum->unreadAnnounceCount->hasSetOriValue()) {
-            $data['unread_announce_count'] = (int) $oMbqEtForum->unreadAnnounceCount->oriValue;
-        }
-        if ($oMbqEtForum->requirePrefix->hasSetOriValue()) {
-            $data['require_prefix'] = (boolean) $oMbqEtForum->requirePrefix->oriValue;
-        }
-        $data['prefixes'] = (array) $oMbqEtForum->prefixes->oriValue;
-        if ($oMbqEtForum->canUpload->hasSetOriValue()) {
-            $data['can_upload'] = (boolean) $oMbqEtForum->canUpload->oriValue;
-        } else {
-            $data['can_upload'] = (boolean) MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.canUpload.default');
-        }
-        $data['child'] = array();
-        $this->recurMakeApiTreeDataForum($data['child'], $oMbqEtForum->objsSubMbqEtForum);
-        return $data;
-    }
-    
-    /**
-     * recur make forum tree api data
-     *
-     * @param  Array  $dataChild
-     * @param  Array  $objsSubMbqEtForum
-     */
-    private function recurMakeApiTreeDataForum(&$dataChild, $objsSubMbqEtForum) {
-        $j = 0;
-        foreach ($objsSubMbqEtForum as $$oMbqEtForum) {
-            $dataChild[$j] = $this->returnApiDataForum($$oMbqEtForum);
-            $j ++;
-        }
-    }
-    
-    /**
-     * return forum tree api data
-     *
-     * @param  Array  $tree  forum tree
-     * @return  Array
-     */
-    public function returnApiTreeDataForum($tree) {
-        $data = array();
-        $i = 0;
-        foreach ($tree as $oMbqEtForum) {
-            $data[$i] = $this->returnApiDataForum($oMbqEtForum);
-            $i ++;
-        }
-        return $data;
     }
     
     /**

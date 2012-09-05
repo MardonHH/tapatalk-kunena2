@@ -2,6 +2,43 @@
 
 defined('MBQ_IN_IT') or exit;
 
+/* error constant */
+define('MBQ_ERR_TOP', 1);   /* the worst error that must stop the program immediately.we often use this constant in plugin development. */
+define('MBQ_ERR_HIGH', 3);  /* serious error that must stop the program immediately for display in html page.we need not use this constant in plugin development,but can use it in other projects development perhaps. */
+define('MBQ_ERR_NOT_SUPPORT', 5);  /* not support corresponding function error that must stop the program immediately. */
+define('MBQ_ERR_APP', 7);   /* normal error that maked by program logic can be displayed,the program can works continue or not. */
+define('MBQ_ERR_INFO', 9);  /* success info that maked by program logic can be displayed,the program can works continue or not. */
+define('MBQ_ERR_DEFAULT_INFO', 'You are not logged in or you do not have permission to do this action.');
+define('MBQ_ERR_INFO_UNKNOWN_CASE', 'Unknown case value!');
+define('MBQ_ERR_INFO_UNKNOWN_PNAME', 'Unknown property name');
+define('MBQ_ERR_INFO_NOT_ACHIEVE', 'Has not been achieved!');
+define('MBQ_ERR_INFO_SAVE_FAIL', 'Can not save data!');
+define('MBQ_ERR_INFO_NEED_ACHIEVE_IN_INHERITED_CLASSE', 'This method need to be achieved in inherited classe!');
+define('MBQ_RUNNING_NAMEPRE', 'mbqnamepre_');   /* mobiquo running time vars name prefix,for example bbcode names. */
+/* path constant */
+require_once(MBQ_FRAME_PATH.'MbqError.php');
+require_once(MBQ_FRAME_PATH.'MbqBaseMain.php');
+require_once(MBQ_FRAME_PATH.'MbqClassLink.php');
+require_once(MBQ_FRAME_PATH.'MbqValue.php');
+define('MBQ_CLASS_PATH', MBQ_PATH.'mbqClass'.MBQ_DS);    /* class path */
+define('MBQ_ENTITY_PATH', MBQ_FRAME_PATH.'entity'.MBQ_DS);    /* entity class path */
+define('MBQ_FDT_PATH', MBQ_FRAME_PATH.'fdt'.MBQ_DS);    /* fdt class path */
+define('MBQ_IO_PATH', MBQ_FRAME_PATH.'io'.MBQ_DS);    /* io class path */
+define('MBQ_IO_HANDLE_PATH', MBQ_IO_PATH.'handle'.MBQ_DS);    /* io handle class path */
+define('MBQ_LIB_PATH', MBQ_CLASS_PATH.'lib'.MBQ_DS);    /* lib class path */
+define('MBQ_ACL_PATH', MBQ_LIB_PATH.'acl'.MBQ_DS);    /* acl class path */
+define('MBQ_READ_PATH', MBQ_LIB_PATH.'read'.MBQ_DS);    /* read class path */
+define('MBQ_WRITE_PATH', MBQ_LIB_PATH.'write'.MBQ_DS);    /* write class path */
+define('MBQ_BASE_ACTION_PATH', MBQ_FRAME_PATH.'mbqBaseAction'.MBQ_DS);    /* base action class path */
+define('MBQ_ACTION_PATH', MBQ_PATH.'mbqAction'.MBQ_DS);    /* action class path */
+define('MBQ_APPEXTENTION_PATH', MBQ_PATH.'appExtt'.MBQ_DS);    /* application extention path */
+define('MBQ_CUSTOM_PATH', MBQ_PATH.'custom'.MBQ_DS);    /* user custom path */
+define('MBQ_3RD_LIB_PATH', MBQ_FRAME_PATH.'3rdLib'.MBQ_DS);    /* 3rd lib path */
+define('MBQ_BASE_LIB_PATH', MBQ_FRAME_PATH.'baseLib'.MBQ_DS);    /* base lib class path */
+define('MBQ_BASE_ACL_PATH', MBQ_BASE_LIB_PATH.'baseAcl'.MBQ_DS);    /* bas acl class path */
+define('MBQ_BASE_READ_PATH', MBQ_BASE_LIB_PATH.'baseRead'.MBQ_DS);    /* base read class path */
+define('MBQ_BASE_WRITE_PATH', MBQ_BASE_LIB_PATH.'baseWrite'.MBQ_DS);    /* base write class path */
+
 /**
  * plugin config base class
  * 
@@ -101,7 +138,14 @@ Abstract Class MbqBaseConfig {
         MbqMain::$oClk->reg('MbqFdtFollow', MBQ_FDT_PATH.'MbqFdtFollow.php');
         MbqMain::$oClk->reg('MbqFdtFeed', MBQ_FDT_PATH.'MbqFdtFeed.php');
         MbqMain::$oClk->reg('MbqFdtAtt', MBQ_FDT_PATH.'MbqFdtAtt.php');
-        /* lib class */
+        /* base lib class and lib class */
+            /* base read class */
+        MbqMain::$oClk->reg('MbqBaseRdEtForum', MBQ_BASE_READ_PATH.'MbqBaseRdEtForum.php');
+        MbqMain::$oClk->reg('MbqBaseRdEtUser', MBQ_BASE_READ_PATH.'MbqBaseRdEtUser.php');
+        MbqMain::$oClk->reg('MbqBaseRdEtForumTopic', MBQ_BASE_READ_PATH.'MbqBaseRdEtForumTopic.php');
+        MbqMain::$oClk->reg('MbqBaseRdEtForumPost', MBQ_BASE_READ_PATH.'MbqBaseRdEtForumPost.php');
+        MbqMain::$oClk->reg('MbqBaseRdEtAtt', MBQ_BASE_READ_PATH.'MbqBaseRdEtAtt.php');
+        MbqMain::$oClk->reg('MbqBaseRdForumSearch', MBQ_BASE_READ_PATH.'MbqBaseRdForumSearch.php');
             /* read class */
         MbqMain::$oClk->reg('MbqRdEtForum', MBQ_READ_PATH.'MbqRdEtForum.php');
         MbqMain::$oClk->reg('MbqRdEtUser', MBQ_READ_PATH.'MbqRdEtUser.php');
@@ -109,9 +153,16 @@ Abstract Class MbqBaseConfig {
         MbqMain::$oClk->reg('MbqRdEtForumPost', MBQ_READ_PATH.'MbqRdEtForumPost.php');
         MbqMain::$oClk->reg('MbqRdEtAtt', MBQ_READ_PATH.'MbqRdEtAtt.php');
         MbqMain::$oClk->reg('MbqRdForumSearch', MBQ_READ_PATH.'MbqRdForumSearch.php');
+            /* base write class */
+        MbqMain::$oClk->reg('MbqBaseWrEtForumTopic', MBQ_BASE_WRITE_PATH.'MbqBaseWrEtForumTopic.php');
+        MbqMain::$oClk->reg('MbqBaseWrEtForumPost', MBQ_BASE_WRITE_PATH.'MbqBaseWrEtForumPost.php');
             /* write class */
         MbqMain::$oClk->reg('MbqWrEtForumTopic', MBQ_WRITE_PATH.'MbqWrEtForumTopic.php');
         MbqMain::$oClk->reg('MbqWrEtForumPost', MBQ_WRITE_PATH.'MbqWrEtForumPost.php');
+            /* base acl class */
+        MbqMain::$oClk->reg('MbqBaseAclEtForum', MBQ_BASE_ACL_PATH.'MbqBaseAclEtForum.php');
+        MbqMain::$oClk->reg('MbqBaseAclEtForumTopic', MBQ_BASE_ACL_PATH.'MbqBaseAclEtForumTopic.php');
+        MbqMain::$oClk->reg('MbqBaseAclEtForumPost', MBQ_BASE_ACL_PATH.'MbqBaseAclEtForumPost.php');
             /* acl class */
         MbqMain::$oClk->reg('MbqAclEtForum', MBQ_ACL_PATH.'MbqAclEtForum.php');
         MbqMain::$oClk->reg('MbqAclEtForumTopic', MBQ_ACL_PATH.'MbqAclEtForumTopic.php');
