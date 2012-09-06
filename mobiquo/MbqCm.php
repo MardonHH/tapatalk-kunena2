@@ -15,18 +15,6 @@ Class MbqCm extends MbqBaseCm {
     }
     
     /**
-     * merge api data
-     *
-     * @param  Array  $apiData
-     * @param  Array  $addApiData
-     */
-    public function mergeApiData(&$apiData, $addApiData) {
-        foreach ($addApiData as $k => $v) {
-            $apiData[$k] = $v;
-        }
-    }
-    
-    /**
      * transform timestamp to iso8601 format
      *
      * @param  Integer  $timeStamp
@@ -84,81 +72,6 @@ Class MbqCm extends MbqBaseCm {
         }
     }
     
-    /**
-     * replace some code in content
-     *
-     * @param  String  $content
-     * @param  String  $strNeedReplaced
-     * @param  String  $type  replacement type.'bbcodeName' means replace bbcode name for our rules.
-     */
-    public function replaceCode($content, $strNeedReplaced = 'quote', $type = 'bbcodeName') {
-        switch ($type) {
-            case 'bbcodeName':
-                switch ($strNeedReplaced) {
-                    case 'quote':
-                    $newName = MBQ_RUNNING_NAMEPRE.'quote';
-                    $content = preg_replace('/\[quote(=.*?)\]/i', "[$newName$1]", $content);
-                    $content = preg_replace('/\[\/quote\]/i', "[/$newName]", $content);
-                    break;
-                    default:
-                    break;
-                }
-            break;
-            default:
-            break;
-        }
-        return $content;
-    }
-    
-    /**
-     * upreplace some code in content
-     *
-     * @param  String  $content
-     * @param  String  $strNeedReplaced
-     * @param  String  $type  replacement type.'bbcodeName' means replace bbcode name for our rules.
-     */
-    public function unreplaceCode($content, $strNeedReplaced = 'quote', $type = 'bbcodeName') {
-        switch ($type) {
-            case 'bbcodeName':
-                switch ($strNeedReplaced) {
-                    case 'quote':
-                    $curName = MBQ_RUNNING_NAMEPRE.'quote';
-                    $content = preg_replace('/\['.$curName.'(=.*?)\]/i', "[quote$1]", $content);
-                    $content = preg_replace('/\[\/'.$curName.'\]/i', "[/quote]", $content);
-                    break;
-                    default:
-                    break;
-                }
-            break;
-            default:
-            break;
-        }
-        return $content;
-    }
-    
-}
-    
-/**
- * shutdown handle
- */
-function mbqShutdownHandle() {
-    $error = error_get_last();
-    if(!empty($error)){
-        $errorInfo1 = "Server error occurred: '{$error['message']} (".$error['file'].":{$error['line']})'";
-        $errorInfo2 = "Server error occurred: '{$error['message']} (".basename($error['file']).":{$error['line']})'";
-        //MbqError::alert('', $errorInfo2);
-        //MbqMain::$oMbqCm->writeLog($errorInfo1, true);
-        switch($error['type']){
-            case E_ERROR:
-            case E_CORE_ERROR:
-            case E_COMPILE_ERROR:
-            case E_USER_ERROR:
-            case E_PARSE:
-                @ ob_end_clean();
-                MbqError::alert('', $errorInfo2);
-                break;
-        }
-    }
 }
 
 ?>

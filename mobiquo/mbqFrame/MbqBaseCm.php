@@ -41,19 +41,6 @@ Abstract Class MbqBaseCm {
     }
     
     /**
-     * write error log into a file for debug
-     */
-    public function errorLog() {
-        if (defined('MBQ_PATH') && ($error = error_get_last())) {
-            $filePath = MBQ_PATH.'mbqError.log';
-            if ($handle = fopen($filePath, 'wb')) {
-                fwrite($handle, print_r($error, true));
-                fclose($handle);
-            }
-        }
-    }
-    
-    /**
      * change array leaf value to string
      * now only support 3 dimensional array
      *
@@ -230,6 +217,93 @@ Abstract Class MbqBaseCm {
         return strtolower(substr(strrchr($fileName, "."), 1));
     }
     
+    /**
+     * merge api data
+     *
+     * @param  Array  $apiData
+     * @param  Array  $addApiData
+     */
+    public function mergeApiData(&$apiData, $addApiData) {
+        foreach ($addApiData as $k => $v) {
+            $apiData[$k] = $v;
+        }
+    }
+    
+    /**
+     * replace some code in content
+     *
+     * @param  String  $content
+     * @param  String  $strNeedReplaced
+     * @param  String  $type  replacement type.'bbcodeName' means replace bbcode name for our rules.
+     */
+    public function replaceCode($content, $strNeedReplaced = 'quote', $type = 'bbcodeName') {
+        switch ($type) {
+            case 'bbcodeName':
+                switch ($strNeedReplaced) {
+                    case 'quote':
+                    $newName = MBQ_RUNNING_NAMEPRE.'quote';
+                    $content = preg_replace('/\[quote(=.*?)\]/i', "[$newName$1]", $content);
+                    $content = preg_replace('/\[\/quote\]/i', "[/$newName]", $content);
+                    break;
+                    default:
+                    break;
+                }
+            break;
+            default:
+            break;
+        }
+        return $content;
+    }
+    
+    /**
+     * upreplace some code in content
+     *
+     * @param  String  $content
+     * @param  String  $strNeedReplaced
+     * @param  String  $type  replacement type.'bbcodeName' means replace bbcode name for our rules.
+     */
+    public function unreplaceCode($content, $strNeedReplaced = 'quote', $type = 'bbcodeName') {
+        switch ($type) {
+            case 'bbcodeName':
+                switch ($strNeedReplaced) {
+                    case 'quote':
+                    $curName = MBQ_RUNNING_NAMEPRE.'quote';
+                    $content = preg_replace('/\['.$curName.'(=.*?)\]/i', "[quote$1]", $content);
+                    $content = preg_replace('/\[\/'.$curName.'\]/i', "[/quote]", $content);
+                    break;
+                    default:
+                    break;
+                }
+            break;
+            default:
+            break;
+        }
+        return $content;
+    }
+    
+}
+    
+/**
+ * shutdown handle
+ */
+function mbqShutdownHandle() {
+    $error = error_get_last();
+    if(!empty($error)){
+        $errorInfo1 = "Server error occurred: '{$error['message']} (".$error['file'].":{$error['line']})'";
+        $errorInfo2 = "Server error occurred: '{$error['message']} (".basename($error['file']).":{$error['line']})'";
+        //MbqError::alert('', $errorInfo2);
+        //MbqMain::$oMbqCm->writeLog($errorInfo1, true);
+        switch($error['type']){
+            case E_ERROR:
+            case E_CORE_ERROR:
+            case E_COMPILE_ERROR:
+            case E_USER_ERROR:
+            case E_PARSE:
+                @ ob_end_clean();
+                MbqError::alert('', $errorInfo2);
+                break;
+        }
+    }
 }
 
 ?>
