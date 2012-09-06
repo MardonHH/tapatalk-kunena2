@@ -10,7 +10,7 @@ defined('MBQ_IN_IT') or exit;
  */
 Class MbqAppEnv extends MbqBaseAppEnv {
     
-    /* this class fully rely the application,so you can define the properties you need come from the application. */
+    /* this class fully relys on the application,so you can define the properties what you need come from the application. */
     public $oApp;    /* joomla application obj */
     public $oDb;
     public $oCurKunenaUser;
