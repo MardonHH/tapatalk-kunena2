@@ -14,6 +14,27 @@ Abstract Class MbqBaseCm {
     }
     
     /**
+     * transform timestamp to iso8601 format
+     */
+    public function datetimeIso8601Encode() {
+        MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NEED_ACHIEVE_IN_INHERITED_CLASSE);
+    }
+    
+    /**
+     * get short content
+     */
+    public function getShortContent() {
+        MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NEED_ACHIEVE_IN_INHERITED_CLASSE);
+    }
+    
+    /**
+     * get attachment ids from content
+     */
+    public function getAttIdsFromContent() {
+        MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NEED_ACHIEVE_IN_INHERITED_CLASSE);
+    }
+    
+    /**
      * change script work dir
      *
      * @param  String  $relativePath  .. or folder name separated by / or \. for example:../../folder1/folder2
