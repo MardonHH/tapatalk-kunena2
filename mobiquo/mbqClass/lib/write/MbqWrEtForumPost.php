@@ -31,7 +31,7 @@ Class MbqWrEtForumPost extends MbqBaseWrEtForumPost {
                 //'catid' => $this->catid,
                 'catid' => $var->forumId->oriValue,
                 //'name' => JRequest::getString ( 'authorname', $this->me->getName () ),
-                'name' => (MbqMain::$oCurMbqEtUser ? MbqMain::$oCurMbqEtUser->loginName : ''),
+                'name' => (MbqMain::$oCurMbqEtUser ? MbqMain::$oCurMbqEtUser->loginName->oriValue : ''),
                 'email' => JRequest::getString ( 'email', null ),
                 //'subject' => JRequest::getVar ( 'subject', null, 'POST', 'string', JREQUEST_ALLOWRAW ),
                 'subject' => $var->postTitle->oriValue,
