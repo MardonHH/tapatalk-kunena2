@@ -33,14 +33,14 @@ Class MbqAppEnv extends MbqBaseAppEnv {
         require_once JPATH_BASE.'/includes/framework.php';
         $this->oApp = JFactory::getApplication('site');
         $this->oApp->initialise();
-        $this->oApp->route();
+        //$this->oApp->route();
         $GLOBALS['mainframe'] = $this->oApp;    //only for old joomla version,for example joomla 1.5.26
         
         // Initialize Kunena (if Kunena System Plugin isn't enabled)
         $api = JPATH_ADMINISTRATOR . '/components/com_kunena/api.php';
         if (file_exists($api)) require_once $api;
         // Load router
-        require_once KPATH_SITE . '/router.php';
+        //require_once KPATH_SITE . '/router.php';
         KunenaFactory::loadLanguage('com_kunena.controllers');
         KunenaFactory::loadLanguage('com_kunena.models');
         KunenaFactory::loadLanguage('com_kunena.views');

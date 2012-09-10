@@ -34,7 +34,8 @@ Class MbqRdEtAtt extends MbqBaseRdEtAtt {
     public function getObjsMbqEtAtt($var, $mbqOpt) {
         if ($mbqOpt['case'] == 'byForumPostIds') {
             $postIds = $var;
-            $objsKunenaForumMessageAttachment = KunenaForumMessageAttachmentHelper::getByMessage($postIds);
+            require_once(MBQ_APPEXTENTION_PATH.'ExttMbqKunenaForumMessageAttachmentHelper.php');
+            $objsKunenaForumMessageAttachment = ExttMbqKunenaForumMessageAttachmentHelper::getByMessage($postIds);
             $objsMbqEtAtt = array();
             foreach ($objsKunenaForumMessageAttachment as $oKunenaForumMessageAttachment) {
                 $objsMbqEtAtt[] = $this->initOMbqEtAtt($oKunenaForumMessageAttachment, array('case' => 'oKunenaForumMessageAttachment'));
