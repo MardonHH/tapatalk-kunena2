@@ -135,6 +135,11 @@ Class MbqRdEtForum extends MbqBaseRdEtForum {
             } else {
                 $oMbqEtForum->canPost->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.canPost.range.no'));
             }
+            if ($var->authorise('topic.post.attachment.create')) {
+                $oMbqEtForum->canUpload->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.canUpload.range.yes'));
+            } else {
+                $oMbqEtForum->canUpload->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.canUpload.range.no'));
+            }
             $oMbqEtForum->mbqBind['oKunenaForumCategory'] = $var;
             return $oMbqEtForum;
         }

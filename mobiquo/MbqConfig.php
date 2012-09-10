@@ -64,6 +64,7 @@ Class MbqConfig extends MbqBaseConfig {
         } else {
             $this->cfg['user']['guest_whosonline']->setOriValue(MbqBaseFdt::getFdt('MbqFdtConfig.user.guest_whosonline.range.notSupport'));
         }
+        $this->cfg['forum']['max_attachment']->setOriValue(MbqMain::$oMbqAppEnv->oKunenaConfig->attachment_limit);
     }
     
 }
