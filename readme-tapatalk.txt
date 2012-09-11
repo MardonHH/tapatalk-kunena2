@@ -5,7 +5,7 @@
   
 - Installation:	
 	At First,please uninstall the old tapatalk plugin version for kunena in Joomla! admin panel,and delete the mobiquo folder,and continue the following steps!
-	1. Upload mobiquo folder to your Joomla! root folder.
+	1. Upload mobiquo folder to your Joomla! root folder.You should make the files under the mobiquo folder can be accessed directly through browser,otherwise the plugin may would not work.
 	2. In your Joomla! admin panel, go to Extensions > Extension Manager.
 	3. Select plg_system_tapatalk.zip under 'Upload Package File'.
 	4. Click Upload & Install
