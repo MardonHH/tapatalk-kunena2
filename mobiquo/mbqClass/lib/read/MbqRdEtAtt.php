@@ -29,6 +29,7 @@ Class MbqRdEtAtt extends MbqBaseRdEtAtt {
      * @param  Mixed  $var
      * @param  Array  $mbqOpt
      * $mbqOpt['case'] = 'byForumPostIds' means get data by forum post ids.$var is the ids.
+     * $mbqOpt['case'] = 'byAttIds' means get data by attachment ids.$var is the ids.
      * @return  Mixed
      */
     public function getObjsMbqEtAtt($var, $mbqOpt) {
@@ -36,6 +37,13 @@ Class MbqRdEtAtt extends MbqBaseRdEtAtt {
             $postIds = $var;
             require_once(MBQ_APPEXTENTION_PATH.'ExttMbqKunenaForumMessageAttachmentHelper.php');
             $objsKunenaForumMessageAttachment = ExttMbqKunenaForumMessageAttachmentHelper::getByMessage($postIds);
+            $objsMbqEtAtt = array();
+            foreach ($objsKunenaForumMessageAttachment as $oKunenaForumMessageAttachment) {
+                $objsMbqEtAtt[] = $this->initOMbqEtAtt($oKunenaForumMessageAttachment, array('case' => 'oKunenaForumMessageAttachment'));
+            }
+            return $objsMbqEtAtt;
+        } elseif ($mbqOpt['case'] == 'byAttIds') {
+            $objsKunenaForumMessageAttachment = KunenaForumMessageAttachmentHelper::getById($var);
             $objsMbqEtAtt = array();
             foreach ($objsKunenaForumMessageAttachment as $oKunenaForumMessageAttachment) {
                 $objsMbqEtAtt[] = $this->initOMbqEtAtt($oKunenaForumMessageAttachment, array('case' => 'oKunenaForumMessageAttachment'));

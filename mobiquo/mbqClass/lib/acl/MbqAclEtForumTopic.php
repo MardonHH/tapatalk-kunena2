@@ -44,7 +44,7 @@ Class MbqAclEtForumTopic extends MbqBaseAclEtForumTopic {
     /**
      * judge can new topic
      *
-     * @param  Object  $oMbqEtForumTopic
+     * @param  Object  $oMbqEtForum
      * @return  Boolean
      */
     public function canAclNewTopic($oMbqEtForum) {

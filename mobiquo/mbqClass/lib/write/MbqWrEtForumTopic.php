@@ -278,6 +278,18 @@ Class MbqWrEtForumTopic extends MbqBaseWrEtForumTopic {
             */
             
             $var->topicId->setOriValue($topic->id);
+            if ($var->attachmentIdArray->hasSetOriValue() && is_array($var->attachmentIdArray->oriValue) && $var->attachmentIdArray->oriValue) {
+                //associate attachment
+                $oDb = MbqMain::$oMbqAppEnv->oDb;
+                $attIds = array();
+                foreach ($var->attachmentIdArray->oriValue as $attId) {
+                    $attIds[] = (int) $attId;
+                }
+                $sqlIn = MbqMain::$oMbqCm->getSqlIn($attIds, false);
+                $userId = (MbqMain::$oCurMbqEtUser) ? MbqMain::$oCurMbqEtUser->userId->oriValue : 0;
+                $oDb->setQuery("UPDATE #__kunena_attachments SET mesid={$oDb->Quote($message->id)} WHERE userid={$oDb->Quote($userId)} AND id in (".$sqlIn.") AND mesid = 0");
+                $oDb->query();
+            }
             if ($topic->hold == 1) {
                 $var->state->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.state.range.postOkNeedModeration'));
             } else {

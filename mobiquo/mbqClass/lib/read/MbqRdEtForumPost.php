@@ -315,7 +315,8 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
     	$post = preg_replace('/<img .*?src=".*?whistling.png" .*?class="bbcode_smiley" \/>/i', ':whistle:', $post);
     	$post = preg_replace('/<img .*?src=".*?pinch.png" .*?class="bbcode_smiley" \/>/i', ':pinch:', $post);
     	/* replace the expression end */
-    	$post = preg_replace('/<img .*?src="(.*?)"{1,2} .*?\/>/i', '[img]$1[/img]', $post);
+    	//$post = preg_replace('/<img .*?src="(.*?)"{1,2} .*?\/>/i', '[img]$1[/img]', $post);
+    	$post = preg_replace('/<img .*?src="(.*?)" .*?\/>/i', '[img]$1[/img]', $post);
     	$post = str_ireplace('<strong>', '<b>', $post);
     	$post = str_ireplace('</strong>', '</b>', $post);
     	$post = preg_replace_callback('/<span style=\"color:(\#.*?)\">(.*?)<\/span>/is', create_function('$matches','return MbqMain::$oMbqCm->mbColorConvert($matches[1], $matches[2]);'), $post);

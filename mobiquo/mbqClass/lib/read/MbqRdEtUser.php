@@ -113,6 +113,9 @@ Class MbqRdEtUser extends MbqBaseRdEtUser {
             $oMbqEtUser->lastActivityTime->setOriValue(strtotime($oJUser->lastvisitDate));
             $oMbqEtUser->isOnline->setOriValue($var['oKunenaUser']->isOnline() ? MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.isOnline.range.yes') : MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.isOnline.range.no'));
             $oMbqEtUser->isBan->setOriValue($var['oKunenaUser']->isBanned() ? MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.isBan.range.yes') : MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.isBan.range.no'));
+            $oMbqEtUser->maxAttachment->setOriValue(MbqMain::$oMbqAppEnv->oKunenaConfig->attachment_limit);
+            $oMbqEtUser->maxPngSize->setOriValue(MbqMain::$oMbqAppEnv->oKunenaConfig->imagesize * 1024);
+            $oMbqEtUser->maxJpgSize->setOriValue(MbqMain::$oMbqAppEnv->oKunenaConfig->imagesize * 1024);
             $oMbqEtUser->mbqBind['oJuser'] = $var['oJuser'];
             $oMbqEtUser->mbqBind['oKunenaUser'] = $var['oKunenaUser'];
             return $oMbqEtUser;
