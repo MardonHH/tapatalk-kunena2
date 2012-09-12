@@ -144,14 +144,6 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
             foreach ($objsMbqEtForumTopic as &$oMbqEtForumTopic) {
                 $this->makeProperty($oMbqEtForumTopic, 'byOAuthorMbqEtUser');
             }
-            /* make other flag,for example canUpload */
-            foreach ($objsMbqEtForumTopic as &$oMbqEtForumTopic) {
-                if ($oMbqEtForumTopic->oMbqEtForum && $oMbqEtForumTopic->oMbqEtForum->mbqBind['oKunenaForumCategory']->authorise('topic.post.attachment.create')) {
-                    $oMbqEtForumTopic->canUpload->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canUpload.range.yes'));
-                } else {
-                    $oMbqEtForumTopic->canUpload->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canUpload.range.no'));
-                }
-            }
             if ($mbqOpt['oMbqDataPage']) {
                 $oMbqDataPage = $mbqOpt['oMbqDataPage'];
                 $oMbqDataPage->datas = $objsMbqEtForumTopic;
@@ -214,12 +206,6 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
                 $oMbqEtForumTopic->canReply->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canReply.range.yes'));
             } else {
                 $oMbqEtForumTopic->canReply->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canReply.range.no'));
-            }
-            /* make other flag,for example canUpload */
-            if ($oMbqEtForumTopic->oMbqEtForum && $oMbqEtForumTopic->oMbqEtForum->mbqBind['oKunenaForumCategory']->authorise('topic.post.attachment.create')) {
-                $oMbqEtForumTopic->canUpload->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canUpload.range.yes'));
-            } else {
-                $oMbqEtForumTopic->canUpload->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canUpload.range.no'));
             }
             return $oMbqEtForumTopic;
         } elseif ($mbqOpt['case'] == 'byTopicId') {

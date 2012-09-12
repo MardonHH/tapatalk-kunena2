@@ -50,7 +50,7 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
             case 'oMbqEtForum':
             if ($oMbqEtForumPost->forumId->hasSetOriValue()) {
                 $oMbqRdEtForum = MbqMain::$oClk->newObj('MbqRdEtForum');
-                if ($objsMbqEtForum = $oMbqRdEtForum->getObjsMbqEtForum(array($oMbqEtForumTopic->forumId->oriValue), array('case' => 'byForumIds'))) {
+                if ($objsMbqEtForum = $oMbqRdEtForum->getObjsMbqEtForum(array($oMbqEtForumPost->forumId->oriValue), array('case' => 'byForumIds'))) {
                     $oMbqEtForumPost->oMbqEtForum = $objsMbqEtForum[0];
                 }
             }
@@ -208,6 +208,11 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
             $oMbqEtForumPost->postContent->setTmlDisplayValueNoHtml($this->processContentForDisplay($oExttMbqKunenaViewTopic->exttMbqReturnDisplayMessageContents($newVar), false));
             $oMbqEtForumPost->shortContent->setOriValue(MbqMain::$oMbqCm->getShortContent($var->message));
             $oMbqEtForumPost->postAuthorId->setOriValue($var->userid);
+            if ($var->authorise('edit')) {
+                $oMbqEtForumPost->canEdit->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumPost.canEdit.range.yes'));
+            } else {
+                $oMbqEtForumPost->canEdit->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumPost.canEdit.range.no'));
+            }
             $oMbqEtForumPost->postTime->setOriValue($var->time);
             $oMbqEtForumPost->mbqBind['oKunenaForumMessage'] = $var;
             if ($mbqOpt['oMbqEtForum']) {

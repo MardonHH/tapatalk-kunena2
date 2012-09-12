@@ -50,6 +50,32 @@ Class MbqAclEtForumPost extends MbqBaseAclEtForumPost {
             return MbqMain::hasLogin();
         }
     }
+    
+    /**
+     * judge can get_raw_post
+     *
+     * @param  Object  $oMbqEtForumPost
+     * @return  Boolean
+     */
+    public function canAclGetRawPost($oMbqEtForumPost) {
+        if ($oMbqEtForumPost->mbqBind['oKunenaForumMessage'] && $oMbqEtForumPost->mbqBind['oKunenaForumMessage']->authorise('edit')) {
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * judge can save_raw_post
+     *
+     * @param  Object  $oMbqEtForumPost
+     * @return  Boolean
+     */
+    public function canAclSaveRawPost($oMbqEtForumPost) {
+        if ($oMbqEtForumPost->mbqBind['oKunenaForumMessage'] && $oMbqEtForumPost->mbqBind['oKunenaForumMessage']->authorise('edit')) {
+            return true;
+        }
+        return false;
+    }
   
 }
 
