@@ -57,6 +57,7 @@ Class MbqRdEtUser extends MbqBaseRdEtUser {
      * @param  Mixed  $var
      * @param  Array  $mbqOpt
      * $mbqOpt['case'] = 'byUserIds' means get data by user ids.$var is the ids.
+     * @mbqOpt['case'] = 'online' means get online user.
      * @return  Array
      */
     public function getObjsMbqEtUser($var, $mbqOpt) {
@@ -79,6 +80,9 @@ Class MbqRdEtUser extends MbqBaseRdEtUser {
                 }
             }
             return $objsMbqEtUser;
+        } elseif ($mbqOpt['case'] == 'online') {
+            $arr = KunenaUserHelper::getOnlineUsers();
+            return $this->getObjsMbqEtUser(array_keys($arr), array('case' => 'byUserIds'));
         }
         MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_CASE);
     }
@@ -118,6 +122,7 @@ Class MbqRdEtUser extends MbqBaseRdEtUser {
             $oMbqEtUser->maxJpgSize->setOriValue(MbqMain::$oMbqAppEnv->oKunenaConfig->imagesize * 1024);
             $oMbqEtUser->mbqBind['oJuser'] = $var['oJuser'];
             $oMbqEtUser->mbqBind['oKunenaUser'] = $var['oKunenaUser'];
+            $oMbqEtUser->canWhosonline->setOriValue(MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.canWhosonline.range.yes'));
             return $oMbqEtUser;
         } elseif ($mbqOpt['case'] == 'byUserId') {
             $userIds = array($var);

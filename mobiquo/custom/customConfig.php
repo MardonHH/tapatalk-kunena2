@@ -15,6 +15,7 @@ MbqMain::$customConfig['base']['version'] = 'kn20_0.1.2';
 MbqMain::$customConfig['base']['api_level'] = 3;
 MbqMain::$customConfig['user']['guest_okay'] = MbqBaseFdt::getFdt('MbqFdtConfig.user.guest_okay.range.support');
 MbqMain::$customConfig['user']['user_id'] = MbqBaseFdt::getFdt('MbqFdtConfig.user.user_id.range.support');
+MbqMain::$customConfig['user']['guest_whosonline'] = MbqBaseFdt::getFdt('MbqFdtConfig.user.guest_whosonline.range.support');
 MbqMain::$customConfig['forum']['no_refresh_on_post'] = MbqBaseFdt::getFdt('MbqFdtConfig.forum.no_refresh_on_post.range.support');
 MbqMain::$customConfig['forum']['get_latest_topic'] = MbqBaseFdt::getFdt('MbqFdtConfig.forum.get_latest_topic.range.support');
 MbqMain::$customConfig['forum']['guest_search'] = MbqBaseFdt::getFdt('MbqFdtConfig.forum.guest_search.range.support');
