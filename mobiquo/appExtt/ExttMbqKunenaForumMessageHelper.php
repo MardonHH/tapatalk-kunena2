@@ -5,7 +5,7 @@ require_once(KPATH_ADMIN.'/libraries/forum/message/helper.php');
 /**
  * for kunena 2.0.1/2.0.2
  * ExttMbqKunenaForumMessageHelper extended from KunenaForumMessageHelper
- * add method exttMbqGetLatestMessagesSql() modified from method getLatestMessages().
+ * add method exttMbqGetLatestMessages() modified from method getLatestMessages().
  * 
  * @since  2012-8-30
  * @modified by Wu ZeTao <578014287@qq.com>
@@ -13,11 +13,11 @@ require_once(KPATH_ADMIN.'/libraries/forum/message/helper.php');
 abstract class ExttMbqKunenaForumMessageHelper extends KunenaForumMessageHelper {
 
     /**
-     * return sql from get last messages action
-     *
-     * @return  String
+     * $params['exttMbqOnlySql'] = true means only get sql string
+     * $params['exttMbqIsReply'] = true means get reply post
+     * @return  Mixed
      */
-	static public function exttMbqGetLatestMessagesSql($categories=false, $limitstart=0, $limit=0, $params=array()) {
+	static public function exttMbqGetLatestMessages($categories=false, $limitstart=0, $limit=0, $params=array()) {
 		$reverse = isset($params['reverse']) ? (int) $params['reverse'] : 0;
 		$orderby = isset($params['orderby']) ? (string) $params['orderby'] : 'm.time DESC';
 		$starttime = isset($params['starttime']) ? (int) $params['starttime'] : 0;
@@ -46,6 +46,7 @@ abstract class ExttMbqKunenaForumMessageHelper extends KunenaForumMessageHelper 
 		$authorise = 'read';
 		$hold = 'm.hold=0';
 		$userfield = 'm.userid';
+		if ($params['exttMbqIsReply']) $exttMbqSubSqlIsReply = "m.parent > 0";
 		switch ($mode) {
 			case 'unapproved':
 				$authorise = 'approve';
@@ -101,6 +102,10 @@ abstract class ExttMbqKunenaForumMessageHelper extends KunenaForumMessageHelper 
 			$cquery->where("m.time>{$db->Quote($starttime)}");
 			$rquery->where("m.time>{$db->Quote($starttime)}");
 		}
+		if ($exttMbqSubSqlIsReply) {
+    		$cquery->where($exttMbqSubSqlIsReply);
+    		$rquery->where($exttMbqSubSqlIsReply);
+		}
 		if ($where) {
 			$cquery->where($where);
 			$rquery->where($where);
@@ -116,7 +121,9 @@ abstract class ExttMbqKunenaForumMessageHelper extends KunenaForumMessageHelper 
 			$limitstart = intval($total / $limit) * $limit;
 
 		$db->setQuery ( $rquery, $limitstart, $limit );
-		return (string) $db->getQuery();    //return sql
+		if ($params['exttMbqOnlySql'] == true) {
+		    return (string) $db->getQuery();    //return sql
+		}
 		
 		$results = $db->loadAssocList ();
 		if (KunenaError::checkDatabaseError()) return array(0, array());

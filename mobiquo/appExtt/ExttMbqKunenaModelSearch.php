@@ -207,7 +207,8 @@ class ExttMbqKunenaModelSearch extends KunenaModelSearch {
         return $this->messages;
         */
         require_once(MBQ_APPEXTENTION_PATH.'ExttMbqKunenaForumMessageHelper.php');
-        $exttMbqLoadMessageSql = ExttMbqKunenaForumMessageHelper::exttMbqGetLatestMessagesSql($this->getState('query.catids'), $limitstart, $limit, $params);
+        $params['exttMbqOnlySql'] = true;
+        $exttMbqLoadMessageSql = ExttMbqKunenaForumMessageHelper::exttMbqGetLatestMessages($this->getState('query.catids'), $limitstart, $limit, $params);
         $user = KunenaUserHelper::getMyself();
         $db = JFactory::getDBO ();
         $query = "SELECT tt.*, ut.posts AS myposts, ut.last_post_id AS my_last_post_id, ut.favorite, tt.last_post_id AS lastread, 0 AS unread

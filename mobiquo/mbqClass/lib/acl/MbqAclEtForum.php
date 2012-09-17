@@ -23,6 +23,32 @@ Class MbqAclEtForum extends MbqBaseAclEtForum {
     public function canAclGetSubscribedForum() {
         return MbqMain::hasLogin();
     }
+    
+    /**
+     * judge can subscribe forum
+     *
+     * @param  Object  $oMbqEtForum
+     * @return  Boolean
+     */
+    public function canAclSubscribeForum($oMbqEtForum) {
+        if (MbqMain::hasLogin() && $oMbqEtForum->mbqBind['oKunenaForumCategory'] && $oMbqEtForum->mbqBind['oKunenaForumCategory']->authorise('subscribe') && !$oMbqEtForum->mbqBind['oKunenaForumCategory']->getSubscribed(MbqMain::$oCurMbqEtUser->userId->oriValue)) {
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * judge can unsubscribe forum
+     *
+     * @param  Object  $oMbqEtForum
+     * @return  Boolean
+     */
+    public function canAclUnsubscribeForum($oMbqEtForum) {
+        if (MbqMain::hasLogin() && $oMbqEtForum->mbqBind['oKunenaForumCategory'] && $oMbqEtForum->mbqBind['oKunenaForumCategory']->authorise('subscribe') && $oMbqEtForum->mbqBind['oKunenaForumCategory']->getSubscribed(MbqMain::$oCurMbqEtUser->userId->oriValue)) {
+            return true;
+        }
+        return false;
+    }
   
 }
 

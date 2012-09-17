@@ -15,7 +15,7 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
     public function __construct() {
     }
     
-    protected function makeProperty(&$oMbqEtForumTopic, $pName, $mbqOpt = array()) {
+    public function makeProperty(&$oMbqEtForumTopic, $pName, $mbqOpt = array()) {
         switch ($pName) {
             case 'oAuthorMbqEtUser':
             $oMbqRdEtUser = MbqMain::$oClk->newObj('MbqRdEtUser');
@@ -46,6 +46,22 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
                 }
             }
             break;
+            case 'oKunenaForumTopicUser':
+            if (MbqMain::hasLogin()) {
+                $objsKunenaForumTopicUser = KunenaForumTopicUserHelper::getTopics($oMbqEtForumTopic->topicId->oriValue, MbqMain::$oCurMbqEtUser->userId->oriValue);
+                foreach ($objsKunenaForumTopicUser as $oKunenaForumTopicUser) {
+                    if ($oKunenaForumTopicUser->topic_id == $oMbqEtForumTopic->topicId->oriValue) {
+                        $oMbqEtForumTopic->mbqBind['oKunenaForumTopicUser'] = $oKunenaForumTopicUser;
+                    }
+                }
+            }
+            break;
+            case 'oLastReplyMbqEtUser':
+            $oMbqRdEtUser = MbqMain::$oClk->newObj('MbqRdEtUser');
+            if ($oMbqEtUser = $oMbqRdEtUser->initOMbqEtUser($oMbqEtForumTopic->lastReplyAuthorId->oriValue, array('case' => 'byUserId'))) {
+                $oMbqEtForumTopic->oLastReplyMbqEtUser = $oMbqEtUser;
+            }
+            break;
             default:
             MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_PNAME . ':' . $pName . '.');
             break;
@@ -61,6 +77,7 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
      * $mbqOpt['case'] = 'subscribed' means get subscribed data.$var is the user id.
      * $mbqOpt['case'] = 'byObjsKunenaForumTopic' means get data by objsKunenaForumTopic.$var is the objsKunenaForumTopic.
      * $mbqOpt['case'] = 'byTopicIds' means get data by topic ids.$var is the ids.
+     * $mbqOpt['case'] = 'byAuthor' means get data by author.$var is the MbqEtUser obj.
      * $mbqOpt['top'] = true means get sticky data.
      * @return  Mixed
      */
@@ -72,7 +89,7 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
                 if ($mbqOpt['top']) {
                     require_once(MBQ_APPEXTENTION_PATH.'ExttMbqKunenaModelTopics.php');
                     $oExttMbqKunenaModelTopics = new ExttMbqKunenaModelTopics();
-                    $arr = $oExttMbqKunenaModelTopics->exttMbqGetRecentTopics(array('catId' => $oMbqEtForum->forumId->oriValue, 'start' => $oMbqDataPage->startNum, 'limit' => $oMbqDataPage->numPerPage, 'mode' => 'sticky'));
+                    $arr = $oExttMbqKunenaModelTopics->exttMbqGetRecentTopics(array('catId' => $oMbqEtForum->forumId->oriValue, 'start' => $oMbqDataPage->startNum, 'limit' => $oMbqDataPage->numPerPage, 'mode' => 'sticky', 'time' => -1));
                     $objsKunenaForumTopic = $arr['topics'];
                     $oMbqDataPage->totalNum = $arr['total'];
                 } else {
@@ -81,7 +98,10 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
                     //$oExttMbqKunenaModelCategory->setState('item.id', $oMbqEtForum->forumId->oriValue);
                     //$oExttMbqKunenaModelCategory->setState('list.start', $oMbqDataPage->startNum);
                     //$oExttMbqKunenaModelCategory->setState('list.limit', $oMbqDataPage->numPerPage);
-                    $objsKunenaForumTopic = $oExttMbqKunenaModelCategory->exttMbqGetTopics(array('catId' => $oMbqEtForum->forumId->oriValue, 'start' => $oMbqDataPage->startNum, 'limit' => $oMbqDataPage->numPerPage));
+                    //$objsKunenaForumTopic = $oExttMbqKunenaModelCategory->exttMbqGetTopics(array('catId' => $oMbqEtForum->forumId->oriValue, 'start' => $oMbqDataPage->startNum, 'limit' => $oMbqDataPage->numPerPage));
+                    $arr = $oExttMbqKunenaModelCategory->exttMbqGetTopics(array('catId' => $oMbqEtForum->forumId->oriValue, 'start' => $oMbqDataPage->startNum, 'limit' => $oMbqDataPage->numPerPage));
+                    $objsKunenaForumTopic = $arr['topics'];
+                    $oMbqDataPage->totalNum = $arr['total'];
                 }
                 /* common begin */
                 $mbqOpt['case'] = 'byObjsKunenaForumTopic';
@@ -101,6 +121,18 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
                 return $this->getObjsMbqEtForumTopic($objsKunenaForumTopic, $mbqOpt);
                 /* common end */
             }
+        } elseif ($mbqOpt['case'] == 'byAuthor') {
+            if ($mbqOpt['oMbqDataPage']) {
+                $oMbqDataPage = $mbqOpt['oMbqDataPage'];
+                $arr = KunenaForumTopicHelper::getLatestTopics(false, $oMbqDataPage->startNum, $oMbqDataPage->numPerPage, array('started' => 1, 'user' => $var->userId->oriValue));
+                $oMbqDataPage->totalNum = $arr[0];
+                $objsKunenaForumTopic = $arr[1];
+                /* common begin */
+                $mbqOpt['case'] = 'byObjsKunenaForumTopic';
+                $mbqOpt['oMbqDataPage'] = $oMbqDataPage;
+                return $this->getObjsMbqEtForumTopic($objsKunenaForumTopic, $mbqOpt);
+                /* common end */
+            }
         } elseif ($mbqOpt['case'] == 'byTopicIds') {
             $objsKunenaForumTopic = KunenaForumTopicHelper::getTopics($var);
             /* common begin */
@@ -112,13 +144,17 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
             /* common begin */
             $objsMbqEtForumTopic = array();
             $authorUserIds = array();
+            $lastReplyUserIds = array();
             $forumIds = array();
+            $topicIds = array();
             foreach ($objsKunenaForumTopic as $oKunenaForumTopic) {
-                $objsMbqEtForumTopic[] = $this->initOMbqEtForumTopic($oKunenaForumTopic, array('case' => 'oKunenaForumTopic', 'withAuthor' => false, 'oMbqEtForum' => false));
+                $objsMbqEtForumTopic[] = $this->initOMbqEtForumTopic($oKunenaForumTopic, array('case' => 'oKunenaForumTopic', 'withAuthor' => false, 'oMbqEtForum' => false, 'oKunenaForumTopicUser' => false, 'oLastReplyMbqEtUser' => false));
             }
             foreach ($objsMbqEtForumTopic as $oMbqEtForumTopic) {
                 $authorUserIds[$oMbqEtForumTopic->topicAuthorId->oriValue] = $oMbqEtForumTopic->topicAuthorId->oriValue;
+                $lastReplyUserIds[$oMbqEtForumTopic->lastReplyAuthorId->oriValue] = $oMbqEtForumTopic->lastReplyAuthorId->oriValue;
                 $forumIds[$oMbqEtForumTopic->forumId->oriValue] = $oMbqEtForumTopic->forumId->oriValue;
+                $topicIds[$oMbqEtForumTopic->topicId->oriValue] = $oMbqEtForumTopic->topicId->oriValue;
             }
             /* load oMbqEtForum property */
             $oMbqRdEtForum = MbqMain::$oClk->newObj('MbqRdEtForum');
@@ -144,6 +180,48 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
             foreach ($objsMbqEtForumTopic as &$oMbqEtForumTopic) {
                 $this->makeProperty($oMbqEtForumTopic, 'byOAuthorMbqEtUser');
             }
+            /* load oLastReplyMbqEtUser */
+            $objsLastReplyMbqEtUser = $oMbqRdEtUser->getObjsMbqEtUser($lastReplyUserIds, array('case' => 'byUserIds'));
+            foreach ($objsMbqEtForumTopic as &$oMbqEtForumTopic) {
+                foreach ($objsLastReplyMbqEtUser as $oLastReplyMbqEtUser) {
+                    if ($oMbqEtForumTopic->lastReplyAuthorId->oriValue == $oLastReplyMbqEtUser->userId->oriValue) {
+                        $oMbqEtForumTopic->oLastReplyMbqEtUser = $oLastReplyMbqEtUser;
+                        break;
+                    }
+                }
+            }
+            /* load oKunenaForumTopicUser */
+            if (MbqMain::hasLogin()) {
+                $objsKunenaForumTopicUser = KunenaForumTopicUserHelper::getTopics($topicIds, MbqMain::$oCurMbqEtUser->userId->oriValue);
+                foreach ($objsKunenaForumTopicUser as $oKunenaForumTopicUser) {
+                    foreach ($objsMbqEtForumTopic as &$oMbqEtForumTopic) {
+                        if ($oKunenaForumTopicUser->topic_id == $oMbqEtForumTopic->topicId->oriValue) {
+                            $oMbqEtForumTopic->mbqBind['oKunenaForumTopicUser'] = $oKunenaForumTopicUser;
+                        }
+                    }
+                }
+                /* make other properties for example:isSubscribed,canSubscribe */
+                foreach ($objsMbqEtForumTopic as &$oMbqEtForumTopic) {
+                    if ($oMbqEtForumTopic->mbqBind['oKunenaForumTopicUser']) {
+                        if ($oMbqEtForumTopic->mbqBind['oKunenaForumTopicUser']->subscribed) {
+                            $oMbqEtForumTopic->isSubscribed->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.isSubscribed.range.yes'));
+                        } else {
+                            $oMbqEtForumTopic->isSubscribed->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.isSubscribed.range.no'));
+                        }
+                    } else {
+                        $oMbqEtForumTopic->isSubscribed->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.isSubscribed.range.no'));
+                    }
+                    if ($oMbqEtForumTopic->mbqBind['oKunenaForumTopic']) {
+                        if ($oMbqEtForumTopic->mbqBind['oKunenaForumTopic']->authorise('subscribe') && (!$oMbqEtForumTopic->mbqBind['oKunenaForumTopicUser'] || ($oMbqEtForumTopic->mbqBind['oKunenaForumTopicUser'] && !$oMbqEtForumTopic->mbqBind['oKunenaForumTopicUser']->subscribed))) {
+                            $oMbqEtForumTopic->canSubscribe->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canSubscribe.range.yes'));
+                        } else {
+                            $oMbqEtForumTopic->canSubscribe->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canSubscribe.range.no'));
+                        }
+                    } else {
+                        $oMbqEtForumTopic->canSubscribe->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canSubscribe.range.no'));
+                    }
+                }
+            }
             if ($mbqOpt['oMbqDataPage']) {
                 $oMbqDataPage = $mbqOpt['oMbqDataPage'];
                 $oMbqDataPage->datas = $objsMbqEtForumTopic;
@@ -164,14 +242,18 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
      * $mbqOpt['case'] = 'oKunenaForumTopic' means init forum topic by KunenaForumCategory obj
      * $mbqOpt['case'] = 'byTopicId' means init forum topic by topic id
      * $mbqOpt['withAuthor'] = true means load topic author,default is true
+     * $mbqOpt['oLastReplyMbqEtUser'] = true means load oLastReplyMbqEtUser property,default is true
      * $mbqOpt['oMbqEtForum'] = true means load oMbqEtForum property of this topic,default is true
      * $mbqOpt['oFirstMbqEtForumPost'] = true means load oFirstMbqEtForumPost property of this topic,default is true
+     * $mbqOpt['oKunenaForumTopicUser'] = true means load oKunenaForumTopicUser bind property of this topic,default is true
      * @return  Mixed
      */
     public function initOMbqEtForumTopic($var, $mbqOpt) {
         $mbqOpt['withAuthor'] = isset($mbqOpt['withAuthor']) ? $mbqOpt['withAuthor'] : true;
+        $mbqOpt['oLastReplyMbqEtUser'] = isset($mbqOpt['oLastReplyMbqEtUser']) ? $mbqOpt['oLastReplyMbqEtUser'] : true;
         $mbqOpt['oMbqEtForum'] = isset($mbqOpt['oMbqEtForum']) ? $mbqOpt['oMbqEtForum'] : true;
         $mbqOpt['oFirstMbqEtForumPost'] = isset($mbqOpt['oFirstMbqEtForumPost']) ? $mbqOpt['oFirstMbqEtForumPost'] : true;
+        $mbqOpt['oKunenaForumTopicUser'] = isset($mbqOpt['oKunenaForumTopicUser']) ? $mbqOpt['oKunenaForumTopicUser'] : true;
         if ($mbqOpt['case'] == 'oKunenaForumTopic') {
             $oMbqEtForumTopic = MbqMain::$oClk->newObj('MbqEtForumTopic');
             $oMbqEtForumTopic->totalPostNum->setOriValue($var->posts);
@@ -197,6 +279,10 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
                 /* load topic author */
                 $this->makeProperty($oMbqEtForumTopic, 'oAuthorMbqEtUser');
             }
+            if ($mbqOpt['oLastReplyMbqEtUser']) {
+                /* load oLastReplyMbqEtUser property */
+                $this->makeProperty($oMbqEtForumTopic, 'oLastReplyMbqEtUser');
+            }
             $this->makeProperty($oMbqEtForumTopic, 'byOAuthorMbqEtUser');
             if ($mbqOpt['oFirstMbqEtForumPost']) {
                 /* load oFirstMbqEtForumPost author */
@@ -206,6 +292,44 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
                 $oMbqEtForumTopic->canReply->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canReply.range.yes'));
             } else {
                 $oMbqEtForumTopic->canReply->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canReply.range.no'));
+            }
+            if ($oMbqEtForumTopic->mbqBind['oKunenaForumTopic']->ordering > 0) {
+                $oMbqEtForumTopic->isSticky->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.isSticky.range.yes'));
+            } else {
+                $oMbqEtForumTopic->isSticky->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.isSticky.range.no'));
+            }
+            if ($oMbqEtForumTopic->mbqBind['oKunenaForumTopic']->hold == 3 || $oMbqEtForumTopic->mbqBind['oKunenaForumTopic']->hold == 2) {
+                $oMbqEtForumTopic->isDeleted->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.isDeleted.range.yes'));
+            } else {
+                $oMbqEtForumTopic->isDeleted->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.isDeleted.range.no'));
+            }
+            if ($oMbqEtForumTopic->mbqBind['oKunenaForumTopic']->locked == 1) {
+                $oMbqEtForumTopic->isClosed->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.isClosed.range.yes'));
+            } else {
+                $oMbqEtForumTopic->isClosed->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.isClosed.range.no'));
+            }
+            if ($mbqOpt['oKunenaForumTopicUser']) {
+                /* load oKunenaForumTopicUser */
+                $this->makeProperty($oMbqEtForumTopic, 'oKunenaForumTopicUser');
+                /* make other properties for example:isSubscribed,canSubscribe */
+                if ($oMbqEtForumTopic->mbqBind['oKunenaForumTopicUser']) {
+                    if ($oMbqEtForumTopic->mbqBind['oKunenaForumTopicUser']->subscribed) {
+                        $oMbqEtForumTopic->isSubscribed->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.isSubscribed.range.yes'));
+                    } else {
+                        $oMbqEtForumTopic->isSubscribed->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.isSubscribed.range.no'));
+                    }
+                } else {
+                    $oMbqEtForumTopic->isSubscribed->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.isSubscribed.range.no'));
+                }
+                if ($oMbqEtForumTopic->mbqBind['oKunenaForumTopic']) {
+                    if ($oMbqEtForumTopic->mbqBind['oKunenaForumTopic']->authorise('subscribe') && (!$oMbqEtForumTopic->mbqBind['oKunenaForumTopicUser'] || ($oMbqEtForumTopic->mbqBind['oKunenaForumTopicUser'] && !$oMbqEtForumTopic->mbqBind['oKunenaForumTopicUser']->subscribed))) {
+                        $oMbqEtForumTopic->canSubscribe->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canSubscribe.range.yes'));
+                    } else {
+                        $oMbqEtForumTopic->canSubscribe->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canSubscribe.range.no'));
+                    }
+                } else {
+                    $oMbqEtForumTopic->canSubscribe->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canSubscribe.range.no'));
+                }
             }
             return $oMbqEtForumTopic;
         } elseif ($mbqOpt['case'] == 'byTopicId') {

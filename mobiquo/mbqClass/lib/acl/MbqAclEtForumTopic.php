@@ -111,6 +111,47 @@ Class MbqAclEtForumTopic extends MbqBaseAclEtForumTopic {
             return MbqMain::hasLogin();
         }
     }
+    
+    /**
+     * judge can subscribe_topic
+     *
+     * @param  Object  $oMbqEtForumTopic
+     * @return  Boolean
+     */
+    public function canAclSubscribeTopic($oMbqEtForumTopic) {
+        if (MbqMain::hasLogin() && $oMbqEtForumTopic->mbqBind['oKunenaForumTopic'] && $oMbqEtForumTopic->mbqBind['oKunenaForumTopic']->authorise('subscribe') && (!$oMbqEtForumTopic->mbqBind['oKunenaForumTopicUser'] || ($oMbqEtForumTopic->mbqBind['oKunenaForumTopicUser'] && !$oMbqEtForumTopic->mbqBind['oKunenaForumTopicUser']->subscribed))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * judge can unsubscribe_topic
+     *
+     * @param  Object  $oMbqEtForumTopic
+     * @return  Boolean
+     */
+    public function canAclUnsubscribeTopic($oMbqEtForumTopic) {
+        if (MbqMain::hasLogin() && $oMbqEtForumTopic->mbqBind['oKunenaForumTopic'] && $oMbqEtForumTopic->mbqBind['oKunenaForumTopic']->authorise('subscribe') && $oMbqEtForumTopic->mbqBind['oKunenaForumTopicUser'] && $oMbqEtForumTopic->mbqBind['oKunenaForumTopicUser']->subscribed) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * judge can get_user_topic
+     *
+     * @return  Boolean
+     */
+    public function canAclGetUserTopic() {
+        if (MbqMain::$oMbqConfig->getCfg('user.guest_okay')->oriValue == MbqBaseFdt::getFdt('MbqFdtConfig.user.guest_okay.range.support')) {
+            return true;
+        } else {
+            return MbqMain::hasLogin();
+        }
+    }
   
 }
 

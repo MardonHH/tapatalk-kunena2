@@ -15,7 +15,7 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
     public function __construct() {
     }
     
-    protected function makeProperty(&$oMbqEtForumPost, $pName, $mbqOpt = array()) {
+    public function makeProperty(&$oMbqEtForumPost, $pName, $mbqOpt = array()) {
         switch ($pName) {
             case 'oAuthorMbqEtUser':
             $oMbqRdEtUser = MbqMain::$oClk->newObj('MbqRdEtUser');
@@ -76,6 +76,7 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
      * @param  Array  $mbqOpt
      * $mbqOpt['case'] = 'byTopic' means get data by forum topic obj.$var is the forum topic obj.
      * $mbqOpt['case'] = 'byObjsKunenaForumMessage' means get data by objsKunenaForumMessage.$var is the objsKunenaForumMessage.
+     * $mbqOpt['case'] = 'byReplyUser' means get data by reply user.$var is the MbqEtUser obj.
      * @return  Mixed
      */
     public function getObjsMbqEtForumPost($var, $mbqOpt) {
@@ -89,6 +90,19 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
                 //$oExttMbqKunenaModelTopic->setState('list.start', $oMbqDataPage->startNum);
                 //$oExttMbqKunenaModelTopic->setState('list.limit', $oMbqDataPage->numPerPage);
                 $objsKunenaForumMessage = $oExttMbqKunenaModelTopic->exttMbqGetMessages(array('topicId' => $oMbqEtForumTopic->topicId->oriValue, 'start' => $oMbqDataPage->startNum, 'limit' => $oMbqDataPage->numPerPage));
+                /* common begin */
+                $mbqOpt['case'] = 'byObjsKunenaForumMessage';
+                $mbqOpt['oMbqDataPage'] = $oMbqDataPage;
+                return $this->getObjsMbqEtForumPost($objsKunenaForumMessage, $mbqOpt);
+                /* common end */
+            }
+        } elseif ($mbqOpt['case'] == 'byReplyUser') {
+            if ($mbqOpt['oMbqDataPage']) {
+                $oMbqDataPage = $mbqOpt['oMbqDataPage'];
+                require_once(MBQ_APPEXTENTION_PATH.'ExttMbqKunenaForumMessageHelper.php');
+                $arr = ExttMbqKunenaForumMessageHelper::exttMbqGetLatestMessages(false, $oMbqDataPage->startNum, $oMbqDataPage->numPerPage, array('user' => $var->userId->oriValue, 'exttMbqIsReply' => true, 'starttime' => -1));
+                $oMbqDataPage->totalNum = $arr[0];
+                $objsKunenaForumMessage = $arr[1];
                 /* common begin */
                 $mbqOpt['case'] = 'byObjsKunenaForumMessage';
                 $mbqOpt['oMbqDataPage'] = $oMbqDataPage;
@@ -236,6 +250,11 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
                 $this->makeProperty($oMbqEtForumPost, 'objsNotInContentMbqEtAtt');
             }
             $this->makeProperty($oMbqEtForumPost, 'byOAuthorMbqEtUser');
+            if ($oMbqEtForumPost->mbqBind['oKunenaForumMessage']->hold == 3 || $oMbqEtForumPost->mbqBind['oKunenaForumMessage']->hold == 2) {
+                $oMbqEtForumPost->isDeleted->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumPost.isDeleted.range.yes'));
+            } else {
+                $oMbqEtForumPost->isDeleted->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumPost.isDeleted.range.no'));
+            }
             return $oMbqEtForumPost;
         } elseif ($mbqOpt['case'] == 'byPostId') {
             require_once(KPATH_ADMIN.'/libraries/forum/message/helper.php');
@@ -342,8 +361,8 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
      * @return  String
      */
     public function getQuotePostContent($oMbqEtForumPost) {
-        if (MbqMain::$oCurMbqEtUser) {
-            $name = MbqMain::$oCurMbqEtUser->loginName->oriValue;
+        if ($oMbqEtForumPost->oAuthorMbqEtUser) {
+            $name = $oMbqEtForumPost->oAuthorMbqEtUser->getDisplayName();
         } else {
             $name = '';
         }

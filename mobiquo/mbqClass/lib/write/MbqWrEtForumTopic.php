@@ -297,6 +297,46 @@ Class MbqWrEtForumTopic extends MbqBaseWrEtForumTopic {
             }
         }
     }
+    
+    /**
+     * subscribe topic
+     *
+     * @param  Mixed  $var($oMbqEtForumTopic or $objsMbqEtForumTopic)
+     */
+    public function subscribeTopic(&$var) {
+        if (is_array($var)) {
+            MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
+        } else {
+            if (!$var->mbqBind['oKunenaForumTopic']->subscribe(1)) {
+                MbqError::alert('', "Subscribe topic fail!", '', MBQ_ERR_APP);
+            } else {
+    			// Activity integration
+    			$activity = KunenaFactory::getActivityIntegration();
+    			//$activity->onAfterSubscribe($topic, 1);
+    			$activity->onAfterSubscribe($var->mbqBind['oKunenaForumTopic'], 1);
+            }
+        }
+    }
+    
+    /**
+     * unsubscribe topic
+     *
+     * @param  Mixed  $var($oMbqEtForumTopic or $objsMbqEtForumTopic)
+     */
+    public function unsubscribeTopic(&$var) {
+        if (is_array($var)) {
+            MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
+        } else {
+            if (!$var->mbqBind['oKunenaForumTopic']->subscribe(0)) {
+                MbqError::alert('', "Unsubscribe topic fail!", '', MBQ_ERR_APP);
+            } else {
+    			// Activity integration
+    			$activity = KunenaFactory::getActivityIntegration();
+    			//$activity->onAfterSubscribe($topic, 0);
+    			$activity->onAfterSubscribe($var->mbqBind['oKunenaForumTopic'], 0);
+            }
+        }
+    }
   
 }
 

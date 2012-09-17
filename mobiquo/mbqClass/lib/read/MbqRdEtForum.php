@@ -15,7 +15,7 @@ Class MbqRdEtForum extends MbqBaseRdEtForum {
     public function __construct() {
     }
     
-    protected function makeProperty(&$oMbqEtForum, $pName, $mbqOpt = array()) {
+    public function makeProperty(&$oMbqEtForum, $pName, $mbqOpt = array()) {
         switch ($pName) {
             default:
             MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_UNKNOWN_PNAME . ':' . $pName . '.');
@@ -139,6 +139,16 @@ Class MbqRdEtForum extends MbqBaseRdEtForum {
                 $oMbqEtForum->canUpload->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.canUpload.range.yes'));
             } else {
                 $oMbqEtForum->canUpload->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.canUpload.range.no'));
+            }
+            if (MbqMain::hasLogin() && $var->getSubscribed(MbqMain::$oCurMbqEtUser->userId->oriValue)) {
+                $oMbqEtForum->isSubscribed->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.isSubscribed.range.yes'));
+            } else {
+                $oMbqEtForum->isSubscribed->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.isSubscribed.range.no'));
+            }
+            if (MbqMain::hasLogin() && $var->authorise('subscribe') && !$var->getSubscribed(MbqMain::$oCurMbqEtUser->userId->oriValue)) {
+                $oMbqEtForum->canSubscribe->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.canSubscribe.range.yes'));
+            } else {
+                $oMbqEtForum->canSubscribe->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.canSubscribe.range.no'));
             }
             $oMbqEtForum->mbqBind['oKunenaForumCategory'] = $var;
             return $oMbqEtForum;

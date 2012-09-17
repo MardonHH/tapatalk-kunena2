@@ -293,7 +293,8 @@ class ExttMbqKunenaModelCategory extends KunenaAdminModelCategories {
 
 			}
 		}
-		return $this->topics;
+		return array('topics' => $this->topics, 'total' => $this->total);
+		//return $this->topics;
 	}
 
 	public function getTotal() {
