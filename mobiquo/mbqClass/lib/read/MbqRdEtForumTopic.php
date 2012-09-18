@@ -141,9 +141,12 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
             return $this->getObjsMbqEtForumTopic($objsKunenaForumTopic, $mbqOpt);
             /* common end */
         } elseif ($mbqOpt['case'] == 'byObjsKunenaForumTopic') {
-            //$objsKunenaForumTopic = $var;
-            require_once(MBQ_APPEXTENTION_PATH.'ExttMbqKunenaForumTopicHelper.php');
-            $objsKunenaForumTopic = ExttMbqKunenaForumTopicHelper::exttMbqFetchNewStatus($var);
+            if (MbqMain::hasLogin()) {
+                require_once(MBQ_APPEXTENTION_PATH.'ExttMbqKunenaForumTopicHelper.php');
+                $objsKunenaForumTopic = ExttMbqKunenaForumTopicHelper::exttMbqFetchNewStatus($var);
+            } else {
+                $objsKunenaForumTopic = $var;
+            }
             /* common begin */
             $objsMbqEtForumTopic = array();
             $authorUserIds = array();
@@ -261,7 +264,7 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
         $mbqOpt['oKunenaForumTopicUser'] = isset($mbqOpt['oKunenaForumTopicUser']) ? $mbqOpt['oKunenaForumTopicUser'] : true;
         $mbqOpt['needExttMbqFetchNewStatus'] = isset($mbqOpt['needExttMbqFetchNewStatus']) ? $mbqOpt['needExttMbqFetchNewStatus'] : true;
         if ($mbqOpt['case'] == 'oKunenaForumTopic') {
-            if ($mbqOpt['needExttMbqFetchNewStatus']) {
+            if ($mbqOpt['needExttMbqFetchNewStatus'] && MbqMain::hasLogin()) {
                 require_once(MBQ_APPEXTENTION_PATH.'ExttMbqKunenaForumTopicHelper.php');
                 $objsKunenaForumTopic = ExttMbqKunenaForumTopicHelper::exttMbqFetchNewStatus(array($var));
                 $var = $objsKunenaForumTopic[0];
