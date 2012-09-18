@@ -150,7 +150,7 @@ Class MbqWrEtForumPost extends MbqBaseWrEtForumPost {
             if (! $success) {
                 //$this->app->enqueueMessage ( $message->getError (), 'error' );
                 //$this->redirectBack ();
-                MbqError::alert('', "Can not save!", '', MBQ_ERR_APP);
+                MbqError::alert('', "Can not save!".$message->getError (), '', MBQ_ERR_APP);
             }
     
             // Message has been sent, we can now clear saved form
@@ -340,7 +340,7 @@ Class MbqWrEtForumPost extends MbqBaseWrEtForumPost {
         			MbqMain::$oMbqAppEnv->oApp->setUserState('com_kunena.postfields', $fields);
         			//$this->app->enqueueMessage ( $message->getError (), 'error' );
         			//$this->redirectBack ();
-                    MbqError::alert('', "Can not save!", '', MBQ_ERR_APP);
+                    MbqError::alert('', "Can not save!".$message->getError (), '', MBQ_ERR_APP);
         		}
         		// Display possible warnings (upload failed etc)
         		foreach ( $message->getErrors () as $warning ) {

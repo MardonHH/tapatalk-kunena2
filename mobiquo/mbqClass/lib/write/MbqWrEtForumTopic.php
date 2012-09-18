@@ -206,7 +206,7 @@ Class MbqWrEtForumTopic extends MbqBaseWrEtForumTopic {
             if (! $success) {
                 //$this->app->enqueueMessage ( $message->getError (), 'error' );
                 //$this->redirectBack ();
-                MbqError::alert('', "Can not save!", '', MBQ_ERR_APP);
+                MbqError::alert('', "Can not save!".$message->getError (), '', MBQ_ERR_APP);
             }
     
             // Message has been sent, we can now clear saved form
