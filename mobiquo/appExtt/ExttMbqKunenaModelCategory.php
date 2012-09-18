@@ -237,6 +237,7 @@ class ExttMbqKunenaModelCategory extends KunenaAdminModelCategories {
 	 * $params['limit'] means the data num per page,in the original getTopics() method it always be changed to config setting,so add this parameter to hack it.
 	 */
 	public function exttMbqGetTopics($params = array()) {
+	    $exttMbqOldParams = $params;
 		if ($this->topics === false) {
 			//$catid = $this->getState ( 'item.id');
 			$catid = $params['catId'];
@@ -269,6 +270,7 @@ class ExttMbqKunenaModelCategory extends KunenaAdminModelCategories {
 			if ($format == 'feed') {
 				$catid = array_keys(KunenaForumCategoryHelper::getChildren($catid, 100)+array($catid=>1));
 			}
+			if ($exttMbqOldParams['where']) $params['where'] = $exttMbqOldParams['where'];
 			list($this->total, $this->topics) = KunenaForumTopicHelper::getLatestTopics($catid, $limitstart, $limit, $params);
 			if ($this->total > 0) {
 				// collect user ids for avatar prefetch when integrated

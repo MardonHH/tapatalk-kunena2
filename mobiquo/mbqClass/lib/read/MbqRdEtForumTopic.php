@@ -79,6 +79,7 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
      * $mbqOpt['case'] = 'byTopicIds' means get data by topic ids.$var is the ids.
      * $mbqOpt['case'] = 'byAuthor' means get data by author.$var is the MbqEtUser obj.
      * $mbqOpt['top'] = true means get sticky data.
+     * $mbqOpt['notIncludeTop'] = true means get not sticky data.
      * @return  Mixed
      */
     public function getObjsMbqEtForumTopic($var, $mbqOpt) {
@@ -95,11 +96,11 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
                 } else {
                     require_once(MBQ_APPEXTENTION_PATH.'ExttMbqKunenaModelCategory.php');
                     $oExttMbqKunenaModelCategory = new ExttMbqKunenaModelCategory();
-                    //$oExttMbqKunenaModelCategory->setState('item.id', $oMbqEtForum->forumId->oriValue);
-                    //$oExttMbqKunenaModelCategory->setState('list.start', $oMbqDataPage->startNum);
-                    //$oExttMbqKunenaModelCategory->setState('list.limit', $oMbqDataPage->numPerPage);
-                    //$objsKunenaForumTopic = $oExttMbqKunenaModelCategory->exttMbqGetTopics(array('catId' => $oMbqEtForum->forumId->oriValue, 'start' => $oMbqDataPage->startNum, 'limit' => $oMbqDataPage->numPerPage));
-                    $arr = $oExttMbqKunenaModelCategory->exttMbqGetTopics(array('catId' => $oMbqEtForum->forumId->oriValue, 'start' => $oMbqDataPage->startNum, 'limit' => $oMbqDataPage->numPerPage));
+                    if ($mbqOpt['notIncludeTop']) {
+                        $arr = $oExttMbqKunenaModelCategory->exttMbqGetTopics(array('catId' => $oMbqEtForum->forumId->oriValue, 'start' => $oMbqDataPage->startNum, 'limit' => $oMbqDataPage->numPerPage, 'where' => 'AND tt.ordering = 0'));
+                    } else {
+                        $arr = $oExttMbqKunenaModelCategory->exttMbqGetTopics(array('catId' => $oMbqEtForum->forumId->oriValue, 'start' => $oMbqDataPage->startNum, 'limit' => $oMbqDataPage->numPerPage));
+                    }
                     $objsKunenaForumTopic = $arr['topics'];
                     $oMbqDataPage->totalNum = $arr['total'];
                 }
