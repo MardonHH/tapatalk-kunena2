@@ -28,7 +28,9 @@
 11.support is_sticky/is_closed flag for topic
 12.support subscribe flags for forum and topic:is_subscribed/can_subscribed
 13.fixed bug:return wrong quoted user name when get quote post content
-14.fixed some other bugs
+14.modify:not include sticky topics when get standard forum topics in get_topic method
+15.return correct new_post flag when get topic data
+16.fixed some other bugs
 
 For more important update info please visit:
 http://support.tapatalk.com/threads/tapatalk-for-kunena-plugin-release-announcement-and-changelog.6632

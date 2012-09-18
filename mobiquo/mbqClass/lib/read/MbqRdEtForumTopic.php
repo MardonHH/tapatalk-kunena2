@@ -141,7 +141,9 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
             return $this->getObjsMbqEtForumTopic($objsKunenaForumTopic, $mbqOpt);
             /* common end */
         } elseif ($mbqOpt['case'] == 'byObjsKunenaForumTopic') {
-            $objsKunenaForumTopic = $var;
+            //$objsKunenaForumTopic = $var;
+            require_once(MBQ_APPEXTENTION_PATH.'ExttMbqKunenaForumTopicHelper.php');
+            $objsKunenaForumTopic = ExttMbqKunenaForumTopicHelper::exttMbqFetchNewStatus($var);
             /* common begin */
             $objsMbqEtForumTopic = array();
             $authorUserIds = array();
@@ -149,7 +151,7 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
             $forumIds = array();
             $topicIds = array();
             foreach ($objsKunenaForumTopic as $oKunenaForumTopic) {
-                $objsMbqEtForumTopic[] = $this->initOMbqEtForumTopic($oKunenaForumTopic, array('case' => 'oKunenaForumTopic', 'withAuthor' => false, 'oMbqEtForum' => false, 'oKunenaForumTopicUser' => false, 'oLastReplyMbqEtUser' => false));
+                $objsMbqEtForumTopic[] = $this->initOMbqEtForumTopic($oKunenaForumTopic, array('case' => 'oKunenaForumTopic', 'withAuthor' => false, 'oMbqEtForum' => false, 'oKunenaForumTopicUser' => false, 'oLastReplyMbqEtUser' => false, 'needExttMbqFetchNewStatus' => false));
             }
             foreach ($objsMbqEtForumTopic as $oMbqEtForumTopic) {
                 $authorUserIds[$oMbqEtForumTopic->topicAuthorId->oriValue] = $oMbqEtForumTopic->topicAuthorId->oriValue;
@@ -247,6 +249,8 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
      * $mbqOpt['oMbqEtForum'] = true means load oMbqEtForum property of this topic,default is true
      * $mbqOpt['oFirstMbqEtForumPost'] = true means load oFirstMbqEtForumPost property of this topic,default is true
      * $mbqOpt['oKunenaForumTopicUser'] = true means load oKunenaForumTopicUser bind property of this topic,default is true
+     * $mbqOpt['needExttMbqFetchNewStatus'] = true means need execute the ExttMbqKunenaForumTopicHelper::exttMbqFetchNewStatus() method when init forum topic by KunenaForumCategory obj,default is true
+     * 
      * @return  Mixed
      */
     public function initOMbqEtForumTopic($var, $mbqOpt) {
@@ -255,7 +259,13 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
         $mbqOpt['oMbqEtForum'] = isset($mbqOpt['oMbqEtForum']) ? $mbqOpt['oMbqEtForum'] : true;
         $mbqOpt['oFirstMbqEtForumPost'] = isset($mbqOpt['oFirstMbqEtForumPost']) ? $mbqOpt['oFirstMbqEtForumPost'] : true;
         $mbqOpt['oKunenaForumTopicUser'] = isset($mbqOpt['oKunenaForumTopicUser']) ? $mbqOpt['oKunenaForumTopicUser'] : true;
+        $mbqOpt['needExttMbqFetchNewStatus'] = isset($mbqOpt['needExttMbqFetchNewStatus']) ? $mbqOpt['needExttMbqFetchNewStatus'] : true;
         if ($mbqOpt['case'] == 'oKunenaForumTopic') {
+            if ($mbqOpt['needExttMbqFetchNewStatus']) {
+                require_once(MBQ_APPEXTENTION_PATH.'ExttMbqKunenaForumTopicHelper.php');
+                $objsKunenaForumTopic = ExttMbqKunenaForumTopicHelper::exttMbqFetchNewStatus(array($var));
+                $var = $objsKunenaForumTopic[0];
+            }
             $oMbqEtForumTopic = MbqMain::$oClk->newObj('MbqEtForumTopic');
             $oMbqEtForumTopic->totalPostNum->setOriValue($var->posts);
             $oMbqEtForumTopic->topicId->setOriValue($var->id);

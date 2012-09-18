@@ -6,6 +6,7 @@ require_once(KPATH_ADMIN.'/libraries/forum/topic/helper.php');
  * for kunena 2.0.1/2.0.2
  * ExttMbqKunenaForumTopicHelper extended from KunenaForumTopicHelper
  * add method exttMbqGetLatestTopics() modified from method getLatestTopics().
+ * add method exttMbqFetchNewStatus() modified from method fetchNewStatus().
  * 
  * @since  2012-8-28
  * @modified by Wu ZeTao <578014287@qq.com>
@@ -168,6 +169,51 @@ abstract class ExttMbqKunenaForumTopicHelper extends KunenaForumTopicHelper {
         KUNENA_PROFILER ? KunenaProfiler::instance()->stop('function '.__CLASS__.'::'.__FUNCTION__.'()') : null;
         return array($total, $topics);
     }
+    
+    static public function exttMbqFetchNewStatus($topics, $user = null) {
+		$user = KunenaUserHelper::get($user);
+		if (!KunenaFactory::getConfig()->shownew || empty($topics) || !$user->exists()) {
+			return array();
+		}
+		$session = KunenaFactory::getSession ();
+
+		$ids = array();
+		foreach ($topics as $topic) {
+			if ($topic->last_post_time < $session->lasttime) continue;
+			$allreadtime = $topic->getCategory()->getUserInfo()->allreadtime;
+			if ($allreadtime && $topic->last_post_time < JFactory::getDate($allreadtime)->toUnix()) continue;
+			$ids[] = $topic->id;
+		}
+
+		if ($ids) {
+			$topiclist = array();
+			$idstr = implode ( ",", $ids );
+
+			$db = JFactory::getDBO ();
+			$db->setQuery ( "SELECT m.thread AS id, MIN(m.id) AS lastread, SUM(1) AS unread
+				FROM #__kunena_messages AS m
+				LEFT JOIN #__kunena_user_read AS ur ON ur.topic_id=m.thread AND user_id={$db->Quote($user->userid)}
+				WHERE m.hold=0 AND m.moved=0 AND m.thread IN ({$idstr}) AND m.time>{$db->Quote($session->lasttime)} AND (ur.time IS NULL OR m.time>ur.time)
+				GROUP BY thread" );
+			$topiclist = (array) $db->loadObjectList ('id');
+			KunenaError::checkDatabaseError ();
+		}
+
+		$list = array();
+		//foreach ( $topics as $topic ) {
+		foreach ( $topics as &$topic ) {
+			if (isset($topiclist[$topic->id])) {
+				$topic->lastread = $topiclist[$topic->id]->lastread;
+				$topic->unread = $topiclist[$topic->id]->unread;
+			} else {
+				$topic->lastread = $topic->last_post_id;
+				$topic->unread = 0;
+			}
+			$list[$topic->id] = $topic->lastread;
+		}
+		return $topics;
+		//return $list;
+	}
     
 }
 
