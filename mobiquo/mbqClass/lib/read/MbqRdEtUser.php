@@ -112,7 +112,8 @@ Class MbqRdEtUser extends MbqBaseRdEtUser {
             $oMbqEtUser->iconUrl->setOriValue($var['oKunenaUser']->getAvatarURL());
             $oMbqEtUser->canSearch->setOriValue(MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.canSearch.range.yes'));
             $oMbqEtUser->postCount->setOriValue($var['oKunenaUser']->posts);
-            $oMbqEtUser->displayText->setOriValue($var['oKunenaUser']->signature);
+            //$oMbqEtUser->displayText->setOriValue($var['oKunenaUser']->signature);
+            $oMbqEtUser->displayText->setOriValue($var['oKunenaUser']->getRank(0, 'title'));
             $oMbqEtUser->regTime->setOriValue(strtotime($oJUser->registerDate));
             $oMbqEtUser->lastActivityTime->setOriValue(strtotime($oJUser->lastvisitDate));
             $oMbqEtUser->isOnline->setOriValue($var['oKunenaUser']->isOnline() ? MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.isOnline.range.yes') : MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.isOnline.range.no'));
