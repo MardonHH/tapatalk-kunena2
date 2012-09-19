@@ -218,7 +218,7 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
                         $oMbqEtForumTopic->isSubscribed->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.isSubscribed.range.no'));
                     }
                     if ($oMbqEtForumTopic->mbqBind['oKunenaForumTopic']) {
-                        if ($oMbqEtForumTopic->mbqBind['oKunenaForumTopic']->authorise('subscribe') && (!$oMbqEtForumTopic->mbqBind['oKunenaForumTopicUser'] || ($oMbqEtForumTopic->mbqBind['oKunenaForumTopicUser'] && !$oMbqEtForumTopic->mbqBind['oKunenaForumTopicUser']->subscribed))) {
+                        if ($oMbqEtForumTopic->mbqBind['oKunenaForumTopic']->authorise('subscribe')) {
                             $oMbqEtForumTopic->canSubscribe->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canSubscribe.range.yes'));
                         } else {
                             $oMbqEtForumTopic->canSubscribe->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canSubscribe.range.no'));
@@ -336,7 +336,7 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
                     $oMbqEtForumTopic->isSubscribed->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.isSubscribed.range.no'));
                 }
                 if ($oMbqEtForumTopic->mbqBind['oKunenaForumTopic']) {
-                    if ($oMbqEtForumTopic->mbqBind['oKunenaForumTopic']->authorise('subscribe') && (!$oMbqEtForumTopic->mbqBind['oKunenaForumTopicUser'] || ($oMbqEtForumTopic->mbqBind['oKunenaForumTopicUser'] && !$oMbqEtForumTopic->mbqBind['oKunenaForumTopicUser']->subscribed))) {
+                    if ($oMbqEtForumTopic->mbqBind['oKunenaForumTopic']->authorise('subscribe')) {
                         $oMbqEtForumTopic->canSubscribe->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canSubscribe.range.yes'));
                     } else {
                         $oMbqEtForumTopic->canSubscribe->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canSubscribe.range.no'));

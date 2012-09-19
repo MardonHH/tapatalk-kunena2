@@ -31,7 +31,14 @@
 14.modify:not include sticky topics when get standard forum topics in get_topic method
 15.return correct new_post flag when get topic data
 16.optimize color convert
-21.fixed some other bugs
+17.optimize output
+18.
+19.
+20.
+21.
+22.
+23.
+24.fixed some other bugs
 
 For more important update info please visit:
 http://support.tapatalk.com/threads/tapatalk-for-kunena-plugin-release-announcement-and-changelog.6632

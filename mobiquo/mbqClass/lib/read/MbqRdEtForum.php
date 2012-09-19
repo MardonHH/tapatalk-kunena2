@@ -145,7 +145,7 @@ Class MbqRdEtForum extends MbqBaseRdEtForum {
             } else {
                 $oMbqEtForum->isSubscribed->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.isSubscribed.range.no'));
             }
-            if (MbqMain::hasLogin() && $var->authorise('subscribe') && !$var->getSubscribed(MbqMain::$oCurMbqEtUser->userId->oriValue)) {
+            if (MbqMain::hasLogin() && $var->authorise('subscribe')) {
                 $oMbqEtForum->canSubscribe->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.canSubscribe.range.yes'));
             } else {
                 $oMbqEtForum->canSubscribe->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.canSubscribe.range.no'));
