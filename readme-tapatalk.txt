@@ -19,7 +19,7 @@
 2.substantially modified the plugin development framework for easy using on plugin development
 3.fixed some compatibility issues in different Joomla! version for example Joomla! 1.5.x/2.5.x 
 4.fixed bug:can not get the correct attaments in the first post of topic
-5.support upload attachment
+5.support upload/delete attachment
 6.support edit post(get_raw_post/save_raw_post)
 7.support get_online_users
 8.support subscribe_forum/unsubscribe_forum/subscribe_topic/unsubscribe_topic
@@ -32,15 +32,10 @@
 15.return correct new_post flag when get topic data
 16.optimize color convert
 17.optimize output
-18.
-19.
-20.
-21.
-22.
-23.
-24.fixed some other bugs
+18.optimize bbcode support
+19.fixed some other bugs
 
 For more important update info please visit:
 http://support.tapatalk.com/threads/tapatalk-for-kunena-plugin-release-announcement-and-changelog.6632
 
-20120918
+20120919

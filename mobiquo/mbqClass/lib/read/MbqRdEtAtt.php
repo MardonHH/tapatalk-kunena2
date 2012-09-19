@@ -29,7 +29,6 @@ Class MbqRdEtAtt extends MbqBaseRdEtAtt {
      * @param  Mixed  $var
      * @param  Array  $mbqOpt
      * $mbqOpt['case'] = 'byForumPostIds' means get data by forum post ids.$var is the ids.
-     * $mbqOpt['case'] = 'byAttIds' means get data by attachment ids.$var is the ids.
      * @return  Mixed
      */
     public function getObjsMbqEtAtt($var, $mbqOpt) {
@@ -37,13 +36,6 @@ Class MbqRdEtAtt extends MbqBaseRdEtAtt {
             $postIds = $var;
             require_once(MBQ_APPEXTENTION_PATH.'ExttMbqKunenaForumMessageAttachmentHelper.php');
             $objsKunenaForumMessageAttachment = ExttMbqKunenaForumMessageAttachmentHelper::getByMessage($postIds);
-            $objsMbqEtAtt = array();
-            foreach ($objsKunenaForumMessageAttachment as $oKunenaForumMessageAttachment) {
-                $objsMbqEtAtt[] = $this->initOMbqEtAtt($oKunenaForumMessageAttachment, array('case' => 'oKunenaForumMessageAttachment'));
-            }
-            return $objsMbqEtAtt;
-        } elseif ($mbqOpt['case'] == 'byAttIds') {
-            $objsKunenaForumMessageAttachment = KunenaForumMessageAttachmentHelper::getById($var);
             $objsMbqEtAtt = array();
             foreach ($objsKunenaForumMessageAttachment as $oKunenaForumMessageAttachment) {
                 $objsMbqEtAtt[] = $this->initOMbqEtAtt($oKunenaForumMessageAttachment, array('case' => 'oKunenaForumMessageAttachment'));
@@ -59,10 +51,17 @@ Class MbqRdEtAtt extends MbqBaseRdEtAtt {
      * @param  Mixed  $var
      * @param  Array  $mbqOpt
      * $mbqOpt['case'] = 'oKunenaForumMessageAttachment' means init attachment by KunenaForumMessageAttachment obj
+     * $mbqOpt['case'] = 'byAttId' means init attachment by attachment id
      * @return  Mixed
      */
     public function initOMbqEtAtt($var, $mbqOpt) {
-        if ($mbqOpt['case'] == 'oKunenaForumMessageAttachment') {
+        if ($mbqOpt['case'] == 'byAttId') {
+            if (($oKunenaForumMessageAttachment = KunenaForumMessageAttachmentHelper::get($var)) && $oKunenaForumMessageAttachment->id) {
+                $mbqOpt['case'] = 'oKunenaForumMessageAttachment';
+                return $this->initOMbqEtAtt($oKunenaForumMessageAttachment, $mbqOpt);
+            }
+            return false;
+        } elseif ($mbqOpt['case'] == 'oKunenaForumMessageAttachment') {
             $oMbqEtAtt = MbqMain::$oClk->newObj('MbqEtAtt');
             $oMbqEtAtt->attId->setOriValue($var->id);
             $oMbqEtAtt->postId->setOriValue($var->mesid);

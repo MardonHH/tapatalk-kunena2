@@ -55,6 +55,17 @@ Class MbqWrEtAtt extends MbqBaseWrEtAtt {
         	}
 		}
     }
+    
+    /**
+     * delete attachment
+     *
+     * @param  Object  $oMbqEtAtt
+     */
+    public function deleteAttachment($oMbqEtAtt) {
+        if (!$oMbqEtAtt->mbqBind['oKunenaForumMessageAttachment']->delete()) {
+            MbqError::alert('', "Delete attachment failed!", '', MBQ_ERR_APP);
+        }
+    }
   
 }
 

@@ -27,6 +27,20 @@ Class MbqAclEtAtt extends MbqBaseAclEtAtt {
         }
         return false;
     }
+    
+    /**
+     * judge can remove attachment
+     *
+     * @param  Object  $oMbqEtAtt
+     * @param  Object  $oMbqEtForum
+     * @return  Boolean
+     */
+    public function canAclRemoveAttachment($oMbqEtAtt, $oMbqEtForum) {
+        if ($oMbqEtAtt->mbqBind['oKunenaForumMessageAttachment'] && $oMbqEtAtt->mbqBind['oKunenaForumMessageAttachment']->authorise('delete')) {
+            return true;
+        }
+        return false;
+    }
   
 }
 
