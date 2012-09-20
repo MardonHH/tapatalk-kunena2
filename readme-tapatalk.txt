@@ -32,10 +32,10 @@
 15.return correct new_post flag when get topic data
 16.optimize color convert
 17.optimize output
-18.optimize bbcode support
+18.optimize content display format
 19.fixed some other bugs
 
 For more important update info please visit:
 http://support.tapatalk.com/threads/tapatalk-for-kunena-plugin-release-announcement-and-changelog.6632
 
-20120919
+20120920
