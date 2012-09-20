@@ -216,7 +216,7 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
             $oMbqEtForumPost->postTitle->setOriValue($var->subject);
             $oMbqEtForumPost->postContent->setOriValue($var->message);
             $newVar = clone $var;
-            //$newVar->message = MbqMain::$oMbqCm->replaceCode($newVar->message);  /* do some change for process */
+            $newVar->message = MbqMain::$oMbqCm->replaceCode($newVar->message);  /* do some change for process */
             $oMbqEtForumPost->postContent->setAppDisplayValue($oExttMbqKunenaViewTopic->exttMbqReturnDisplayMessageContents($var));
             $oMbqEtForumPost->postContent->setTmlDisplayValue($this->processContentForDisplay($oExttMbqKunenaViewTopic->exttMbqReturnDisplayMessageContents($newVar), true));
             $oMbqEtForumPost->postContent->setTmlDisplayValueNoHtml($this->processContentForDisplay($oExttMbqKunenaViewTopic->exttMbqReturnDisplayMessageContents($newVar), false));
@@ -283,9 +283,9 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
         attention output param:post_content
         */
         $post = $content;
-        //$post = MbqMain::$oMbqCm->unreplaceCode($post);
+        $post = MbqMain::$oMbqCm->unreplaceCode($post);
         /* change the &quot; in quote bbcode to " maked by kunena! */
-        //$post = preg_replace('/\[quote=&quot;(.*?)&quot;.*?\]/i', '[quote="$1"]', $post);
+        $post = preg_replace('/\[quote=&quot;(.*?)&quot;.*?\]/i', '[quote="$1"]', $post);
     	if($returnHtml){
     		//$post = str_replace("&", '&amp;', $post);
     		//$post = str_replace("<", '&lt;', $post);
@@ -313,13 +313,13 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
             // strip remaining bbcode
             //$post = preg_replace('/\[\/?.*?\]/i', '', $post);
     	}
-    	//$post = preg_replace('/\[quote="(.*?)".*?\]/i', '$1 wrote:[quote]', $post);
-    	$post = preg_replace('/<div class="kmsgtext-quote">(.*?)<\/div>/is', '[quote]$1[/quote]', $post);
-    	$post = preg_replace('/<div class="highlight"><pre xml\:php>(.*?)<\/pre><\/div>/is', '[quote]$1[/quote]', $post);
-    	$post = preg_replace('/<div class="kmsgtext\-hide">(.*?)<\/div>/is', '[quote]$1[/quote]', $post);
-    	$post = preg_replace('/<div class="kmsgtext-confidential">(.*?)<\/div>/is', '[quote]$1[/quote]', $post);
-    	$post = preg_replace('/<a .*?><img .*?src="(.*?)" .*?\/><\/a>/is', '[img]$1[/img]', $post);
-    	$post = preg_replace('/<a .*?href="(.*?)".*?>(.*?)<\/a>/is', '[url=$1]$2[/url]', $post);
+    	$post = preg_replace('/\[quote="(.*?)".*?\]/i', '$1 wrote:[quote]', $post);
+    	$post = preg_replace('/<div class="kmsgtext-quote">(.*?)<\/div>/i', '[quote]$1[/quote]', $post);
+    	$post = preg_replace('/<div class="highlight"><pre xml\:php>(.*?)<\/pre><\/div>/i', '[quote]$1[/quote]', $post);
+    	$post = preg_replace('/<div class="kmsgtext\-hide">(.*?)<\/div>/i', '[quote]$1[/quote]', $post);
+    	$post = preg_replace('/<div class="kmsgtext-confidential">(.*?)<\/div>/i', '[quote]$1[/quote]', $post);
+    	$post = preg_replace('/<a .*?><img .*?src="(.*?)" .*?\/><\/a>/i', '[img]$1[/img]', $post);
+    	$post = preg_replace('/<a .*?href="(.*?)".*?>(.*?)<\/a>/i', '[url=$1]$2[/url]', $post);
     	/* replace the expression begin */
     	$post = preg_replace('/<img .*?src=".*?cool.png" .*?class="bbcode_smiley" \/>/i', 'B)', $post);
     	$post = preg_replace('/<img .*?src=".*?sad.png" .*?class="bbcode_smiley" \/>/i', ':(', $post);
@@ -352,12 +352,11 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
     	$post = str_ireplace('</strong>', '</b>', $post);
     	$post = preg_replace_callback('/<span style=\"color:(\#.*?)\">(.*?)<\/span>/is', create_function('$matches','return MbqMain::$oMbqCm->mbColorConvert($matches[1], $matches[2]);'), $post);
     	$post = preg_replace('/<object .*?>.*?<embed src="(.*?)".*?><\/embed><\/object>/is', '[url=$1]$1[/url]', $post); /* for youtube content etc. */
-    	$post = preg_replace('/<div class="bbcode_indent".*?>(.*?)<\/div>/is', "\t\t".'$1', $post);
-    	$post = preg_replace('/<div class="kspoiler".*?><div class="kspoiler\-header".*?>.*?<\/div><div class="kspoiler\-wrapper".*?><div class="kspoiler\-content".*?>(.*?)<\/div><\/div><\/div>/is', '[spoiler]$1[/spoiler]', $post);
+    	$post = preg_replace('/<div class="bbcode_indent".*?>(.*?)<\/div>/i', "\t\t".'$1', $post);
+    	$post = preg_replace('/<div class="kspoiler".*?><div class="kspoiler\-header".*?>.*?<\/div><div class="kspoiler\-wrapper".*?><div class="kspoiler\-content".*?>(.*?)<\/div><\/div><\/div>/i', '[spoiler]$1[/spoiler]', $post);
     	$post = str_ireplace('</div>', '</div><br />', $post);
     	if ($returnHtml) {
     	    $post = strip_tags($post, '<br><i><b><u><font>');
-    	    //MbqCm::writeLog(print_r($post, true));
         } else {
     	    $post = strip_tags($post);
         }
