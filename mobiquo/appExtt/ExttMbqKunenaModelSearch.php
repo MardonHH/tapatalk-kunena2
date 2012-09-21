@@ -125,7 +125,7 @@ class ExttMbqKunenaModelSearch extends KunenaModelSearch {
         $limitstart = $this->getState('list.start');
         $limit = $this->getState('list.limit');
         list($this->total, $this->messages) = KunenaForumMessageHelper::getLatestMessages($this->getState('query.catids'), $limitstart, $limit, $params);
-
+        /*
         if ($this->total < $limitstart)
             $this->setState('list.start', intval($this->total / $limit) * $limit);
 
@@ -145,7 +145,7 @@ class ExttMbqKunenaModelSearch extends KunenaModelSearch {
         KunenaForumMessageHelper::loadLocation($this->messages);
 
         if ( empty($this->messages) ) $this->app->enqueueMessage( JText::sprintf('COM_KUNENA_SEARCH_NORESULTS_FOUND', $q));
-        
+        */
         //return $this->messages;
         return array($this->total, $this->messages);
     }

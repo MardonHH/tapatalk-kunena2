@@ -272,6 +272,7 @@ class ExttMbqKunenaModelCategory extends KunenaAdminModelCategories {
 			}
 			if ($exttMbqOldParams['where']) $params['where'] = $exttMbqOldParams['where'];
 			list($this->total, $this->topics) = KunenaForumTopicHelper::getLatestTopics($catid, $limitstart, $limit, $params);
+			/*
 			if ($this->total > 0) {
 				// collect user ids for avatar prefetch when integrated
 				$userlist = array();
@@ -294,6 +295,7 @@ class ExttMbqKunenaModelCategory extends KunenaAdminModelCategories {
 				}
 
 			}
+			*/
 		}
 		return array('topics' => $this->topics, 'total' => $this->total);
 		//return $this->topics;

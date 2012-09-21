@@ -35,7 +35,7 @@ Class MbqRdEtForum extends MbqBaseRdEtForum {
         $newTree = array();
         $i = 0;
         foreach ($arr as $oKunenaForumCategory) {
-            if ($oKunenaForumCategory->level == $level) {
+            if (($oKunenaForumCategory->level == $level) && $oKunenaForumCategory->id) {
                 $tree[$i]['obj'] = $oKunenaForumCategory;
                 $tree[$i]['children'] = array();
                 $this->exttRecurGetKunenaForumCategoryTree($arr, $tree[$i]);
