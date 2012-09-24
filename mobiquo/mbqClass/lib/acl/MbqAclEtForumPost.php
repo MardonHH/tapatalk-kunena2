@@ -89,6 +89,29 @@ Class MbqAclEtForumPost extends MbqBaseAclEtForumPost {
             return MbqMain::hasLogin();
         }
     }
+    
+    /**
+     * judge can report_post
+     *
+     * @param  Object  $oMbqEtForumPost
+     * @return  Boolean
+     */
+    public function canAclReportPost($oMbqEtForumPost) {
+        if ((MbqMain::$oMbqConfig->getCfg('forum.report_post')->oriValue == MbqBaseFdt::getFdt('MbqFdtConfig.forum.report_post.range.support')) && MbqMain::hasLogin() && $oMbqEtForumPost->mbqBind['oKunenaForumMessage']->authorise('read')) {
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * judge can thank_post
+     *
+     * @param  Object  $oMbqEtForumPost
+     * @return  Boolean
+     */
+    public function canAclThankPost($oMbqEtForumPost) {
+        return $oMbqEtForumPost->canThank->oriValue;
+    }
   
 }
 

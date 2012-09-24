@@ -412,6 +412,180 @@ Class MbqWrEtForumPost extends MbqBaseWrEtForumPost {
             }
         }
     }
+    
+    /**
+     * report post
+     *
+     * @param  Object  $oMbqEtForumPost
+     * @param  Object  $oMbqEtForumReportPost
+     */
+    public function reportPost($oMbqEtForumPost, $oMbqEtForumReportPost) {
+        /* modified from KunenaControllerTopic::report() */
+        /*
+		if (! JRequest::checkToken ()) {
+			$this->app->enqueueMessage ( JText::_ ( 'COM_KUNENA_ERROR_TOKEN' ), 'error' );
+			$this->redirectBack ();
+		}
+		*/
+
+		//if (!$this->me->exists() || $this->config->reportmsg == 0) {
+		if (!MbqMain::$oCurMbqEtUser->mbqBind['oKunenaUser']->exists() || MbqMain::$oMbqAppEnv->oKunenaConfig->reportmsg == 0) {
+			// Deny access if report feature has been disabled or user is guest
+			//$this->app->enqueueMessage ( JText::_ ( 'COM_KUNENA_NO_ACCESS' ), 'notice' );
+			//$this->redirectBack ();
+			MbqError::alert('', '', '', MBQ_ERR_APP);
+		}
+
+		//if (!$this->config->get('send_emails')) {
+		if (!MbqMain::$oMbqAppEnv->oKunenaConfig->get('send_emails')) {
+			// Emails have been disabled
+			//$this->app->enqueueMessage ( JText::_ ( 'COM_KUNENA_EMAIL_DISABLED' ), 'notice' );
+			//$this->redirectBack ();
+			MbqError::alert('', "Email disabled!", '', MBQ_ERR_APP);
+		}
+		jimport ( 'joomla.mail.helper' );
+		//if (! $this->config->getEmail() || ! JMailHelper::isEmailAddress ( $this->config->getEmail() )) {
+		if (! MbqMain::$oMbqAppEnv->oKunenaConfig->getEmail() || ! JMailHelper::isEmailAddress ( MbqMain::$oMbqAppEnv->oKunenaConfig->getEmail() )) {
+			// Error: email address is invalid
+			//$this->app->enqueueMessage ( JText::_ ( 'COM_KUNENA_EMAIL_INVALID' ), 'error' );
+			//$this->redirectBack ();
+			MbqError::alert('', "Email is invalid!", '', MBQ_ERR_APP);
+		}
+
+		// Get target object for the report
+		/*
+		if ($this->mesid) {
+			$message = $target = KunenaForumMessageHelper::get($this->mesid);
+			$topic = $target->getTopic();
+		} else {
+			$topic = $target = KunenaForumTopicHelper::get($this->id);
+			$message = KunenaForumMessageHelper::get($topic->first_post_id);
+		}
+		*/
+		$message = $target = $oMbqEtForumPost->mbqBind['oKunenaForumMessage'];
+		$topic = $oMbqEtForumPost->oMbqEtForumTopic->mbqBind['oKunenaForumTopic'];
+		$messagetext = $message->message;
+		$baduser = KunenaFactory::getUser($message->userid);
+
+		if (!$target->authorise('read')) {
+			// Deny access if user cannot read target
+			//$this->app->enqueueMessage ( $target->getError(), 'notice' );
+			//$this->redirectBack ();
+			MbqError::alert('', '', '', MBQ_ERR_APP);
+		}
+		$category = $topic->getCategory();
+
+		//$reason = JRequest::getString ( 'reason' );
+		//$text = JRequest::getString ( 'text' );
+		$reason = $oMbqEtForumReportPost->reason->oriValue;
+		$text = '';
+
+		if (empty ( $reason ) && empty ( $text )) {
+			// Do nothing: empty subject or reason is empty
+			//$this->app->enqueueMessage ( JText::_ ( 'COM_KUNENA_REPORT_FORG0T_SUB_MES' ) );
+			//$this->redirectBack ();
+			MbqError::alert('', "Need valid report reason!", '', MBQ_ERR_APP);
+		} else {
+			$acl = KunenaAccess::getInstance();
+			//$emailToList = $acl->getSubscribers($topic->category_id, $topic->id, false, true, false, $this->me->userid);
+			$emailToList = $acl->getSubscribers($topic->category_id, $topic->id, false, true, false, MbqMain::$oCurMbqEtUser->mbqBind['oKunenaUser']->userid);
+
+			if (!empty ( $emailToList )) {
+				//$mailsender = JMailHelper::cleanAddress ( $this->config->board_title . ' ' . JText::_ ( 'COM_KUNENA_FORUM' ) . ': ' . $this->me->getName() );
+				$mailsender = JMailHelper::cleanAddress ( MbqMain::$oMbqAppEnv->oKunenaConfig->board_title . ' ' . JText::_ ( 'COM_KUNENA_FORUM' ) . ': ' . MbqMain::$oCurMbqEtUser->mbqBind['oKunenaUser']->getName() );
+				//$mailsubject = "[" . $this->config->board_title . " " . JText::_ ( 'COM_KUNENA_FORUM' ) . "] " . JText::_ ( 'COM_KUNENA_REPORT_MSG' ) . ": ";
+				$mailsubject = "[" . MbqMain::$oMbqAppEnv->oKunenaConfig->board_title . " " . JText::_ ( 'COM_KUNENA_FORUM' ) . "] " . JText::_ ( 'COM_KUNENA_REPORT_MSG' ) . ": ";
+				if ($reason) {
+					$mailsubject .= $reason;
+				} else {
+					$mailsubject .= $topic->subject;
+				}
+
+				jimport ( 'joomla.environment.uri' );
+				$msglink = JUri::getInstance()->toString(array('scheme', 'host', 'port')) . $target->getPermaUrl(null, false);
+
+				//$mailmessage = "" . JText::_ ( 'COM_KUNENA_REPORT_RSENDER' ) . " {$this->me->username} ({$this->me->name})";
+				$mailmessage = "" . JText::_ ( 'COM_KUNENA_REPORT_RSENDER' ) . " ".MbqMain::$oCurMbqEtUser->mbqBind['oKunenaUser']->username." (".MbqMain::$oCurMbqEtUser->mbqBind['oKunenaUser']->name.")";
+				$mailmessage .= "\n";
+				$mailmessage .= "" . JText::_ ( 'COM_KUNENA_REPORT_RREASON' ) . " " . $reason;
+				$mailmessage .= "\n";
+				$mailmessage .= "" . JText::_ ( 'COM_KUNENA_REPORT_RMESSAGE' ) . " " . $text;
+				$mailmessage .= "\n\n";
+				$mailmessage .= "" . JText::_ ( 'COM_KUNENA_REPORT_POST_POSTER' ) . " {$baduser->username} ({$baduser->name})";
+				$mailmessage .= "\n";
+				$mailmessage .= "" . JText::_ ( 'COM_KUNENA_REPORT_POST_SUBJECT' ) . ": " . $topic->subject;
+				$mailmessage .= "\n";
+				$mailmessage .= "" . JText::_ ( 'COM_KUNENA_REPORT_POST_MESSAGE' ) . "\n-----\n" . KunenaHtmlParser::stripBBCode($messagetext, 0, false);
+				$mailmessage .= "\n-----\n\n";
+				$mailmessage .= "" . JText::_ ( 'COM_KUNENA_REPORT_POST_LINK' ) . " " . $msglink;
+				$mailmessage = JMailHelper::cleanBody ( strtr ( $mailmessage, array ('&#32;' => '' ) ) );
+
+				foreach ( $emailToList as $emailTo ) {
+					if (! $emailTo->email || ! JMailHelper::isEmailAddress ( $emailTo->email ))
+						continue;
+
+					//JUtility::sendMail ( $this->config->getEmail(), $mailsender, $emailTo->email, $mailsubject, $mailmessage );
+					JUtility::sendMail ( MbqMain::$oMbqAppEnv->oKunenaConfig->getEmail(), $mailsender, $emailTo->email, $mailsubject, $mailmessage );
+				}
+
+				//$this->app->enqueueMessage ( JText::_ ( 'COM_KUNENA_REPORT_SUCCESS' ) );
+			} else {
+				//$this->app->enqueueMessage ( JText::_ ( 'COM_KUNENA_REPORT_NOT_SEND' ) );
+			    MbqError::alert('', "Report not send!", '', MBQ_ERR_APP);
+			}
+		}
+		//$this->app->redirect ( $target->getUrl($this->return, false) );
+    }
+    
+    /**
+     * thank post
+     *
+     * @param  Object  $oMbqEtForumPost
+     * @param  Object  $oMbqEtThank
+     */
+    public function thankPost($oMbqEtForumPost, $oMbqEtThank) {
+        /* modified from KunenaControllerTopic::setThankyou() */
+        /*
+		if (! JRequest::checkToken ('get')) {
+			$this->app->enqueueMessage ( JText::_ ( 'COM_KUNENA_ERROR_TOKEN' ), 'error' );
+			$this->redirectBack ();
+		}
+		*/
+
+		//$message = KunenaForumMessageHelper::get($this->mesid);
+		$message = $oMbqEtForumPost->mbqBind['oKunenaForumMessage'];
+		//if (!$message->authorise($type)) {
+		if (!$message->authorise('thankyou')) {
+			//$this->app->enqueueMessage ( $message->getError() );
+			//$this->redirectBack ();
+			MbqError::alert('', '', '', MBQ_ERR_APP);
+		}
+
+		//$category = KunenaForumCategoryHelper::get($this->catid);
+		//$thankyou = KunenaForumMessageThankyouHelper::get($this->mesid);
+		$thankyou = KunenaForumMessageThankyouHelper::get($oMbqEtForumPost->postId->oriValue);
+		$activityIntegration = KunenaFactory::getActivityIntegration();
+		//if ( $type== 'thankyou') {
+			//if (!$thankyou->save ( $this->me )) {
+			if (!$thankyou->save ( MbqMain::$oCurMbqEtUser->mbqBind['oKunenaUser'] )) {
+				//$this->app->enqueueMessage ( $thankyou->getError() );
+				//$this->redirectBack ();
+				MbqError::alert('', $thankyou->getError(), '', MBQ_ERR_APP);
+			}
+			//$activityIntegration->onAfterThankyou($this->me->userid, $message->userid, $message);
+			$activityIntegration->onAfterThankyou(MbqMain::$oCurMbqEtUser->mbqBind['oKunenaUser']->userid, $message->userid, $message);
+	    /*
+		} else {
+			$userid = JRequest::getInt('userid','0');
+			if (!$thankyou->delete ( $userid )) {
+				$this->app->enqueueMessage ( $thankyou->getError() );
+				$this->redirectBack ();
+			}
+			$activityIntegration->onAfterUnThankyou($userid, $this->me->userid, $message);
+		}
+		*/
+		//$this->setRedirect($message->getUrl($category->exists() ? $category->id : $message->catid, false));
+    }
   
 }
 
