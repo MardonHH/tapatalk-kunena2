@@ -312,15 +312,38 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
             } else {
                 $oMbqEtForumTopic->isSticky->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.isSticky.range.no'));
             }
+            if ($oMbqEtForumTopic->mbqBind['oKunenaForumTopic']->authorise('sticky')) {
+                $oMbqEtForumTopic->canStick->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canStick.range.yes'));
+            } else {
+                $oMbqEtForumTopic->canStick->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canStick.range.no'));
+            }
             if ($oMbqEtForumTopic->mbqBind['oKunenaForumTopic']->hold == 3 || $oMbqEtForumTopic->mbqBind['oKunenaForumTopic']->hold == 2) {
                 $oMbqEtForumTopic->isDeleted->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.isDeleted.range.yes'));
             } else {
                 $oMbqEtForumTopic->isDeleted->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.isDeleted.range.no'));
             }
+            if ($oMbqEtForumTopic->isDeleted->oriValue) {
+                if ($oMbqEtForumTopic->mbqBind['oKunenaForumTopic']->authorise('undelete')) {
+                    $oMbqEtForumTopic->canDelete->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canDelete.range.yes'));
+                } else {
+                    $oMbqEtForumTopic->canDelete->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canDelete.range.no'));
+                }
+            } else {
+                if ($oMbqEtForumTopic->mbqBind['oKunenaForumTopic']->authorise('delete')) {
+                    $oMbqEtForumTopic->canDelete->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canDelete.range.yes'));
+                } else {
+                    $oMbqEtForumTopic->canDelete->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canDelete.range.no'));
+                }
+            }
             if ($oMbqEtForumTopic->mbqBind['oKunenaForumTopic']->locked == 1) {
                 $oMbqEtForumTopic->isClosed->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.isClosed.range.yes'));
             } else {
                 $oMbqEtForumTopic->isClosed->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.isClosed.range.no'));
+            }
+            if ($oMbqEtForumTopic->mbqBind['oKunenaForumTopic']->authorise('lock')) {
+                $oMbqEtForumTopic->canClose->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canClose.range.yes'));
+            } else {
+                $oMbqEtForumTopic->canClose->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canClose.range.no'));
             }
             if ($mbqOpt['oKunenaForumTopicUser']) {
                 /* load oKunenaForumTopicUser */

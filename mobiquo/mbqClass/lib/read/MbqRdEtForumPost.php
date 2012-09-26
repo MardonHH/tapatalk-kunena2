@@ -294,6 +294,19 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
             } else {
                 $oMbqEtForumPost->isDeleted->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumPost.isDeleted.range.no'));
             }
+            if ($oMbqEtForumPost->isDeleted->oriValue) {
+                if ($oMbqEtForumPost->mbqBind['oKunenaForumMessage']->authorise('undelete')) {
+                    $oMbqEtForumPost->canDelete->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumPost.canDelete.range.yes'));
+                } else {
+                    $oMbqEtForumPost->canDelete->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumPost.canDelete.range.no'));
+                }
+            } else {
+                if ($oMbqEtForumPost->mbqBind['oKunenaForumMessage']->authorise('delete')) {
+                    $oMbqEtForumPost->canDelete->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumPost.canDelete.range.yes'));
+                } else {
+                    $oMbqEtForumPost->canDelete->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumPost.canDelete.range.no'));
+                }
+            }
             if ($mbqOpt['objsMbqEtThank']) {
                 /* load objsMbqEtThank property and make related properties/flags */
                 $this->makeProperty($oMbqEtForumPost, 'objsMbqEtThank');

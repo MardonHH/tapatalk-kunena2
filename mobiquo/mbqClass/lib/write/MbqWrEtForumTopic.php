@@ -337,6 +337,102 @@ Class MbqWrEtForumTopic extends MbqBaseWrEtForumTopic {
             }
         }
     }
+    
+    /**
+     * m_stick_topic
+     *
+     * @param  Object  $oMbqEtForumTopic
+     * @param  Integer  $mode
+     */
+    public function mStickTopic($oMbqEtForumTopic, $mode) {
+        $topic = $oMbqEtForumTopic->mbqBind['oKunenaForumTopic'];
+        if ($mode == 1) {   //stick
+            //modified from KunenaControllerTopic::sticky()
+            if ($topic->sticky(1)) {
+                // Activity integration
+    			$activity = KunenaFactory::getActivityIntegration();
+    			$activity->onAfterSticky($topic, 1);
+            } else {
+                MbqError::alert('', "Stick topic failed!", '', MBQ_ERR_APP);
+            }
+        } elseif ($mode == 2) { //unstick
+            //modified from KunenaControllerTopic::unsticky()
+            if ($topic->sticky(0)) {
+    			// Activity integration
+    			$activity = KunenaFactory::getActivityIntegration();
+    			$activity->onAfterSticky($topic, 0);
+            } else {
+                MbqError::alert('', "Unstick topic failed!", '', MBQ_ERR_APP);
+            }
+        } else {
+            MbqError::alert('', "Need valid mode!", '', MBQ_ERR_APP);
+        }
+    }
+    
+    /**
+     * m_close_topic
+     *
+     * @param  Object  $oMbqEtForumTopic
+     * @param  Integer  $mode
+     */
+    public function mCloseTopic($oMbqEtForumTopic, $mode) {
+        $topic = $oMbqEtForumTopic->mbqBind['oKunenaForumTopic'];
+        if ($mode == 1) {   //reopen
+            //modified from KunenaControllerTopic::unlock()
+    		if ($topic->lock(0)) {
+    			// Activity integration
+    			$activity = KunenaFactory::getActivityIntegration();
+    			$activity->onAfterLock($topic, 0);
+    		} else {
+    			MbqError::alert('', "Reopen topic failed!", '', MBQ_ERR_APP);
+    		}
+        } elseif ($mode == 2) { //close
+            //modified from KunenaControllerTopic::lock()
+    		if ($topic->lock(1)) {
+    			// Activity integration
+    			$activity = KunenaFactory::getActivityIntegration();
+    			$activity->onAfterLock($topic, 1);
+    		} else {
+    			MbqError::alert('', "Close topic failed!", '', MBQ_ERR_APP);
+    		}
+        } else {
+            MbqError::alert('', "Need valid mode!", '', MBQ_ERR_APP);
+        }
+    }
+    
+    /**
+     * m_delete_topic
+     *
+     * @param  Object  $oMbqEtForumTopic
+     * @param  Integer  $mode
+     */
+    public function mDeleteTopic($oMbqEtForumTopic, $mode) {
+        $topic = $oMbqEtForumTopic->mbqBind['oKunenaForumTopic'];
+        if ($mode == 1) {   //soft-delete
+            //modified from KunenaControllerTopic::delete()
+            $hold = KunenaForum::TOPIC_DELETED;
+            if (!$topic->publish($hold)) {
+    			MbqError::alert('', "Delete topic failed!", '', MBQ_ERR_APP);
+            }
+        } elseif ($mode == 2) { //hard-delete
+            MbqError::alert('', "Sorry!Not support hard-delete a topic!", '', MBQ_ERR_APP);
+        } else {
+            MbqError::alert('', "Need valid mode!", '', MBQ_ERR_APP);
+        }
+    }
+    
+    /**
+     * m_undelete_topic
+     *
+     * @param  Object  $oMbqEtForumTopic
+     */
+    public function mUndeleteTopic($oMbqEtForumTopic) {
+        $topic = $oMbqEtForumTopic->mbqBind['oKunenaForumTopic'];
+        //modified from KunenaControllerTopic::undelete()
+        if (!$topic->publish(KunenaForum::PUBLISHED)) {
+            MbqError::alert('', "Undelete topic failed!", '', MBQ_ERR_APP);
+        }
+    }
   
 }
 

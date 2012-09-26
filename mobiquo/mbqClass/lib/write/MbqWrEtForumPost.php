@@ -586,6 +586,40 @@ Class MbqWrEtForumPost extends MbqBaseWrEtForumPost {
 		*/
 		//$this->setRedirect($message->getUrl($category->exists() ? $category->id : $message->catid, false));
     }
+    
+    /**
+     * m_delete_post
+     *
+     * @param  Object  $oMbqEtForumPost
+     * @param  Integer  $mode
+     */
+    public function mDeletePost($oMbqEtForumPost, $mode) {
+        $target = $oMbqEtForumPost->mbqBind['oKunenaForumMessage'];
+        if ($mode == 1) {   //soft-delete
+            //modified from KunenaControllerTopic::delete()
+            $hold = KunenaForum::DELETED;
+            if (!$target->publish($hold)) {
+    			MbqError::alert('', "Delete post failed!", '', MBQ_ERR_APP);
+            }
+        } elseif ($mode == 2) { //hard-delete
+            MbqError::alert('', "Sorry!Not support hard-delete a post!", '', MBQ_ERR_APP);
+        } else {
+            MbqError::alert('', "Need valid mode!", '', MBQ_ERR_APP);
+        }
+    }
+    
+    /**
+     * m_undelete_post
+     *
+     * @param  Object  $oMbqEtForumPost
+     */
+    public function mUndeletePost($oMbqEtForumPost) {
+        $target = $oMbqEtForumPost->mbqBind['oKunenaForumMessage'];
+        //modified from KunenaControllerTopic::undelete()
+        if (!$target->publish(KunenaForum::PUBLISHED)) {
+			MbqError::alert('', "Undelete post failed!", '', MBQ_ERR_APP);
+        }
+    }
   
 }
 

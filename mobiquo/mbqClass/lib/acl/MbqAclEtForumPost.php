@@ -112,6 +112,37 @@ Class MbqAclEtForumPost extends MbqBaseAclEtForumPost {
     public function canAclThankPost($oMbqEtForumPost) {
         return $oMbqEtForumPost->canThank->oriValue;
     }
+    
+    /**
+     * judge can m_delete_post
+     *
+     * @param  Object  $oMbqEtForumPost
+     * @param  Integer  $mode
+     * @return  Boolean
+     */
+    public function canAclMDeletePost($oMbqEtForumPost, $mode) {
+        if ($mode == 1) {   //soft-delete
+            if (!$oMbqEtForumPost->isDeleted->oriValue && $oMbqEtForumPost->mbqBind['oKunenaForumMessage']->authorise('delete')) {
+                return true;
+            }
+        } elseif ($mode == 2) { //hard-delete
+            //not support
+        }
+        return false;
+    }
+    
+    /**
+     * judge can m_undelete_post
+     *
+     * @param  Object  $oMbqEtForumPost
+     * @return  Boolean
+     */
+    public function canAclMUndeletePost($oMbqEtForumPost) {
+        if ($oMbqEtForumPost->isDeleted->oriValue && $oMbqEtForumPost->mbqBind['oKunenaForumMessage']->authorise('undelete')) {
+            return true;
+        }
+        return false;
+    }
   
 }
 
