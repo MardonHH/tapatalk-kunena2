@@ -223,6 +223,50 @@ Class MbqAclEtForumTopic extends MbqBaseAclEtForumTopic {
         }
         return false;
     }
+    
+    /**
+     * judge can m_move_topic
+     *
+     * @param  Object  $oMbqEtForumTopic
+     * @param  Object  $oMbqEtForum
+     * @return  Boolean
+     */
+    public function canAclMMoveTopic($oMbqEtForumTopic, $oMbqEtForum) {
+        if ($oMbqEtForumTopic->canMove->oriValue && $oMbqEtForum->mbqBind['oKunenaForumCategory']->authorise ( 'read' )) {
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * judge can m_rename_topic
+     *
+     * @param  Object  $oMbqEtForumTopic
+     * @return  Boolean
+     */
+    public function canAclMRenameTopic($oMbqEtForumTopic) {
+        return $oMbqEtForumTopic->canRename->oriValue;
+    }
+    
+    /**
+     * judge can m_approve_topic
+     *
+     * @param  Object  $oMbqEtForumTopic
+     * @param  Integer  $mode
+     * @return  Boolean
+     */
+    public function canAclMApproveTopic($oMbqEtForumTopic, $mode) {
+        if ($mode == 1) {   //approve
+            if ($oMbqEtForumTopic->canApprove->oriValue && ($oMbqEtForumTopic->mbqBind['oKunenaForumTopic']->hold == KunenaForum::UNAPPROVED)) {
+                return true;
+            }
+        } elseif ($mode == 2) { //unapprove
+            if ($oMbqEtForumTopic->canApprove->oriValue && ($oMbqEtForumTopic->mbqBind['oKunenaForumTopic']->hold == KunenaForum::PUBLISHED)) {
+                return true;
+            }
+        }
+        return false;
+    }
   
 }
 

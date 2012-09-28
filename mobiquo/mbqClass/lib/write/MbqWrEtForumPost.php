@@ -343,10 +343,11 @@ Class MbqWrEtForumPost extends MbqBaseWrEtForumPost {
                     MbqError::alert('', "Can not save!".$message->getError (), '', MBQ_ERR_APP);
         		}
         		// Display possible warnings (upload failed etc)
+        		/*
         		foreach ( $message->getErrors () as $warning ) {
-        			//$this->app->enqueueMessage ( $warning, 'notice' );
-                    MbqError::alert('', $warning, '', MBQ_ERR_APP);
+        			$this->app->enqueueMessage ( $warning, 'notice' );
         		}
+        		*/
                 
                 /*
         		$poll_title = $fields['poll_title'];
@@ -619,6 +620,42 @@ Class MbqWrEtForumPost extends MbqBaseWrEtForumPost {
         if (!$target->publish(KunenaForum::PUBLISHED)) {
 			MbqError::alert('', "Undelete post failed!", '', MBQ_ERR_APP);
         }
+    }
+    
+    /**
+     * m_move_post
+     *
+     * @param  Object  $oMbqEtForumPost
+     * @param  Mixed  $oTargetMbqEtForum
+     * @param  Mixed  $oTargetMbqEtForumTopic
+     * @param  Mixed  $topicTitle
+     */
+    public function mMovePost($oMbqEtForumPost, $oTargetMbqEtForum, $oTargetMbqEtForumTopic, $topicTitle) {
+        $oMbqWrEtForumTopic = MbqMain::$oClk->newObj('MbqWrEtForumTopic');
+        $oMbqWrEtForumTopic->exttMove(array('oMbqEtForumPost' => $oMbqEtForumPost, 'oTargetMbqEtForumTopic' => $oTargetMbqEtForumTopic, 'oTargetMbqEtForum' => $oTargetMbqEtForum, 'topicTitle' => $topicTitle));
+    }
+    
+    /**
+     * m_approve_post
+     *
+     * @param  Object  $oMbqEtForumPost
+     * @param  Integer  $mode
+     */
+    public function mApprovePost($oMbqEtForumPost, $mode) {
+        $target = $oMbqEtForumPost->mbqBind['oKunenaForumMessage'];
+        if ($mode == 1) {
+            $hold = KunenaForum::PUBLISHED;
+        } elseif ($mode == 2) {
+            $hold = KunenaForum::UNAPPROVED;
+        } else {
+            MbqError::alert('', "Need valid mode!", '', MBQ_ERR_APP);
+        }
+        /* modified from KunenaControllerTopic::approve() */
+		if ($target->publish($hold)) {
+			$target->sendNotification();
+		} else {
+			MbqError::alert('', $target->getError(), '', MBQ_ERR_APP);
+		}
     }
   
 }

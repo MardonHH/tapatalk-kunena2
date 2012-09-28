@@ -12,14 +12,14 @@
 	5. Go to Extensions > Plug-In Manager and search 'Tapatalk' using the Filter box;
 	6. Click the red icon to enable Tapatalk Kunena Plugin if it is not already enabled.
 
-- Kunena 2.0 Series Version 1.0.1 released
+- Kunena 2.0 Series Version 1.1.0 released
 
 1.support kunena 2.0.1/2.0.2
-2.fixed bug:memory exhausted when get forum tree as administrator
-3.optimize content display format
-4.optimize program
+2.support report_post
+3.support thank_post
+4.support basic moderation(m_stick_topic/m_close_topic/m_delete_topic/m_delete_post/m_undelete_topic/m_undelete_post/m_move_topic/m_rename_topic/m_move_post/m_approve_topic/m_approve_post/m_ban_user)
 
 For more important update info please visit:
 http://support.tapatalk.com/threads/tapatalk-for-kunena-plugin-release-announcement-and-changelog.6632
 
-20120921
+20120929

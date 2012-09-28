@@ -124,6 +124,12 @@ Class MbqRdEtUser extends MbqBaseRdEtUser {
             $oMbqEtUser->mbqBind['oJuser'] = $var['oJuser'];
             $oMbqEtUser->mbqBind['oKunenaUser'] = $var['oKunenaUser'];
             $oMbqEtUser->canWhosonline->setOriValue(MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.canWhosonline.range.yes'));
+            $ban = KunenaUserBan::getInstanceByUserid ( $oMbqEtUser->userId->oriValue, true );
+            if ($ban->canBan()) {
+                $oMbqEtUser->canBan->setOriValue(MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.canBan.range.yes'));
+            } else {
+                $oMbqEtUser->canBan->setOriValue(MbqBaseFdt::getFdt('MbqFdtUser.MbqEtUser.canBan.range.no'));
+            }
             return $oMbqEtUser;
         } elseif ($mbqOpt['case'] == 'byUserId') {
             $userIds = array($var);

@@ -433,6 +433,138 @@ Class MbqWrEtForumTopic extends MbqBaseWrEtForumTopic {
             MbqError::alert('', "Undelete topic failed!", '', MBQ_ERR_APP);
         }
     }
+    
+    /**
+     * m_move_topic
+     *
+     * @param  Object  $oMbqEtForumTopic
+     * @param  Object  $oMbqEtForum
+     */
+    public function mMoveTopic($oMbqEtForumTopic, $oMbqEtForum) {
+        $this->exttMove(array('oMbqEtForumTopic' => $oMbqEtForumTopic, 'oTargetMbqEtForum' => $oMbqEtForum));
+    }
+    
+    /**
+     * move for m_move_topic/m_move_post
+     */
+    public function exttMove($mbqOpt) {
+        /* modified from KunenaControllerTopic::move() */
+        /*
+		if (! JRequest::checkToken ()) {
+			$this->app->enqueueMessage ( JText::_ ( 'COM_KUNENA_ERROR_TOKEN' ), 'error' );
+			$this->redirectBack ();
+		}
+		*/
+
+		//$topicId = JRequest::getInt('id', 0);
+		$topicId = $mbqOpt['oMbqEtForumTopic'] ? $mbqOpt['oMbqEtForumTopic']->topicId->oriValue : 0;
+		//$messageId = JRequest::getInt('mesid', 0);
+		$messageId = $mbqOpt['oMbqEtForumPost'] ? $mbqOpt['oMbqEtForumPost']->postId->oriValue : 0;
+		//$targetTopic = JRequest::getInt ( 'targetid', JRequest::getInt ( 'targettopic', 0 ));
+		$targetTopic = $mbqOpt['oTargetMbqEtForumTopic'] ? $mbqOpt['oTargetMbqEtForumTopic']->topicId->oriValue : 0;
+		//$targetCategory = JRequest::getInt ( 'targetcategory', 0 );
+		$targetCategory = $mbqOpt['oTargetMbqEtForum'] ? $mbqOpt['oTargetMbqEtForum']->forumId->oriValue : 0;
+
+		if ($messageId) {
+			$object = KunenaForumMessageHelper::get ( $messageId ); //need moved post
+			$topic = $object->getTopic();
+		} else {
+			$object = KunenaForumTopicHelper::get ( $topicId ); //need moved topic
+			$topic = $object;
+		}
+		if ($targetTopic) {
+			$target = KunenaForumTopicHelper::get( $targetTopic );  //need moved to topic
+		} else {
+			$target = KunenaForumCategoryHelper::get( $targetCategory );    //need moved to forum
+		}
+
+		$error = null;
+		if (!$object->authorise ( 'move' )) {
+			$error = $object->getError();
+			MbqError::alert('', $error, '', MBQ_ERR_APP);
+		} elseif (!$target->authorise ( 'read' )) {
+			$error = $target->getError();
+			MbqError::alert('', $error, '', MBQ_ERR_APP);
+		} else {
+			$changesubject = JRequest::getBool ( 'changesubject', false );
+			//$subject = JRequest::getString ( 'subject', '' );
+			$subject = $mbqOpt['topicTitle'] ? $mbqOpt['topicTitle'] : '';  //new topic title
+			$shadow = JRequest::getBool ( 'shadow', false );
+			$topic_emoticon = JRequest::getInt ( 'topic_emoticon', null );
+			if (!is_null($topic_emoticon)) $topic->icon_id = $topic_emoticon;
+
+			if ($object instanceof KunenaForumMessage) {
+				$mode = JRequest::getWord ( 'mode', 'selected' );
+				switch ($mode) {
+					case 'newer':
+						$ids = new JDate($object->time);
+						break;
+					case 'selected':
+					default:
+						$ids = $object->id;
+						break;
+				}
+			} else {
+				$ids = false;
+			}
+			$targetobject = $topic->move ( $target, $ids, $shadow, $subject, $changesubject );
+			if (!$targetobject) {
+				$error = $topic->getError();
+				MbqError::alert('', $error, '', MBQ_ERR_APP);
+			}
+		}
+		/*
+		if ($error) {
+			$this->app->enqueueMessage ( $error, 'notice' );
+		} else {
+			$this->app->enqueueMessage ( JText::_ ( 'COM_KUNENA_POST_SUCCESS_MOVE' ) );
+		}
+		if ($targetobject) {
+			$this->app->redirect ( $targetobject->getUrl($this->return, false, 'last' ) );
+		} else {
+			$this->app->redirect ( $topic->getUrl($this->return, false, 'first' ) );
+		}
+		*/
+    }
+    
+    /**
+     * m_rename_topic
+     *
+     * @param  Object  $oMbqEtForumTopic
+     * @param  String  $title
+     */
+    public function mRenameTopic($oMbqEtForumTopic, $title) {
+        if ($oFirstMbqEtForumPost = $oMbqEtForumTopic->oFirstMbqEtForumPost) {
+            $oMbqWrEtForumPost = MbqMain::$oClk->newObj('MbqWrEtForumPost');
+            $oFirstMbqEtForumPost->postTitle->setOriValue($title);
+            $oMbqWrEtForumPost->mdfMbqEtForumPost($oFirstMbqEtForumPost, array('case' => 'edit'));
+        } else {
+            MbqError::alert('', 'Need valid oFirstMbqEtForumPost property!', '', MBQ_ERR_APP);
+        }
+    }
+    
+    /**
+     * m_approve_topic
+     *
+     * @param  Object  $oMbqEtForumTopic
+     * @param  Integer  $mode
+     */
+    public function mApproveTopic($oMbqEtForumTopic, $mode) {
+        $target = $oMbqEtForumTopic->mbqBind['oKunenaForumTopic'];
+        if ($mode == 1) {
+            $hold = KunenaForum::PUBLISHED;
+        } elseif ($mode == 2) {
+            $hold = KunenaForum::UNAPPROVED;
+        } else {
+            MbqError::alert('', "Need valid mode!", '', MBQ_ERR_APP);
+        }
+        /* modified from KunenaControllerTopic::approve() */
+		if ($target->publish($hold)) {
+			$target->sendNotification();
+		} else {
+			MbqError::alert('', $target->getError(), '', MBQ_ERR_APP);
+		}
+    }
   
 }
 

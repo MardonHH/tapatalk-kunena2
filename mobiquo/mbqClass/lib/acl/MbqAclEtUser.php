@@ -30,6 +30,17 @@ Class MbqAclEtUser extends MbqBaseAclEtUser {
         }
         return false;
     }
+    
+    /**
+     * judge can m_ban_user
+     *
+     * @param  Object  $oMbqEtUser
+     * @param  Integer  $mode
+     * @return  Boolean
+     */
+    public function canAclMBanUser($oMbqEtUser, $mode) {
+        return $oMbqEtUser->canBan->oriValue;
+    }
   
 }
 

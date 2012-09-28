@@ -143,6 +143,45 @@ Class MbqAclEtForumPost extends MbqBaseAclEtForumPost {
         }
         return false;
     }
+    
+    /**
+     * judge can m_move_post
+     *
+     * @param  Object  $oMbqEtForumPost
+     * @param  Mixed  $oMbqEtForum
+     * @param  Mixed  $oMbqEtForumTopic
+     * @return  Boolean
+     */
+    public function canAclMMovePost($oMbqEtForumPost, $oMbqEtForum, $oMbqEtForumTopic) {
+        if ($oMbqEtForumPost->canMove->oriValue && $oMbqEtForum && $oMbqEtForum->mbqBind['oKunenaForumCategory']->authorise ( 'read' )) {
+            return true;
+        } elseif ($oMbqEtForumPost->canMove->oriValue && $oMbqEtForumTopic && $oMbqEtForumTopic->mbqBind['oKunenaForumTopic']->authorise ( 'read' )) {
+            return true;
+        }
+        return false;
+    }
+    
+    
+    
+    /**
+     * judge can m_approve_post
+     *
+     * @param  Object  $oMbqEtForumPost
+     * @param  Integer  $mode
+     * @return  Boolean
+     */
+    public function canAclMApprovePost($oMbqEtForumPost, $mode) {
+        if ($mode == 1) {   //approve
+            if ($oMbqEtForumPost->canApprove->oriValue && ($oMbqEtForumPost->mbqBind['oKunenaForumMessage']->hold == KunenaForum::UNAPPROVED)) {
+                return true;
+            }
+        } elseif ($mode == 2) { //unapprove
+            if ($oMbqEtForumPost->canApprove->oriValue && ($oMbqEtForumPost->mbqBind['oKunenaForumMessage']->hold == KunenaForum::PUBLISHED)) {
+                return true;
+            }
+        }
+        return false;
+    }
   
 }
 
