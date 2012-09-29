@@ -412,8 +412,6 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
     	$post = preg_replace('/<div class="highlight"><pre xml\:php>(.*?)<\/pre><\/div>/i', '[quote]$1[/quote]', $post);
     	$post = preg_replace('/<div class="kmsgtext\-hide">(.*?)<\/div>/i', '[quote]$1[/quote]', $post);
     	$post = preg_replace('/<div class="kmsgtext-confidential">(.*?)<\/div>/i', '[quote]$1[/quote]', $post);
-    	$post = preg_replace('/<a .*?><img .*?src="(.*?)" .*?\/><\/a>/i', '[img]$1[/img]', $post);
-    	$post = preg_replace('/<a .*?href="(.*?)".*?>(.*?)<\/a>/i', '[url=$1]$2[/url]', $post);
     	$post = preg_replace('/\[email\](.*?)\[\/email\]/i', '[url=$1]$1[/url]', $post);
     	//$post = preg_replace('/\[ebay\](.*?)\[\/ebay\]/i', '[url=http://www.ebay.com/sch/i.html?_nkw=$1]$1 on eBay[/url]', $post);
     	$post = preg_replace_callback('/\[ebay\](.*?)\[\/ebay\]/i', create_function('$matches','return \'[url=http://www.ebay.com/sch/i.html?_nkw=\'.urlencode($matches[1]).\']\'.$matches[1].\' on eBay[/url]\';'), $post);
@@ -447,6 +445,7 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
     	/* replace the expression end */
     	//$post = preg_replace('/<img .*?src="(.*?)"{1,2} .*?\/>/i', '[img]$1[/img]', $post);
     	$post = preg_replace('/<img .*?src="(.*?)" .*?\/>/i', '[img]$1[/img]', $post);
+    	$post = preg_replace('/<a .*?href="(.*?)".*?>(.*?)<\/a>/i', '[url=$1]$2[/url]', $post);
     	$post = str_ireplace('<strong>', '<b>', $post);
     	$post = str_ireplace('</strong>', '</b>', $post);
     	$post = preg_replace_callback('/<span style=\"color:(\#.*?)\">(.*?)<\/span>/is', create_function('$matches','return MbqMain::$oMbqCm->mbColorConvert($matches[1], $matches[2]);'), $post);

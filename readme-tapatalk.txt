@@ -18,8 +18,9 @@
 2.support report_post
 3.support thank_post
 4.support basic moderation(m_stick_topic/m_close_topic/m_delete_topic/m_delete_post/m_undelete_topic/m_undelete_post/m_move_topic/m_rename_topic/m_move_post/m_approve_topic/m_approve_post/m_ban_user)
+5.optimize content display format
 
 For more important update info please visit:
 http://support.tapatalk.com/threads/tapatalk-for-kunena-plugin-release-announcement-and-changelog.6632
 
-20120929
+20120930
