@@ -90,9 +90,12 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
             if ($mbqOpt['oMbqDataPage']) {
                 $oMbqDataPage = $mbqOpt['oMbqDataPage'];
                 if ($mbqOpt['top']) {
-                    require_once(MBQ_APPEXTENTION_PATH.'ExttMbqKunenaModelTopics.php');
-                    $oExttMbqKunenaModelTopics = new ExttMbqKunenaModelTopics();
-                    $arr = $oExttMbqKunenaModelTopics->exttMbqGetRecentTopics(array('catId' => $oMbqEtForum->forumId->oriValue, 'start' => $oMbqDataPage->startNum, 'limit' => $oMbqDataPage->numPerPage, 'mode' => 'sticky', 'time' => -1));
+                    //require_once(MBQ_APPEXTENTION_PATH.'ExttMbqKunenaModelTopics.php');
+                    //$oExttMbqKunenaModelTopics = new ExttMbqKunenaModelTopics();
+                    //$arr = $oExttMbqKunenaModelTopics->exttMbqGetRecentTopics(array('catId' => $oMbqEtForum->forumId->oriValue, 'start' => $oMbqDataPage->startNum, 'limit' => $oMbqDataPage->numPerPage, 'mode' => 'sticky', 'time' => -1));
+                    require_once(MBQ_APPEXTENTION_PATH.'ExttMbqKunenaModelCategory.php');
+                    $oExttMbqKunenaModelCategory = new ExttMbqKunenaModelCategory();
+                    $arr = $oExttMbqKunenaModelCategory->exttMbqGetTopics(array('catId' => $oMbqEtForum->forumId->oriValue, 'start' => $oMbqDataPage->startNum, 'limit' => $oMbqDataPage->numPerPage, 'where' => 'AND tt.ordering > 0'));
                     $objsKunenaForumTopic = $arr['topics'];
                     $oMbqDataPage->totalNum = $arr['total'];
                 } else {
