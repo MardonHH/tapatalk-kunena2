@@ -17,6 +17,7 @@ Class MbqAppEnv extends MbqBaseAppEnv {
     public $oCurJUser;
     public $timeOffset;
     public $oKunenaConfig;
+    public $joomlaRootUrl;
     
     public function __construct() {
         parent::__construct();
@@ -35,6 +36,7 @@ Class MbqAppEnv extends MbqBaseAppEnv {
         $this->oApp->initialise();
         //$this->oApp->route();
         $GLOBALS['mainframe'] = $this->oApp;    //only for old joomla version,for example joomla 1.5.26
+        $this->joomlaRootUrl = JURI::root();
         
         // Initialize Kunena (if Kunena System Plugin isn't enabled)
         $api = JPATH_ADMINISTRATOR . '/components/com_kunena/api.php';
