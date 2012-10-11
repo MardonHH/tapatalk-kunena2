@@ -54,6 +54,7 @@ Class MbqConfig extends MbqBaseConfig {
         if (!$this->moduleIsEnable('forum')) {
             $this->cfg['base']['is_open']->setOriValue(MbqBaseFdt::getFdt('MbqFdtConfig.base.is_open.range.no'));
         }
+        $this->cfg['base']['sys_version']->setOriValue(KunenaForum::version());
         if ($this->moduleIsEnable('user') && !MbqMain::$oMbqAppEnv->oKunenaConfig->regonly && ($this->getCfg('user.guest_okay')->oriValue == MbqBaseFdt::getFdt('MbqFdtConfig.user.guest_okay.range.support'))) {
             $this->cfg['user']['guest_okay']->setOriValue(MbqBaseFdt::getFdt('MbqFdtConfig.user.guest_okay.range.support'));
         } else {
