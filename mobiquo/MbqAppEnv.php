@@ -27,6 +27,7 @@ Class MbqAppEnv extends MbqBaseAppEnv {
      * application environment init
      */
     public function init() {
+        @ ob_start();
         define('_JEXEC', 1);
         define('DS', DIRECTORY_SEPARATOR);
         define('JPATH_BASE', realpath(MBQ_PARENT_PATH));    /* attention!!! */
@@ -80,6 +81,7 @@ Class MbqAppEnv extends MbqBaseAppEnv {
         $this->oDb = JFactory::getDBO ();
         
         require_once(KPATH_SITE.'/lib/kunena.link.class.php');
+        @ ob_end_clean();
     }
     
 }
