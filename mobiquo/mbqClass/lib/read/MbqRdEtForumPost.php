@@ -457,6 +457,19 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
     	if ($returnHtml) {
     	    $post = str_ireplace('</div>', '</div><br />', $post);
     	    $post = strip_tags($post, '<br><i><b><u><font>');
+    	    /*
+    		$post = str_replace("&", '&amp;', $post);
+    		$post = str_replace("<", '&lt;', $post);
+    		$post = str_replace(">", '&gt;', $post);
+    		$post = str_ireplace("&lt;b&gt;", '<b>', $post);
+    		$post = str_ireplace("&lt;/b&gt;", '</b>', $post);
+    		$post = str_ireplace("&lt;i&gt;", '<i>', $post);
+    		$post = str_ireplace("&lt;/i&gt;", '</i>', $post);
+    		$post = str_ireplace("&lt;u&gt;", '<u>', $post);
+    		$post = str_ireplace("&lt;/u&gt;", '</u>', $post);
+    		$post = str_ireplace("&lt;br /&gt;", '<br />', $post);
+    	    $post = preg_replace('/&lt;font (.*?)&gt;(.*?)&lt;\/font&gt;/i', '<font $1>$2</font>', $post);
+    	    */
         } else {
     	    $post = strip_tags($post);
         }
