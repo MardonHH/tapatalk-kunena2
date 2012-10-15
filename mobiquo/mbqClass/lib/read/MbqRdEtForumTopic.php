@@ -158,6 +158,7 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
             $lastReplyUserIds = array();
             $forumIds = array();
             $topicIds = array();
+            $firstPostIds = array();
             foreach ($objsKunenaForumTopic as $oKunenaForumTopic) {
                 $objsMbqEtForumTopic[] = $this->initOMbqEtForumTopic($oKunenaForumTopic, array('case' => 'oKunenaForumTopic', 'withAuthor' => false, 'oMbqEtForum' => false, 'oFirstMbqEtForumPost' => false, 'oKunenaForumTopicUser' => false, 'oLastReplyMbqEtUser' => false, 'needExttMbqFetchNewStatus' => false));
             }
