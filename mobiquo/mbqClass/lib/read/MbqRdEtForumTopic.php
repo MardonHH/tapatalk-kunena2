@@ -323,7 +323,7 @@ Class MbqRdEtForumTopic extends MbqBaseRdEtForumTopic {
             }
             $this->makeProperty($oMbqEtForumTopic, 'byOAuthorMbqEtUser');
             if ($mbqOpt['oFirstMbqEtForumPost']) {
-                /* load oFirstMbqEtForumPost author */
+                /* load oFirstMbqEtForumPost property */
                 $this->makeProperty($oMbqEtForumTopic, 'oFirstMbqEtForumPost');
                 if ($oMbqEtForumTopic->oFirstMbqEtForumPost && $oMbqEtForumTopic->oFirstMbqEtForumPost->canEdit->oriValue) {
                     $oMbqEtForumTopic->canRename->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForumTopic.canRename.range.yes'));
