@@ -261,8 +261,8 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
             $newVar = clone $var;
             $newVar->message = MbqMain::$oMbqCm->replaceCodes($newVar->message, 'quote|email|ebay|map');  /* do some change for process */
             $oMbqEtForumPost->postContent->setAppDisplayValue($oExttMbqKunenaViewTopic->exttMbqReturnDisplayMessageContents($var));
-            $oMbqEtForumPost->postContent->setTmlDisplayValue($this->processContentForDisplay($oExttMbqKunenaViewTopic->exttMbqReturnDisplayMessageContents($newVar), true));
-            $oMbqEtForumPost->postContent->setTmlDisplayValueNoHtml($this->processContentForDisplay($oExttMbqKunenaViewTopic->exttMbqReturnDisplayMessageContents($newVar), false));
+            $oMbqEtForumPost->postContent->setTmlDisplayValue($this->processContentForDisplay($oExttMbqKunenaViewTopic->exttMbqReturnDisplayMessageContents($newVar), true, $oMbqEtForumPost));
+            $oMbqEtForumPost->postContent->setTmlDisplayValueNoHtml($this->processContentForDisplay($oExttMbqKunenaViewTopic->exttMbqReturnDisplayMessageContents($newVar), false, $oMbqEtForumPost));
             $oMbqEtForumPost->shortContent->setOriValue(MbqMain::$oMbqCm->getShortContent($var->message));
             $oMbqEtForumPost->postAuthorId->setOriValue($var->userid);
             if ($var->authorise('edit')) {
@@ -366,9 +366,10 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
      *
      * @params  String  $content
      * @params  Boolean  $returnHtml
+     * @param  Object  $oMbqEtForumPost
      * @return  String
      */
-    public function processContentForDisplay($content, $returnHtml) {
+    public function processContentForDisplay($content, $returnHtml, $oMbqEtForumPost) {
         /*
         support bbcode:url/img/quote
         support html:br/i/b/u/font+color(red/blue)
@@ -457,6 +458,22 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
     	if ($returnHtml) {
     	    $post = str_ireplace('</div>', '</div><br />', $post);
     	    $post = strip_tags($post, '<br><i><b><u><font>');
+    	    if (KunenaForum::version() == '2.0.1') {
+        	    $post = preg_replace_callback('/\[url=(.*?)\](.*?)\[\/url\]/i', create_function('$matches','return "[url=".$matches[1]."]".str_ireplace("&", "&amp;", $matches[2])."[/url]";'), $post);
+        	    //$post = preg_replace_callback('/\[img\](.*?)\[\/img\]/i', create_function('$matches','return "[img]".str_ireplace("&", "&amp;", $matches[1])."[/img]";'), $post);
+    	        preg_match_all('/\[email\](.*?)\[\/email\]/is', $oMbqEtForumPost->postContent->oriValue, $oriEmails);
+    	        $oriEmails = $oriEmails[1];
+    	        $post = preg_replace('/\[email\].*?\[\/email\]/is', '[email]temp[/email]', $post);
+    	        foreach ($oriEmails as $oriEmail) {
+    	            $post = preg_replace('/\[email\]temp\[\/email\]/is', '[email]'.$oriEmail.'[/email]', $post, 1);
+    	        }
+        	} else {    //kunena version > 2.0.1
+        	    //$post = preg_replace_callback('/\[url=(.*?)\](.*?)\[\/url\]/i', create_function('$matches','return "[url=".$matches[1]."]".str_ireplace("&", "&amp;", $matches[2])."[/url]";'), $post);
+        	    //$post = preg_replace_callback('/\[img\](.*?)\[\/img\]/i', create_function('$matches','return "[img]".str_ireplace("&", "&amp;", $matches[1])."[/img]";'), $post);
+        	    $post = str_ireplace('&amp;amp;', '&amp;', $post);
+        	    $post = str_ireplace('&amp;lt;', '&lt;', $post);
+        	    $post = str_ireplace('&amp;gt;', '&gt;', $post);
+        	}
     	    /*
     		$post = str_replace("&", '&amp;', $post);
     		$post = str_replace("<", '&lt;', $post);
