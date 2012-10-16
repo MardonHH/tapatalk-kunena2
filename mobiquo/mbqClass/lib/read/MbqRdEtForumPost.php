@@ -459,7 +459,9 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
     	    $post = str_ireplace('</div>', '</div><br />', $post);
     	    $post = strip_tags($post, '<br><i><b><u><font>');
     	    if (KunenaForum::version() == '2.0.1') {
-        	    $post = preg_replace_callback('/\[url=(.*?)\](.*?)\[\/url\]/i', create_function('$matches','return "[url=".$matches[1]."]".str_ireplace("&", "&amp;", $matches[2])."[/url]";'), $post);
+        	    //$post = preg_replace_callback('/\[url=(.*?)\](.*?)\[\/url\]/i', create_function('$matches','return "[url=".str_ireplace("&", "&amp;", $matches[1])."]".str_ireplace("&", "&amp;", $matches[2])."[/url]";'), $post);
+        	    $post = preg_replace_callback('/\[url=(.*?)\](.*?)\[\/url\]/i', create_function('$matches','return "[url=".str_ireplace("&amp;", "&", $matches[1])."]".$matches[2]."[/url]";'), $post);   //!!!sometimes contain &amp;
+        	    $post = preg_replace_callback('/\[url=(.*?)\](.*?)\[\/url\]/i', create_function('$matches','return "[url=".str_ireplace("&", "&amp;", $matches[1])."]".str_ireplace("&", "&amp;", $matches[2])."[/url]";'), $post);
         	    //$post = preg_replace_callback('/\[img\](.*?)\[\/img\]/i', create_function('$matches','return "[img]".str_ireplace("&", "&amp;", $matches[1])."[/img]";'), $post);
     	        preg_match_all('/\[email\](.*?)\[\/email\]/is', $oMbqEtForumPost->postContent->oriValue, $oriEmails);
     	        $oriEmails = $oriEmails[1];
