@@ -30,6 +30,11 @@ Class MbqRdEtForum extends MbqBaseRdEtForum {
      */
     public function getForumTree() {
         $arr = KunenaForumCategoryHelper::getCategories();
+        $catIds = array();
+        foreach ($arr as $oKunenaForumCategory) {
+            $catIds[] = $oKunenaForumCategory->id;
+        }
+        KunenaForumCategoryHelper::getNewTopics($catIds);   //set unread num
         $level = 0;
         $tree = array();
         $newTree = array();
@@ -130,6 +135,7 @@ Class MbqRdEtForum extends MbqBaseRdEtForum {
             $oMbqEtForum->totalTopicNum->setOriValue($var->numTopics);
             $oMbqEtForum->parentId->setOriValue($var->parent_id);
             $oMbqEtForum->subOnly->setOriValue($var->parent_id == 0 ? MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.subOnly.range.yes') : MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.subOnly.range.no'));
+            $oMbqEtForum->newPost->setOriValue($var->getNewCount() ? MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.newPost.range.yes') : MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.newPost.range.no'));
             if ($var->authorise('topic.create')) {
                 $oMbqEtForum->canPost->setOriValue(MbqBaseFdt::getFdt('MbqFdtForum.MbqEtForum.canPost.range.yes'));
             } else {
