@@ -13,9 +13,12 @@
 	6. Click the red icon to enable Tapatalk Kunena Plugin if it is not already enabled.
 
 -- Change Log
-    Kunena 2.0 Series Version 1.1.1 released
+    Kunena 2.0 Series Version 1.1.2 released
     1.support kunena 2.0.1/2.0.2
-    2.fixed bug:can not display relative url pictures
-    3.optimize program
+    2.fixed bug:can not display post content when contain special characters
+    3.fixed some display compatibility issues between kunena 2.0.1 and kunena 2.0.2
+    4.optimize program for display color
+    5.support new_post flag for forum
+    6.optimize program
 
-20121015
+20121113
