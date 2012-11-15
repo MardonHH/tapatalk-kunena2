@@ -23,16 +23,18 @@ class plgSystemTapatalk extends JPlugin
 		if (!class_exists('KunenaForum'))
 			return false;
 			
-        if (JRequest::getCmd('option') != 'com_kunena') {
-            return false;
-        }
-
-		$base	= JURI::base(false).'';
-		$buffer = JResponse::getBody();
-
-		$buffer = str_ireplace("</head>", "<script type='text/javascript' src='{$base}mobiquo/tapatalkdetect.js'></script></head>", $buffer);
-
-		JResponse::setBody($buffer);
-		return true;
+        if (JRequest::getCmd('option') == 'com_kunena' && (JRequest::getCmd('view') == 'topics' || JRequest::getCmd('view') == 'category')) {
+    		$base	= JURI::base(false).'';
+    		$buffer = JResponse::getBody();
+    
+    		$buffer = str_ireplace("</head>", "<script type='text/javascript' src='{$base}mobiquo/tapatalkdetect.js'></script></head>", $buffer);
+    
+    		JResponse::setBody($buffer);
+    		return true;
+    	} else {
+    	    return false;
+    	}
 	}
 }
+
+?>
