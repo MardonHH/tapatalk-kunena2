@@ -13,12 +13,9 @@
 	6. Click the red icon to enable Tapatalk Kunena Plugin if it is not already enabled.
 
 -- Change Log
-    Kunena 2.0 Series Version 1.1.2 released
+    Kunena 2.0 Series Version 1.1.3 released
     1.support kunena 2.0.1/2.0.2
-    2.fixed bug:can not display post content when contain special characters
-    3.fixed some display compatibility issues between kunena 2.0.1 and kunena 2.0.2
-    4.optimize program for display color
-    5.support new_post flag for forum
-    6.optimize program
+    2.improve:only run detect js on kunena forum relational pages
+    3.improve:get message content from function instead of tpl
 
-20121113
+20121118

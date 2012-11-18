@@ -7,7 +7,7 @@
 	<license></license>
 	<authorEmail></authorEmail>
 	<authorUrl>www.tapatalk.com</authorUrl>
-	<version>kn20_1.1.2</version>
+	<version>kn20_1.1.3</version>
 	<description>Tapatalk Kunena Plugin</description>
 	<files>
 		<filename plugin="tapatalk">tapatalk.php</filename>
