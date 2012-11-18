@@ -18,7 +18,9 @@ class ExttMbqKunenaViewTopic extends KunenaViewTopic {
      */
 	function exttMbqReturnDisplayMessageContents($message) {
 	    $this->message = $message;
-	    return $this->loadTemplateFile('message');
+	    //return $this->loadTemplateFile('message');
+	    /* modified from default_message.php */
+	    return KunenaHtmlParser::parseBBCode ($this->message->message, $this);
 	}
 }
 
