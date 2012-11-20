@@ -23,7 +23,8 @@ class plgSystemTapatalk extends JPlugin
 		if (!class_exists('KunenaForum'))
 			return false;
 			
-        if (JRequest::getCmd('option') == 'com_kunena' && (JRequest::getCmd('view') == 'topics' || JRequest::getCmd('view') == 'category')) {
+        //if (JRequest::getCmd('option') == 'com_kunena' && (JRequest::getCmd('view') == 'topics' || JRequest::getCmd('view') == 'category')) {
+        if (JRequest::getCmd('option') == 'com_kunena') {
     		$base	= JURI::base(false).'';
     		$buffer = JResponse::getBody();
     
