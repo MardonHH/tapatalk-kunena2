@@ -3,7 +3,7 @@
 require_once(KPATH_SITE.'/models/topic.php');
 
 /**
- * for kunena 2.0.1/2.0.2
+ * for kunena 2.0.1/2.0.2/2.0.3
  * ExttMbqKunenaModelTopic extended from KunenaModelTopic
  * add method exttMbqGetTopic() modified from method getTopic()
  * add method exttMbqGetMessages() modified from method getMessages()
@@ -78,7 +78,9 @@ class ExttMbqKunenaModelTopic extends KunenaModelTopic {
 			// First collect ids and users
 			$userlist = array();
 			$this->threaded = array();
+			if (KunenaForum::version() >= '2.0.3') $location = $params['start'];    //for compatible with kunena 2.0.3
 			foreach($this->messages AS $message){
+			    if (KunenaForum::version() >= '2.0.3') $message->replynum = ++$location;    //for compatible with kunena 2.0.3
 				if ($threaded) {
 					// Threaded ordering
 					if (isset($this->messages[$message->parent])) {

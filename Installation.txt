@@ -13,9 +13,13 @@
 	6. Click the red icon to enable Tapatalk Kunena Plugin if it is not already enabled.
 
 -- Change Log
-    Kunena 2.0 Series Version 1.1.3 released
-    1.support kunena 2.0.1/2.0.2
-    2.improve:only run detect js on kunena forum relational pages
-    3.improve:get message content from function instead of tpl
+    Kunena 2.0 Series Version 1.1.4 released
+    1.support kunena 2.0.1/2.0.2/2.0.3
+    2.fixed bug:can not run detect js in old joomla version
+    3.do compatibility work for kunena 2.0.3
+    4.user now can custom the detect js popup info for different devices
 
-20121118
+-- Other note:
+    1.You can custom the detect js popup info for different devices by modify the mobiquo/custom/customDetectJs.php,after you modified this file you need to bakup it by yourself for next plugin version.
+
+20121203

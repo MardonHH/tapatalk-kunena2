@@ -3,7 +3,7 @@
 require_once(KPATH_ADMIN.'/libraries/forum/message/helper.php');
 
 /**
- * for kunena 2.0.1/2.0.2
+ * for kunena 2.0.1/2.0.2/2.0.3
  * ExttMbqKunenaForumMessageHelper extended from KunenaForumMessageHelper
  * add method exttMbqGetLatestMessages() modified from method getLatestMessages().
  * 

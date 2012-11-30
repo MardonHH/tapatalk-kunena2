@@ -24,7 +24,7 @@ Class MbqWrEtForumPost extends MbqBaseWrEtForumPost {
         if (is_array($var)) {
             MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
         } else {
-            /* modified from KunenaControllerTopic::post(),for kunena 2.0.1/2.0.2 */
+            /* modified from KunenaControllerTopic::post(),for kunena 2.0.1/2.0.2/2.0.3 */
             require_once KPATH_SITE . '/lib/kunena.link.class.php';
             //$this->id = JRequest::getInt('parentid', 0);
             $fields = array (
@@ -121,6 +121,9 @@ Class MbqWrEtForumPost extends MbqBaseWrEtForumPost {
             if (MbqMain::$oCurMbqEtUser && !MbqMain::$oCurMbqEtUser->mbqBind['oKunenaUser']->isModerator($category) && MbqMain::$oCurMbqEtUser->mbqBind['oKunenaUser']->posts < MbqMain::$oMbqAppEnv->oKunenaConfig->hold_newusers_posts ) {
                 $message->hold = 1;
             }
+            
+            // Prevent user abort from this point in order to maintain data integrity.
+		    @ignore_user_abort(true);
     
             // Upload new attachments
             /*
@@ -253,7 +256,7 @@ Class MbqWrEtForumPost extends MbqBaseWrEtForumPost {
             MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
         } else {
             if ($mbqOpt['case'] == 'edit') {
-                /* modified from KunenaControllerTopic::edit(),for kunena 2.0.1/2.0.2 */
+                /* modified from KunenaControllerTopic::edit(),for kunena 2.0.1/2.0.2/2.0.3 */
                 require_once KPATH_SITE . '/lib/kunena.link.class.php';
         		//$this->id = JRequest::getInt('mesid', 0);
         

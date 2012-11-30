@@ -3,7 +3,7 @@
 require_once(KPATH_ADMIN.'/libraries/user/helper.php');
 
 /**
- * for kunena 2.0.1/2.0.2
+ * for kunena 2.0.1/2.0.2/2.0.3
  * ExttMbqKunenaUserHelper extended from KunenaUserHelper
  * add method exttMbqLoadUsers() modified from method loadUsers(),fixed a bug in method loadUsers().
  * 

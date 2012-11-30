@@ -3,7 +3,7 @@
 require_once(KPATH_ADMIN.'/libraries/forum/message/attachment/attachment.php');
 
 /**
- * for kunena 2.0.1/2.0.2
+ * for kunena 2.0.1/2.0.2/2.0.3
  * ExttMbqKunenaForumMessageAttachment extended from KunenaForumMessageAttachment
  * add method exttMbqSave() modified from method save().
  * 
@@ -14,7 +14,8 @@ class ExttMbqKunenaForumMessageAttachment extends KunenaForumMessageAttachment {
 
 	public function exttMbqSave($updateOnly = false) {
 		// Do not save altered message
-		if ($this->_disabled) return;
+		//if ($this->_disabled) return;
+		if ($this->_disabled || $this->disabled) return; //$this->disabled for compatible with kunena 2.0.3
 
 		// Create the messages table object
 		$table = $this->getTable ();

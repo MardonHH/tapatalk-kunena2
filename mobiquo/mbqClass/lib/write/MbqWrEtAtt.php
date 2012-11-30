@@ -41,7 +41,8 @@ Class MbqWrEtAtt extends MbqBaseWrEtAtt {
         		$attachment = new ExttMbqKunenaForumMessageAttachment();
         		$attachment->mesid = 0;
         		$attachment->userid = (MbqMain::$oCurMbqEtUser) ? MbqMain::$oCurMbqEtUser->userId->oriValue : 0;
-        		$success = $attachment->upload('attachment');
+        		if (KunenaForum::version() >= '2.0.3') $success = $attachment->upload('attachment', $forumId);  //for compatible with kunena 2.0.3
+        		else $success = $attachment->upload('attachment');
         		if ($success) {
         		    if ($attachment->exttMbqSave()) {
     	                $oMbqRdEtAtt = MbqMain::$oClk->newObj('MbqRdEtAtt');
