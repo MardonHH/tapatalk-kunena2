@@ -473,6 +473,7 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
         	} else {    //kunena version > 2.0.1
         	    //$post = preg_replace_callback('/\[url=(.*?)\](.*?)\[\/url\]/i', create_function('$matches','return "[url=".$matches[1]."]".str_ireplace("&", "&amp;", $matches[2])."[/url]";'), $post);
         	    //$post = preg_replace_callback('/\[img\](.*?)\[\/img\]/i', create_function('$matches','return "[img]".str_ireplace("&", "&amp;", $matches[1])."[/img]";'), $post);
+        	    $post = str_replace("&", '&amp;', $post);
         	    $post = str_ireplace('&amp;amp;', '&amp;', $post);
         	    $post = str_ireplace('&amp;lt;', '&lt;', $post);
         	    $post = str_ireplace('&amp;gt;', '&gt;', $post);
