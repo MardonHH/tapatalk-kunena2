@@ -77,8 +77,9 @@ Class MbqRdEtAtt extends MbqBaseRdEtAtt {
                 $contentType = MbqBaseFdt::getFdt('MbqFdtAtt.MbqEtAtt.contentType.range.other');
             }     
             $oMbqEtAtt->contentType->setOriValue($contentType);
-            $oMbqEtAtt->thumbnailUrl->setOriValue(preg_replace('/<a .*?href="(.*?)".*?>.*?<\/a>/i', '$1', $var->getThumbnailLink()));
-            $oMbqEtAtt->url->setOriValue(preg_replace('/<a .*?href="(.*?)".*?>.*?<\/a>/i', '$1', $var->getImageLink()));
+            /* $oMbqEtAtt->thumbnailUrl->setOriValue(preg_replace('/<a .*?href="(.*?)".*?>.*?<\/a>/i', '$1', $var->getThumbnailLink())); */
+            $oMbqEtAtt->thumbnailUrl->setOriValue(preg_replace('/<a .*?href=".*?".*?><img .*?src="(.*?)".*?\/><\/a>/i', '$1', $var->getThumbnailLink()));
+            $oMbqEtAtt->url->setOriValue(preg_replace('/<a .*?href="(.*?)".*?>.*?<\/a>/i', '$1', $var->getThumbnailLink()));
             $oMbqEtAtt->userId->setOriValue($var->userid);
             $oMbqEtAtt->mbqBind['oKunenaForumMessageAttachment'] = $var;
             return $oMbqEtAtt;
