@@ -18,8 +18,11 @@
     2.fixed bug:can not run detect js in old joomla version
     3.do compatibility work for kunena 2.0.3
     4.user now can custom the detect js popup info for different devices
+    5.fixed bug:can not display smilies correctly sometimes
+    6.fixed bug:have not convert special characters in url
+    7.fixed bug:can not correctly display attachments url with not image format files(for example:zip files etc.)
 
 -- Other note:
     1.You can custom the detect js popup info for different devices by modify the mobiquo/custom/customDetectJs.php,after you modified this file you need to bakup it by yourself for next plugin version.
 
-20121203
+20121213
