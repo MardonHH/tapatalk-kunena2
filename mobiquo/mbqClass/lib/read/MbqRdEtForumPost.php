@@ -477,6 +477,7 @@ Class MbqRdEtForumPost extends MbqBaseRdEtForumPost {
         	    $post = str_ireplace('&amp;amp;', '&amp;', $post);
         	    $post = str_ireplace('&amp;lt;', '&lt;', $post);
         	    $post = str_ireplace('&amp;gt;', '&gt;', $post);
+        	    $post = str_ireplace('&amp;quot;', '"', $post);
         	}
     	    /*
     		$post = str_replace("&", '&amp;', $post);
