@@ -14,7 +14,7 @@
 
 -- Change Log
     Kunena 2.0 Series Version 1.1.4 released
-    1.support kunena 2.0.1/2.0.2/2.0.3
+    1.support kunena 2.0.1/2.0.2/2.0.3/2.0.4
     2.fixed bug:can not run detect js in old joomla version
     3.do compatibility work for kunena 2.0.3
     4.user now can custom the detect js popup info for different devices

@@ -24,7 +24,7 @@ Class MbqWrEtForumPost extends MbqBaseWrEtForumPost {
         if (is_array($var)) {
             MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
         } else {
-            /* modified from KunenaControllerTopic::post(),for kunena 2.0.1/2.0.2/2.0.3 */
+            /* modified from KunenaControllerTopic::post(),for kunena 2.0.1/2.0.2/2.0.3/2.0.4 */
             require_once KPATH_SITE . '/lib/kunena.link.class.php';
             //$this->id = JRequest::getInt('parentid', 0);
             $fields = array (
@@ -256,7 +256,7 @@ Class MbqWrEtForumPost extends MbqBaseWrEtForumPost {
             MbqError::alert('', __METHOD__ . ',line:' . __LINE__ . '.' . MBQ_ERR_INFO_NOT_ACHIEVE);
         } else {
             if ($mbqOpt['case'] == 'edit') {
-                /* modified from KunenaControllerTopic::edit(),for kunena 2.0.1/2.0.2/2.0.3 */
+                /* modified from KunenaControllerTopic::edit(),for kunena 2.0.1/2.0.2/2.0.3/2.0.4 */
                 require_once KPATH_SITE . '/lib/kunena.link.class.php';
         		//$this->id = JRequest::getInt('mesid', 0);
         

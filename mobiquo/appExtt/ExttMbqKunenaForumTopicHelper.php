@@ -3,7 +3,7 @@
 require_once(KPATH_ADMIN.'/libraries/forum/topic/helper.php');
 
 /**
- * for kunena 2.0.1/2.0.2/2.0.3
+ * for kunena 2.0.1/2.0.2/2.0.3/2.0.4
  * ExttMbqKunenaForumTopicHelper extended from KunenaForumTopicHelper
  * add method exttMbqGetLatestTopics() modified from method getLatestTopics().
  * add method exttMbqFetchNewStatus() modified from method fetchNewStatus().

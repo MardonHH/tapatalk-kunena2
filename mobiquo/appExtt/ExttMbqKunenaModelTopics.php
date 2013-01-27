@@ -3,7 +3,7 @@
 require_once(KPATH_SITE.'/models/topics.php');
 
 /**
- * for kunena 2.0.1/2.0.2/2.0.3
+ * for kunena 2.0.1/2.0.2/2.0.3/2.0.4
  * ExttMbqKunenaModelTopics extended from KunenaModelTopics
  * add method exttMbqGetRecentTopics() modified from method getRecentTopics()
  * 
