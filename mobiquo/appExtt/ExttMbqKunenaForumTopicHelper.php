@@ -172,8 +172,15 @@ abstract class ExttMbqKunenaForumTopicHelper extends KunenaForumTopicHelper {
     
     static public function exttMbqFetchNewStatus($topics, $user = null) {
 		$user = KunenaUserHelper::get($user);
+		/*
 		if (!KunenaFactory::getConfig()->shownew || empty($topics) || !$user->exists()) {
 			return array();
+		}
+		*/
+		if (!KunenaFactory::getConfig()->shownew) { /* get_unread_topic and mark_all_as_read methods will be invalid if Show New posts is No in site backend setting */
+			return $topics;
+		} elseif (empty($topics) || !$user->exists()) {
+		    return array();
 		}
 		$session = KunenaFactory::getSession ();
 

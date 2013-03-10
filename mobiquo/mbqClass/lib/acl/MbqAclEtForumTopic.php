@@ -69,7 +69,8 @@ Class MbqAclEtForumTopic extends MbqBaseAclEtForumTopic {
      * @return  Boolean
      */
     public function canAclMarkAllAsRead() {
-        return MbqMain::hasLogin();
+        //return MbqMain::hasLogin();
+        return (MbqMain::hasLogin() && MbqMain::$oMbqConfig->getCfg('forum.mark_read')->oriValue == MbqBaseFdt::getFdt('MbqFdtConfig.forum.mark_read.range.support'));
     }
     
     /**
@@ -78,7 +79,8 @@ Class MbqAclEtForumTopic extends MbqBaseAclEtForumTopic {
      * @return  Boolean
      */
     public function canAclGetUnreadTopic() {
-        return MbqMain::hasLogin();
+        //return MbqMain::hasLogin();
+        return (MbqMain::hasLogin() && MbqMain::$oMbqConfig->getCfg('forum.can_unread')->oriValue == MbqBaseFdt::getFdt('MbqFdtConfig.forum.can_unread.range.support'));
     }
     
     /**

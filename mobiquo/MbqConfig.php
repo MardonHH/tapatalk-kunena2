@@ -75,6 +75,10 @@ Class MbqConfig extends MbqBaseConfig {
         } else {
             $this->cfg['forum']['report_post']->setOriValue(MbqBaseFdt::getFdt('MbqFdtConfig.forum.report_post.range.notSupport'));
         }
+        if (!KunenaFactory::getConfig()->shownew) {
+            $this->cfg['forum']['mark_read']->setOriValue(MbqBaseFdt::getFdt('MbqFdtConfig.forum.mark_read.range.notSupport'));
+            $this->cfg['forum']['can_unread']->setOriValue(MbqBaseFdt::getFdt('MbqFdtConfig.forum.can_unread.range.notSupport'));
+        }
     }
     
 }
