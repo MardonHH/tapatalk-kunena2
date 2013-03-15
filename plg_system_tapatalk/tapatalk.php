@@ -37,11 +37,14 @@ class plgSystemTapatalk extends JPlugin
             $str .= 'var tapatalk_ipad_url = "'.MbqCustomDetectJs::$MBQ_DETECTJS_IPAD_DOWNLOAD_URL.'";';
             $str .= 'var tapatalk_kindle_msg = "'.MbqCustomDetectJs::$MBQ_DETECTJS_KINDLEFIRE_CONFIRM_TITLE.'";';
             $str .= 'var tapatalk_kindle_url = "'.MbqCustomDetectJs::$MBQ_DETECTJS_KINDLEFIRE_DOWNLOAD_URL.'";';
+            $str .= 'var tapatalk_kindle_hd_msg = "'.MbqCustomDetectJs::$MBQ_DETECTJS_KINDLEFIRE_HD_CONFIRM_TITLE.'";';
+            $str .= 'var tapatalk_kindle_hd_url = "'.MbqCustomDetectJs::$MBQ_DETECTJS_KINDLEFIRE_HD_DOWNLOAD_URL.'";';
             $str .= 'var tapatalk_android_msg = "'.MbqCustomDetectJs::$MBQ_DETECTJS_ANDROID_CONFIRM_TITLE.'";';
             $str .= 'var tapatalk_android_url = "'.MbqCustomDetectJs::$MBQ_DETECTJS_ANDROID_DOWNLOAD_URL.'";';
-            $str .= 'var tapatalk_chrome_enable = '.(MbqCustomDetectJs::$MBQ_DETECTJS_CHROME_ENABLE ? 'true' : 'false').';';
+            $str .= 'var tapatalk_android_hd_msg = "'.MbqCustomDetectJs::$MBQ_DETECTJS_ANDROID_HD_CONFIRM_TITLE.'";';
+            $str .= 'var tapatalk_android_hd_url = "'.MbqCustomDetectJs::$MBQ_DETECTJS_ANDROID_HD_DOWNLOAD_URL.'";';
             $str .= 'var tapatalkdir = "'.MbqCustomDetectJs::$MBQ_DETECTJS_TAPATALKDIR.'";';
-            $str .= "</script><script type='text/javascript' src='{$base}mobiquo/tapatalkdetect.js'></script>";
+            $str .= "</script><script type='text/javascript' src='{$base}".MbqCustomDetectJs::$MBQ_DETECTJS_TAPATALKDIR."/tapadetect.js'></script>";
             $str .= '</head>';
     		$buffer = str_ireplace("</head>", $str, $buffer);
     
