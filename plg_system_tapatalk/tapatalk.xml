@@ -2,12 +2,12 @@
 <install version="1.6" type="plugin" group="system">
 	<name>Tapatalk Kunena Plugin</name>
 	<author>Tapatalk Team</author>
-	<creationDate>December 2012</creationDate>
+	<creationDate>March 2013</creationDate>
 	<copyright>Copyright (C) Quoord Systems Ltd. All rights reserved.</copyright>
 	<license></license>
 	<authorEmail></authorEmail>
 	<authorUrl>www.tapatalk.com</authorUrl>
-	<version>kn20_1.1.4</version>
+	<version>kn20_1.1.5</version>
 	<description>Tapatalk Kunena Plugin</description>
 	<files>
 		<filename plugin="tapatalk">tapatalk.php</filename>
