@@ -13,12 +13,11 @@
 	6. Click the red icon to enable Tapatalk Kunena Plugin if it is not already enabled.
 
 -- Change Log
-    Kunena 2.0 Series Version 1.1.5 released
-    1.support kunena 2.0.1/2.0.2/2.0.3/2.0.4
-    2.fixed bug:display " as html entity
-    3.improvement:get_latest_topic method can be called and return topic list as guest user when guest_search=1 in get_config
-    4.improvement:get_unread_topic and mark_all_as_read methods will be invalid if Show New posts is No in site backend setting
-    5.improve detect js
-    6.some other modify
+    Kunena 2.0 Series Version 1.2.0 released
+    1.support for kunena 2.0.1/2.0.2/2.0.3/2.0.4
+    2.support smartbanner
+    3.optimize content displaying
+    4.fixed some bugs
+    5.some other modify
 
-20130315
+20130420
