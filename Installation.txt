@@ -20,4 +20,7 @@
     4.fixed some bugs
     5.some other modify
 
+-- Support forum:
+https://support.tapatalk.com/forums/kunena-discussion.60/
+
 20130420
