@@ -67,6 +67,7 @@ class plgSystemTapatalk extends JPlugin
     		$oKunenaConfig = KunenaFactory::getConfig();
     		MbqSmartbanner::$MBQ_SMARTBANNER_APP_FORUM_NAME = $oKunenaConfig->board_title;
             $tapatalk_dir_url = $base.MbqSmartbanner::$MBQ_SMARTBANNER_TAPATALKDIR;
+            MbqSmartbanner::$MBQ_SMARTBANNER_APP_LOCATION_URL = 'tapatalk://'.preg_replace('/http[s]?\:\/\/(.*?)/i', '$1', $base).'?location=index';
             //header code
             $str = '<!-- Tapatalk Banner head start -->';
             $str .= '<link href="'.$tapatalk_dir_url.'/smartbanner/appbanner.css" rel="stylesheet" type="text/css" media="screen">';
