@@ -70,7 +70,7 @@ class plgSystemTapatalk extends JPlugin
             MbqSmartbanner::$MBQ_SMARTBANNER_APP_LOCATION_URL = 'tapatalk://'.preg_replace('/http[s]?\:\/\/(.*?)/i', '$1', $base).'?location=index';
             //header code
             $str = '<!-- Tapatalk Banner head start -->';
-            $str .= '<link href="'.$tapatalk_dir_url.'/smartbanner/appbanner.css" rel="stylesheet" type="text/css" media="screen">';
+            $str .= '<link href="'.$tapatalk_dir_url.'/smartbanner/appbanner.css" rel="stylesheet" type="text/css" media="screen" />';
             $str .= '<script type="text/javascript">';
             if (MbqSmartbanner::$MBQ_SMARTBANNER_IS_MOBILE_SKIN)
             $str .= 'var is_mobile_skin = '.MbqSmartbanner::$MBQ_SMARTBANNER_IS_MOBILE_SKIN.';';
